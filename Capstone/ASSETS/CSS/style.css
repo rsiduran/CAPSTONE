@@ -1,0 +1,16 @@
+.background {
+    position: relative;
+    height: 100vh; /* Full viewport height */
+    width: 100%; /* Full width */
+}
+
+.background img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the entire element */
+    opacity: 0.2; /* Adjust the opacity value (0.0 to 1.0) */
+    z-index: -1; /* Places the image behind other content */
+}
