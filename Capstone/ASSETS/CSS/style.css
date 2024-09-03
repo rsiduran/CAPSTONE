@@ -1,16 +1,250 @@
+/* Background */
 .background {
-    position: relative;
-    height: 100vh; /* Full viewport height */
-    width: 100%; /* Full width */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; 
+    background-repeat: repeat; 
+    background-size: auto; 
 }
 
-.background img {
+.background .background-img {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Ensures the image covers the entire element */
-    opacity: 0.2; /* Adjust the opacity value (0.0 to 1.0) */
-    z-index: -1; /* Places the image behind other content */
+    object-fit: cover;
+    opacity: 0.20;
+    z-index: -1;
 }
+
+/* Navigation bar */
+.custom-nav-link {
+    font-size: 1.25rem; /* Adjust font size */
+}
+
+.nav-link {
+    font-weight: bold;
+    color: #333; /* Adjust color */
+}
+
+.nav-link:hover {
+    color: #555;
+}
+
+.main-nav{
+    position: relative;
+    padding: 9px 0;
+    margin: 2px;
+}
+
+.nav-icon-style {
+    background-color: #B7DCB0;
+    padding: 8px 10px;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+}
+
+.nav-text-style {
+    position: absolute;
+    font-size: 10px;
+    bottom: -22px;
+    font-weight: bolder;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* For Carousel */
+.carousel {
+    min-height: 500px;
+    overflow: hidden;
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+}
+
+.carousel-inner {
+    height: 93%;
+    width: 35%;
+    display: flex;
+    align-items: center; 
+    border-radius: 10px;
+}
+
+.carousel-item img {
+    height: 50%;
+    object-fit: contain;
+    border-radius: 10px;
+}
+  
+/* Card Front */
+.title {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    font-size: 2.5rem;
+}
+
+.subtitle {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    font-size: 1.5rem;
+}
+
+.fixed-size {
+    width: 150px;
+    height: 150px;
+}
+
+/*2nd */
+.card-custom {
+    border-radius: 15px;
+    background-color: #d3e3c4;
+    color: #4b774f;
+    padding: 20px;
+    margin: 10px;
+}
+
+.card-header-custom {
+    background-color: #61873a;
+    color: #fff;
+    font-weight: bold;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    padding: 10px;
+    text-align: center;
+}
+
+.card-text-custom {
+    color: #4b774f;
+    font-size: 1rem;
+    margin-top:  10px;
+    padding: 2px;
+    text-align: center;
+}
+
+.testimonial-box {
+    border-radius: 20px;
+    padding: 20px;
+    font-size: 1rem;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    text-align: center;
+}
+
+.box1 {
+    background-color: #d4e6ff;
+    color: #333;
+}
+
+.box2 {
+    background-color: #ffe6d4;
+    color: #333;
+}
+
+.box3 {
+    background-color: #fff5d4;
+    color: #333;
+}
+
+.write-review-btn {
+    margin-top: 20px;
+    background-color: #a5d6a7;
+    color: #333;
+    font-weight: bold;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    text-decoration: none;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    border-radius: 50%;
+}
+
+.section-title {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/*3rd*/
+.testimonial-box {
+    border-radius: 20px;
+    padding: 20px;
+    font-size: 1rem;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    text-align: center;
+    margin: 10px;
+}
+
+.box1 {
+    background-color: #d4e6ff;
+    color: #333;
+}
+
+.box2 {
+    background-color: #ffe6d4;
+    color: #333;
+}
+
+.box3 {
+    background-color: #fff5d4;
+    color: #333;
+}
+
+.write-review-btn {
+    margin-top: 20px;
+    background-color: #a5d6a7;
+    color: #333;
+    font-weight: bold;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    text-decoration: none;
+}
+
+.section-title {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/*4th section */
+
+.contact-section {
+    padding: 30px 0;
+}
+.contact-form {
+    background-color: #d8f5d4;
+    padding: 30px;
+    border-radius: 10px;
+}
+.contact-form h2 {
+    font-family: 'Fantasy', sans-serif;
+    font-weight: bold;
+}
+.contact-form .form-control {
+    background-color: #c1e7b3;
+    border: none;
+    border-radius: 5px;
+}
+.contact-form .btn-submit {
+    background-color: #c1e7b3;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+.contact-form label {
+    font-weight: bold;
+}
+.map-container {
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
