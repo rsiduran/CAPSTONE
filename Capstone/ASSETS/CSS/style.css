@@ -123,11 +123,7 @@
     font-size: 1rem;
     margin-top:  10px;
     padding: 2px;
-    text-align: center; 
-}
-
-.box{
-    box-shadow: 4px 4px 2px gray;
+    text-align: center;
 }
 
 .testimonial-box {
@@ -141,19 +137,16 @@
 .box1 {
     background-color: #d4e6ff;
     color: #333;
-    box-shadow: 4px 4px 2px gray;
 }
 
 .box2 {
     background-color: #ffe6d4;
     color: #333;
-    box-shadow: 4px 4px 2px gray;
 }
 
 .box3 {
     background-color: #fff5d4;
     color: #333;
-    box-shadow: 4px 4px 2px gray;
 }
 
 .write-review-btn {
