@@ -114,6 +114,7 @@
     font-weight: bold;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
+    /* border-radius: 15px; */
     padding: 10px;
     text-align: center;
 }
@@ -121,9 +122,10 @@
 .card-text-custom {
     color: #4b774f;
     font-size: 1rem;
-    margin-top:  10px;
+    margin-top:  15px;
     padding: 2px;
-    text-align: center;
+    text-align: left;
+    height: 280px;
 }
 
 .testimonial-box {
@@ -131,7 +133,7 @@
     padding: 20px;
     font-size: 1rem;
     font-family: 'Comic Sans MS', cursive, sans-serif;
-    text-align: center;
+    text-align: left;
 }
 
 .box1 {
@@ -247,4 +249,3 @@
     border-radius: 10px;
     overflow: hidden;
 }
-
