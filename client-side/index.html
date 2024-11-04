@@ -22,26 +22,26 @@
 
     <nav class="navbar navbar-expand-lg sticky-top">
         <div class="container-fluid">
-            <div class="navbar-collapse justify-content-center" id="navbarNav">
+            <div class="navbar-collapse justify-content-center margin" id="navbarNav">
             <ul class="nav justify-content-center">
                 <li class="nav-item">
-                    <a class="nav-link custom-nav-link active main-nav" aria-current="page" href="#">
-                        <i class="fa-solid fa-bell nav-icon-style"></i><br><p class="nav-text-style">Home</p>
+                    <a class="nav-link custom-nav-link active main-nav" aria-current="page" href="#home">
+                        <i class="fa-solid fa-house nav-icon-style"></i><br><p class="nav-text-style">Home</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link custom-nav-link main-nav" href="#">
-                        <i class="fa-solid fa-magnifying-glass nav-icon-style" ></i><br><p class="nav-text-style">Wander</p> 
+                    <a class="nav-link custom-nav-link main-nav" href="#about">
+                        <i class="fa-solid fa-paw nav-icon-style"></i><br><p class="nav-text-style">About</p> 
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link custom-nav-link main-nav" href="#">
-                        <i class="fa-solid fa-paw nav-icon-style"></i><br><p class="nav-text-style">Paws</p> 
+                    <a class="nav-link custom-nav-link main-nav" href="#review">
+                        <i class="fa-solid fa-comment nav-icon-style"></i><br><p class="nav-text-style">Review</p> 
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link custom-nav-link main-nav" href="#">
-                        <i class='bx bxs-donate-heart nav-icon-style'></i><br><p class="nav-text-style">Donate</p> 
+                    <a class="nav-link custom-nav-link main-nav" href="#contact">
+                        <i class='fa-solid fa-phone nav-icon-style'></i><br><p class="nav-text-style">Contact</p> 
                     </a>
                 </li>
             </ul>
@@ -50,32 +50,39 @@
 
    <!-- Front Content -->
     
-    <div class="container pt-4 ps-5 pe-5" >
+    <div class="container pt-4 ps-5 pe-5" id="home">
         <div class="row justify-content-center">
             <div class="col-md-6 d-flex justify-content-center">
                 <div id="carouselExampleDark" class="carousel carousel-dark slide"> 
                     <div class="carousel-inner">
                         <div class="carousel-item active" data-bs-interval="10000">
-                        <img src="ASSETS/IMAGES/xample1.jpg" class="d-block w-100 carousel-image" alt="Application Image 1">
+                        <img src="ASSETS/IMAGES/app1.jpg" class="d-block w-100 carousel-image" alt="Application Image 1">
                         <div class="carousel-caption d-none d-md-block">
                             <!-- <h5>First slide label</h5>
                             <p>Some representative placeholder content for the first slide.</p> -->
                         </div>
                         </div>
                         <div class="carousel-item" data-bs-interval="2000">
-                        <img src="ASSETS/IMAGES/xample2.jpg" class="d-block w-100 carousel-image" alt="Application Image 2">
+                        <img src="ASSETS/IMAGES/app2.jpg" class="d-block w-100 carousel-image" alt="Application Image 2">
                         <div class="carousel-caption d-none d-md-block">
                             <!-- <h5>Second slide label</h5>
                             <p>Some representative placeholder content for the second slide.</p> -->
                         </div>
                         </div>
                         <div class="carousel-item">
-                        <img src="ASSETS/IMAGES/xample3.jpg" class="d-block w-100 carousel-image" alt="Application Image 3">
+                        <img src="ASSETS/IMAGES/app3.jpg" class="d-block w-100 carousel-image" alt="Application Image 3">
                         <div class="carousel-caption d-none d-md-block">
                             <!-- <h5>Third slide label</h5>
                             <p>Some representative placeholder content for the third slide.</p> -->
                         </div>
                         </div>
+                        <div class="carousel-item">
+                            <img src="ASSETS/IMAGES/app4.jpg" class="d-block w-100 carousel-image" alt="Application Image 3">
+                            <div class="carousel-caption d-none d-md-block">
+                                <!-- <h5>Third slide label</h5>
+                                <p>Some representative placeholder content for the third slide.</p> -->
+                            </div>
+                            </div>
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -89,12 +96,13 @@
             </div>
             <div class="col-md-6 justify-content-center d-flex align-items-center">
                 <div class="text-center">
-                    <h1 class="title" style="font-weight: bold;">WANDER PETS</h1>
-                    <h2 class="subtitle" style="font-weight: bold;">How it works?</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                    <img src="https://via.placeholder.com/200x200" alt="QR Code" class="img-fluid fixed-size">
-                    <img src="https://via.placeholder.com/200x200" alt="App Logo" class="img-fluid fixed-size">
+                    <h1 class="title" style="font-weight: bold; margin-bottom: 20px;">WANDER PETS</h1>
+                    <!-- <h2 class="subtitle" style="font-weight: bold;">How it works?</h2> -->
+                    <p style="text-align: left;">Introducing our innovative pet safety application, designed to help pet owners report wandering pets and search for missing companions. With a user-friendly interface, users can quickly report lost pets or sightings, receiving real-time alerts to enhance recovery chances.</p>
+                    <p style="text-align: left;">The app also features a robust search function for browsing local listings of lost and found animals. Owners can create detailed profiles for their pets and share information through social media, fostering a supportive community dedicated to reuniting pets with their families.</p>
+                    <br>
+                    <img src="ASSETS/IMAGES/supremo_qr.png" alt="QR Code" class="img-fluid fixed-size">
+                    <img src="ASSETS/IMAGES/playstore.png" alt="App Logo" class="img-fluid fixed-size">
                 </div>
             </div>
         </div>
@@ -102,45 +110,45 @@
 
     <!-- Second Content -->
     <br>
-    <div class="container pt-5 ps-5 pe-5" >
+    <div class="container pt-5 ps-5 pe-5" id="about">
         <div class="row">
             <div class="col-md-3">
-                <div class="card-custom box">
+                <div class="card-custom">
                     <div class="card-header-custom">
                         LOST
                     </div>
                     <div class="card-text-custom">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. incidunt officiis sequi quam perspiciatis qui.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        The Lost Pet Reporting feature allows users to quickly and easily submit reports for missing pets. With just a few taps, users can upload photos, provide detailed descriptions, and specify the last known location, ensuring that their lost pet reaches a wide audience.
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card-custom box">
+                <div class="card-custom">
                     <div class="card-header-custom">
                         WANDER
                     </div>
                     <div class="card-text-custom">
-                         Lorem ipsum dolor sit, amet consectetur adipisicing elit. Facilis ipsum quam quidem illo vel aliquam?Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                         The Wandering Pet Reporting allows users to quickly report and locate wandering pets in their community. With a simple tap, you can post sightings, share photos, and receive real-time alerts about lost pets nearby. 
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card-custom box">
+                <div class="card-custom">
                     <div class="card-header-custom">
                         FOUND
                     </div>
                     <div class="card-text-custom">
-                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Facilis ipsum quam quidem illo vel aliquam? Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                       The Pet Rescue Reporting connects reporters with local rescue organizations and volunteers dedicated to helping lost or abandoned animals. Users can post alerts for pets in distress, browse nearby rescue resources, and access emergency contacts.
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card-custom box">
+                <div class="card-custom">
                     <div class="card-header-custom">
                         ADOPTION
                     </div>
                     <div class="card-text-custom">
-                         Lorem ipsum dolor sit, amet consectetur adipisicing elit. Facilis ipsum quam quidem illo vel aliquam?Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                         The Pet Adoption connects potential pet owners with adorable animals in need of loving homes. Browse a diverse selection of pets available for adoption, complete with photos, bios, and personality traits to help you find your perfect match.
                     </div>
                 </div>
             </div>
@@ -148,18 +156,18 @@
     </div><br><br><br>
 
     <!-- Third Content -->
-    <div class="container pt-4 ps-5 pe-5" >  
+    <div class="container pt-4 ps-5 pe-5" id="review">  
         <div class="container mt-5">
-            <h2 class="section-title">HAPPY OWNERS</h2>
+            <h2 class="section-title">APP REVIEWS</h2>
             <div class="owl-carousel owl-theme">
                 <div class="testimonial-box box1">
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nesciunt vitae, assumenda consequatur sit nulla provident enim ducimus atque, veniam fuga odit quas labore saepe harum nam quos excepturi hic natus officiis! Eos similique aliquid voluptatem unde illo et dolore esse? Facere a impedit necessitatibus rerum nam, illo maxime dignissimos officia.
+                    "I can't believe how easy it is to use this app! The Lost Pet Reporting feature helped me find my lost cat within hours. I love the community support and how quickly people responded. Highly recommend it to all pet owners."
                 </div>
                 <div class="testimonial-box box2">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque consequuntur quod minima unde est odit quam tenetur! Temporibus ducimus similique dolore, nostrum expedita, illo beatae sunt aperiam provident a laboriosam sed omnis possimus quidem mollitia illum voluptas at voluptatum repellendus veritatis esse ullam molestias nisi architecto. Illo sint ad fugiat.
-                </div>
+                   "The Pet Adoption feature is fantastic! I found the sweetest dog and was able to connect with the shelter right through the app. The profiles are detailed, making it easy to find the right match. This app is a game-changer for animal lovers."
+                    </div>
                 <div class="testimonial-box box3">
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eligendi nemo eum adipisci, deserunt dolorum neque nam perspiciatis maxime quam voluptas harum veniam facere nobis, perferendis debitis obcaecati, culpa cumque totam ab? Ea neque iusto quibusdam dolor, et illum fugit repellat fugiat nobis vitae labore laboriosam necessitatibus nihil inventore. Explicabo, praesentium?
+                    "I really appreciate the Pet Rescue feature. It’s great to have a way to report and help animals in need. The only thing I’d like to see improved is more local resources listed. It’s an amazing app that brings the community together for our pets."
                 </div>
             </div>
             <div class="d-flex justify-content-center">
@@ -168,7 +176,7 @@
         </div>
     </div>
     <!-- Fourth Content -->
-    <div class="container contact-section">
+    <div class="container contact-section" id="contact">
         <div class="row">
             <div class="col-md-6">
                 <div class="contact-form">
