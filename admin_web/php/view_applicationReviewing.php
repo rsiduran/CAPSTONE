@@ -119,7 +119,7 @@ if (!$petDetails) {
         <p><strong>Work Hours:</strong> <?= htmlspecialchars($petDetails['workHours'] ?? 'N/A') ?></p>
         <p><strong>Allergic:</strong> <?= htmlspecialchars($petDetails['allergic'] ?? 'N/A') ?></p>
         <p><strong>Financial Responsibillities:</strong> <?= htmlspecialchars($petDetails['responsibleFinancial'] ?? 'N/A') ?></p>
-        <p><strong>Grroming Responsibillities:</strong> <?= htmlspecialchars($petDetails['responsibleGrooming'] ?? 'N/A') ?></p>
+        <p><strong>Grooming Responsibillities:</strong> <?= htmlspecialchars($petDetails['responsibleGrooming'] ?? 'N/A') ?></p>
         <p><strong>Meet ups?:</strong> <?= htmlspecialchars($petDetails['meet'] ?? 'N/A') ?></p>
         <p><strong>Move?</strong> <?= htmlspecialchars($petDetails['move'] ?? 'N/A') ?></p>
         <p><strong>Ideal Pet:</strong> <?= htmlspecialchars($petDetails['idealPet'] ?? 'N/A') ?></p>
@@ -134,6 +134,15 @@ if (!$petDetails) {
         <p><strong>Live Alone?:</strong> <?= htmlspecialchars($petDetails['liveAlone'] ?? 'N/A') ?></p>
         <p><strong>Looking After?:</strong> <?= htmlspecialchars($petDetails['lookAfter'] ?? 'N/A') ?></p>
         <p><strong>Introduce Surroundings:</strong> <?= htmlspecialchars($petDetails['introduceSurroundings'] ?? 'N/A') ?></p>
+ 
+        <p>
+    <strong>Posted Date:</strong> 
+    <?= htmlspecialchars(
+        is_numeric($petDetails['postedTimestamp']) && $petDetails['postedTimestamp'] > 0 
+        ? date('Y-m-d H:i:s', (int)$petDetails['postedTimestamp']) 
+        : date('Y-m-d H:i:s', time())
+    ) ?>
+</p>
       </div>
 
       <!-- Right Side: Pictures -->
@@ -217,6 +226,7 @@ if (!$petDetails) {
         <p><strong>Size:</strong> <?= htmlspecialchars($petDetails['size'] ?? 'N/A') ?></p>
         <p><strong>Pet Type:</strong> <?= htmlspecialchars($petDetails['petType'] ?? 'N/A') ?></p>
         <p><strong>Description:</strong> <?= htmlspecialchars($petDetails['description'] ?? 'N/A') ?></p>
+
       </div>
     </div>
 

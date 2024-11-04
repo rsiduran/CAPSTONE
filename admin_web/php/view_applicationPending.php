@@ -127,6 +127,15 @@ if (!$petDetails) {
         <p><strong>Live Alone?:</strong> <?= htmlspecialchars($petDetails['liveAlone'] ?? 'N/A') ?></p>
         <p><strong>Looking After?:</strong> <?= htmlspecialchars($petDetails['lookAfter'] ?? 'N/A') ?></p>
         <p><strong>Introduce Surroundings:</strong> <?= htmlspecialchars($petDetails['introduceSurroundings'] ?? 'N/A') ?></p>
+
+        <p>
+    <strong>Posted Date:</strong> 
+    <?= htmlspecialchars(
+        is_numeric($petDetails['postedTimestamp']) && $petDetails['postedTimestamp'] > 0 
+        ? date('Y-m-d H:i:s', (int)$petDetails['postedTimestamp']) 
+        : date('Y-m-d H:i:s', time())
+    ) ?>
+</p>
       </div>
 
       <!-- Right Side: Pictures -->

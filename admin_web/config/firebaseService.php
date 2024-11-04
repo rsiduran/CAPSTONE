@@ -71,7 +71,7 @@ class FirebaseService {
                     'move' => $fields['move']['stringValue'] ?? 'N/A',
                     'occupation' => $fields['occupation']['stringValue'] ?? 'N/A',
                     'otherPets' => $fields['otherPets']['stringValue'] ?? 'N/A',
-                    'pastPets' => $fields['medical']['stringValue'] ?? 'N/A',
+                    'pastPets' => $fields['pastPets']['stringValue'] ?? 'N/A',
                     'postedTimestamp' => $fields['postedTimestamp']['timestampValue'] ?? 'N/A',
                     'previouslyAdopted' => $fields['previouslyAdopted']['stringValue'] ?? 'N/A',
                     'pronouns' => $fields['pronouns']['stringValue'] ?? 'N/A',

@@ -105,7 +105,14 @@ if (!$petDetails) {
       <p><strong>Pet Type:</strong> <?= htmlspecialchars($petDetails['petType'] ?? 'N/A') ?></p>
       <p><strong>Status:</strong> <?= htmlspecialchars($petDetails['postType'] ?? 'N/A') ?></p>
       <p><strong>Characteristic:</strong> <?= htmlspecialchars($petDetails['characteristic'] ?? 'N/A') ?></p>
-      <p><strong>Posted Date:</strong> <?= htmlspecialchars(date('Y-m-d H:i:s', $petDetails['timestamp'] ?? time())) ?></p>
+      <p>
+    <strong>Posted Date:</strong> 
+    <?= htmlspecialchars(
+        is_numeric($petDetails['timestamp']) && $petDetails['timestamp'] > 0 
+        ? date('Y-m-d H:i:s', (int)$petDetails['timestamp']) 
+        : date('Y-m-d H:i:s', time())
+    ) ?>
+</p>
       
       <h2>OWNER INFORMATION</h2>
       <p><strong>Owner Name:</strong> <?= htmlspecialchars($petDetails['firstName'] ?? 'N/A') ?> <?= htmlspecialchars($petDetails['lastName'] ?? 'N/A') ?></p>  
