@@ -26,20 +26,34 @@ if (!$petDetails) {
   <a href="#inquiry">Inquiry</a>
   <a href="missing.php">Missing</a>
   <a href="wandering.php">Wandering</a>
-  <a href="missing.php">Found</a>
+  <a href="found.php">Found</a>
   <a data-bs-toggle="collapse" href="#adoptionMenu" role="button" aria-expanded="false" aria-controls="adoptionMenu">
     Adoption
   </a>
   <div class="collapse" id="adoptionMenu">
-    <a href="#adoption-application" class="sub-link">Adoption Application</a>
-    <a href="#pet-adoption" class="sub-link">Pet Adoption</a>
-    <a href="#adopted-pets" class="sub-link">Adopted Pets</a>
+    <a href="#petAdoptionList" class="sub-link">Pet Adoption List</a>
+    <a href="#adoptedPets" class="sub-link">Adopted Pets</a>
+    <a href="addPetAdoption.php" class="sub-link">Add Pet</a>
+  </div>
+  <a data-bs-toggle="collapse" href="#applicationMenu" role="button" aria-expanded="false" aria-controls="adoptionMenu">
+    Adoption Application
+  </a>
+  <div class="collapse" id="applicationMenu">
+    <a href="applicationPending.php" class="sub-link">Pending</a>
+    <a href="applicationReviewing.php" class="sub-link">Reviewing</a>
+    <a href="applicationApproved.php" class="sub-link">Approved</a>
+    <a href="applicationCompleted.php" class="sub-link">Completed</a>
+    <a href="applicationRejected.php" class="sub-link">Rejected</a>
   </div>
   <a data-bs-toggle="collapse" href="#rescueMenu" role="button" aria-expanded="false" aria-controls="rescueMenu">
     Rescue
   </a>
   <div class="collapse" id="rescueMenu">
-    <a href="#rescued-pets" class="sub-link">Rescued Pets</a>
+    <a href="rescuePending.php" class="sub-link">Pending</a>
+    <a href="rescueReviewing.php" class="sub-link">Reviewing</a>
+    <a href="rescueOngoing.php" class="sub-link">Ongoing</a>
+    <a href="rescueRescued.php" class="sub-link">Rescued</a>
+    <a href="rescueDeclined.php" class="sub-link">Declined</a>
   </div>
   <a data-bs-toggle="collapse" href="#historyMenu" role="button" aria-expanded="false" aria-controls="adoptionMenu">
     History
@@ -47,7 +61,8 @@ if (!$petDetails) {
   <div class="collapse" id="historyMenu">
     <a href="../history/missing_history.php" class="sub-link">Missing</a>
     <a href="../history/wandering_history.php" class="sub-link">Wandering</a>
-    <a href="#adopted-pets" class="sub-link">Adopted</a>
+    <a href="#adopted-history" class="sub-link">Adopted</a>
+    <a href="../history/found_history.php" class="sub-link">Found</a>
   </div>
 </div>
 

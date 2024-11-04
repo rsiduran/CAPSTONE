@@ -2,19 +2,19 @@
 
 $firebase = include('../config/firebase.php');
 
-$missingHistory = $firebase->getDocuments("missingHistory");
+$missingHistory = $firebase->getDocuments("foundHistory");
 
 if (isset($_GET['petid'])) {
     $petid = $_GET['petid'];
-    $petDetails = $firebase->getDocuments("missing")[$petid] ?? null;
+    $petDetails = $firebase->getDocuments("found")[$petid] ?? null;
 
     if ($petDetails) {
 
-        $firebase->copyDocumentToHistoryMissing($petDetails, $petid);
+        $firebase->copyDocumentToHistoryFound($petDetails, $petid);
 
-        $firebase->deleteDocument("missing", $petid);
+        $firebase->deleteDocument("found", $petid);
 
-        header("Location: missing.php");
+        header("Location: found.php");
         exit();
     }
 }
@@ -95,7 +95,7 @@ if (isset($_GET['petid'])) {
 </nav>
 
 <div class="container my-5">
-  <h2 class="text-center">Missing History</h2>
+  <h2 class="text-center">Found History</h2>
   <div class="table-responsive">
     <table class="table table-striped mx-auto" style="width: 90%;">
       <thead>
@@ -118,7 +118,7 @@ if (isset($_GET['petid'])) {
                 <td><?= htmlspecialchars($history['postType'] ?? 'N/A') ?></td>
                 <td><?= htmlspecialchars($history['removedAt'] ?? 'N/A') ?></td>
                 <td>
-                    <a href="view_detailsMissing.php?petid=<?= urlencode($historyId) ?>" class="btn btn-primary btn-sm">View Details</a>
+                    <a href="view_detailsFound.php?petid=<?= urlencode($historyId) ?>" class="btn btn-primary btn-sm">View Details</a>
                 </td>
             </tr>
         <?php endforeach; ?>

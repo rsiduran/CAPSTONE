@@ -2,21 +2,12 @@
 
 $firebase = include('../config/firebase.php');
 
-$missingHistory = $firebase->getDocuments("missingHistory");
+$petid = $_GET['petid'] ?? null;
 
-if (isset($_GET['petid'])) {
-    $petid = $_GET['petid'];
-    $petDetails = $firebase->getDocuments("missing")[$petid] ?? null;
+$petDetails = $firebase->getDocuments("foundHistory")[$petid] ?? null;
 
-    if ($petDetails) {
-
-        $firebase->copyDocumentToHistoryMissing($petDetails, $petid);
-
-        $firebase->deleteDocument("missing", $petid);
-
-        header("Location: missing.php");
-        exit();
-    }
+if (!$petDetails) {
+    die("Pet not found.");
 }
 ?>
 <!DOCTYPE html>
@@ -24,7 +15,7 @@ if (isset($_GET['petid'])) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard</title>
+  <title>Pet Profile - <?= htmlspecialchars($petDetails['name'] ?? 'Pet Profile') ?></title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="../assets/style.css">
 </head>
@@ -75,7 +66,6 @@ if (isset($_GET['petid'])) {
   </div>
 </div>
 
-<!-- Top Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light top-navbar">
   <div class="container-fluid">
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -94,41 +84,36 @@ if (isset($_GET['petid'])) {
   </div>
 </nav>
 
-<div class="container my-5">
-  <h2 class="text-center">Missing History</h2>
-  <div class="table-responsive">
-    <table class="table table-striped mx-auto" style="width: 90%;">
-      <thead>
-        <tr>    
-          <th>Name</th>
-          <th>Breed</th>
-          <th>Type</th>
-          <th>Status</th>
-          <th>Removed At</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-    <?php if (!empty($missingHistory)) : ?>
-        <?php foreach ($missingHistory as $historyId => $history) : ?>
-            <tr>
-                <td><?= htmlspecialchars($history['name'] ?? 'N/A') ?></td>
-                <td><?= htmlspecialchars($history['breed'] ?? 'N/A') ?></td>
-                <td><?= htmlspecialchars($history['petType'] ?? 'N/A') ?></td>
-                <td><?= htmlspecialchars($history['postType'] ?? 'N/A') ?></td>
-                <td><?= htmlspecialchars($history['removedAt'] ?? 'N/A') ?></td>
-                <td>
-                    <a href="view_detailsMissing.php?petid=<?= urlencode($historyId) ?>" class="btn btn-primary btn-sm">View Details</a>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-    <?php else : ?>
-        <tr>
-            <td colspan="6" class="text-center">No records found in history</td>
-        </tr>
-    <?php endif; ?>
-</tbody>
-    </table>
+<div class="container main-content">
+<div class="back-button-container">
+    <a href="javascript:history.back()" class="back-button">Back</a>
+</div>
+  <div class="row">
+    <div class="col-md-6">
+      <img src="<?= htmlspecialchars($petDetails['petPicture'] ?? 'default-pet.jpg') ?>" alt="<?= htmlspecialchars($petDetails['name'] ?? 'Pet Image') ?>" class="pet-image">
+      <img src="<?= htmlspecialchars($petDetails['profilePicture'] ?? 'default-pet.jpg') ?>"class="pet-image">
+    </div>
+    <div class="col-md-6">
+      <h2><?= htmlspecialchars($petDetails['name'] ?? 'N/A') ?></h2>
+      <p><strong>Breed:</strong> <?= htmlspecialchars($petDetails['breed'] ?? 'N/A') ?></p>
+      <p><strong>Age:</strong> <?= htmlspecialchars($petDetails['age'] ?? 'N/A') ?></p>
+      <p><strong>Gender:</strong> <?= htmlspecialchars($petDetails['gender'] ?? 'N/A') ?></p>
+      <p><strong>Size:</strong> <?= htmlspecialchars($petDetails['size'] ?? 'N/A') ?></p>
+      <p><strong>City:</strong> <?= htmlspecialchars($petDetails['city'] ?? 'N/A') ?></p>
+      <p><strong>Street Number:</strong> <?= htmlspecialchars($petDetails['streetNumber'] ?? 'N/A') ?></p>
+      <p><strong>Address</strong> <?= htmlspecialchars($petDetails['address'] ?? 'N/A') ?></p>
+      <p><strong>Message:</strong> <?= htmlspecialchars($petDetails['message'] ?? 'N/A') ?></p> 
+      <p><strong>Pet Type:</strong> <?= htmlspecialchars($petDetails['petType'] ?? 'N/A') ?></p>
+      <p><strong>Status:</strong> <?= htmlspecialchars($petDetails['postType'] ?? 'N/A') ?></p>
+      <p><strong>Characteristic:</strong> <?= htmlspecialchars($petDetails['characteristic'] ?? 'N/A') ?></p>
+      <p><strong>Posted Date:</strong> <?= htmlspecialchars(date('Y-m-d H:i:s', $petDetails['timestamp'] ?? time())) ?></p>
+      
+      <h2>OWNER INFORMATION</h2>
+      <p><strong>Owner Name:</strong> <?= htmlspecialchars($petDetails['firstName'] ?? 'N/A') ?> <?= htmlspecialchars($petDetails['lastName'] ?? 'N/A') ?></p>  
+      <p><strong>Email:</strong> <?= htmlspecialchars($petDetails['email'] ?? 'N/A') ?></p>
+      <p><strong>Phone Number:</strong> <?= htmlspecialchars($petDetails['phoneNumber'] ?? 'N/A') ?></p>
+    </div>
+    </div>
   </div>
 </div>
 

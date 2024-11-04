@@ -4,7 +4,7 @@ $firebase = include('../config/firebase.php');
 
 $petid = $_GET['petid'] ?? null;
 
-$petDetails = $firebase->getDocuments("wandering")[$petid] ?? null;
+$petDetails = $firebase->getDocuments("rescue")[$petid] ?? null;
 
 if (!$petDetails) {
     die("Pet not found.");
@@ -65,6 +65,7 @@ if (!$petDetails) {
     <a href="../history/found_history.php" class="sub-link">Found</a>
   </div>
 </div>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light top-navbar">
   <div class="container-fluid">
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -85,7 +86,7 @@ if (!$petDetails) {
 
 <div class="container main-content">
 <div class="back-button-container">
-    <a href="javascript:history.back()" class="back-button">Back</a>
+    <a href="rescueReviewing.php" class="back-button">Back</a>
 </div>
   <div class="row">
     <div class="col-md-6">
@@ -93,7 +94,6 @@ if (!$petDetails) {
       <img src="<?= htmlspecialchars($petDetails['profilePicture'] ?? 'default-pet.jpg') ?>"class="pet-image">
     </div>
     <div class="col-md-6">
-      <h2><?= htmlspecialchars($petDetails['name'] ?? 'N/A') ?></h2>
       <p><strong>Breed:</strong> <?= htmlspecialchars($petDetails['breed'] ?? 'N/A') ?></p>
       <p><strong>Age:</strong> <?= htmlspecialchars($petDetails['age'] ?? 'N/A') ?></p>
       <p><strong>Gender:</strong> <?= htmlspecialchars($petDetails['gender'] ?? 'N/A') ?></p>
@@ -103,18 +103,31 @@ if (!$petDetails) {
       <p><strong>Address</strong> <?= htmlspecialchars($petDetails['address'] ?? 'N/A') ?></p>
       <p><strong>Message:</strong> <?= htmlspecialchars($petDetails['message'] ?? 'N/A') ?></p> 
       <p><strong>Pet Type:</strong> <?= htmlspecialchars($petDetails['petType'] ?? 'N/A') ?></p>
-      <p><strong>Status:</strong> <?= htmlspecialchars($petDetails['postType'] ?? 'N/A') ?></p>
       <p><strong>Characteristic:</strong> <?= htmlspecialchars($petDetails['characteristic'] ?? 'N/A') ?></p>
       <p><strong>Posted Date:</strong> <?= htmlspecialchars(date('Y-m-d H:i:s', $petDetails['timestamp'] ?? time())) ?></p>
       
-      <h2>OWNER INFORMATION</h2>
-      <p><strong>Owner Name:</strong> <?= htmlspecialchars($petDetails['firstName'] ?? 'N/A') ?> <?= htmlspecialchars($petDetails['lastName'] ?? 'N/A') ?></p>  
+      <p><strong>Reporter Name:</strong> <?= htmlspecialchars($petDetails['firstName'] ?? 'N/A') ?> <?= htmlspecialchars($petDetails['lastName'] ?? 'N/A') ?></p>  
       <p><strong>Email:</strong> <?= htmlspecialchars($petDetails['email'] ?? 'N/A') ?></p>
       <p><strong>Phone Number:</strong> <?= htmlspecialchars($petDetails['phoneNumber'] ?? 'N/A') ?></p>
+      <p><strong>Socials:</strong> <?= htmlspecialchars($petDetails['socials'] ?? 'N/A') ?></p>
+
+      <p><strong>Status:</strong> <span id="status"><?= htmlspecialchars($petDetails['reportStatus'] ?? 'N/A') ?></span></p>
+
+<form action="update_ReportReviewing.php" method="POST" style="display:inline;">
+    <input type="hidden" name="petid" value="<?= htmlspecialchars($petid) ?>">
+    <input type="hidden" name="currentStatus" value="<?= htmlspecialchars($petDetails['reportStatus'] ?? 'N/A') ?>">
+    <button type="submit" class="btn btn-warning btn-sm">ONGOING</button>
+</form>
+<form action="update_ReportDeclined.php" method="POST" style="display:inline;">
+    <input type="hidden" name="petid" value="<?= htmlspecialchars($petid) ?>">
+    <input type="hidden" name="currentStatus" value="<?= htmlspecialchars($petDetails['reportStatus'] ?? 'N/A') ?>">
+    <button type="submit" class="btn btn-warning btn-sm">DECLINED</button>
+</form>
     </div>
     </div>
   </div>
 </div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

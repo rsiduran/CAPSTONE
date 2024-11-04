@@ -1,24 +1,16 @@
 <?php
-
+// Include Firebase service instance
 $firebase = include('../config/firebase.php');
 
-$missingHistory = $firebase->getDocuments("missingHistory");
+// Fetch missing pets data from Firebase
+$pets = $firebase->getDocuments("rescue");
 
-if (isset($_GET['petid'])) {
-    $petid = $_GET['petid'];
-    $petDetails = $firebase->getDocuments("missing")[$petid] ?? null;
-
-    if ($petDetails) {
-
-        $firebase->copyDocumentToHistoryMissing($petDetails, $petid);
-
-        $firebase->deleteDocument("missing", $petid);
-
-        header("Location: missing.php");
-        exit();
-    }
-}
+// Filter the pets to only include those with a reportStatus of "pending"
+$pendingPets = array_filter($pets, function($pet) {
+    return isset($pet['reportStatus']) && $pet['reportStatus'] === 'REVIEWING';
+});
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,45 +25,45 @@ if (isset($_GET['petid'])) {
 <div class="sidebar">
   <a href="../index.php">Dashboard</a>
   <a href="#inquiry">Inquiry</a>
-  <a href="../php/missing.php">Missing</a>
-  <a href="../php/wandering.php">Wandering</a>
-  <a href="../php/found.php">Found</a>
+  <a href="missing.php">Missing</a>
+  <a href="wandering.php">Wandering</a>
+  <a href="found.php">Found</a>
   <a data-bs-toggle="collapse" href="#adoptionMenu" role="button" aria-expanded="false" aria-controls="adoptionMenu">
     Adoption
   </a>
   <div class="collapse" id="adoptionMenu">
     <a href="#petAdoptionList" class="sub-link">Pet Adoption List</a>
     <a href="#adoptedPets" class="sub-link">Adopted Pets</a>
-    <a href="../php/addPetAdoption.php" class="sub-link">Add Pet</a>
+    <a href="addPetAdoption.php" class="sub-link">Add Pet</a>
   </div>
   <a data-bs-toggle="collapse" href="#applicationMenu" role="button" aria-expanded="false" aria-controls="adoptionMenu">
     Adoption Application
   </a>
   <div class="collapse" id="applicationMenu">
-    <a href="../php/applicationPending.php" class="sub-link">Pending</a>
-    <a href="../php/applicationReviewing.php" class="sub-link">Reviewing</a>
-    <a href="../php/applicationApproved.php" class="sub-link">Approved</a>
-    <a href="../php/applicationCompleted.php" class="sub-link">Completed</a>
-    <a href="../php/applicationRejected.php" class="sub-link">Rejected</a>
+    <a href="applicationPending.php" class="sub-link">Pending</a>
+    <a href="applicationReviewing.php" class="sub-link">Reviewing</a>
+    <a href="applicationApproved.php" class="sub-link">Approved</a>
+    <a href="applicationCompleted.php" class="sub-link">Completed</a>
+    <a href="applicationRejected.php" class="sub-link">Rejected</a>
   </div>
   <a data-bs-toggle="collapse" href="#rescueMenu" role="button" aria-expanded="false" aria-controls="rescueMenu">
     Rescue
   </a>
   <div class="collapse" id="rescueMenu">
-    <a href="../php/rescuePending.php" class="sub-link">Pending</a>
-    <a href="../php/rescueReviewing.php" class="sub-link">Reviewing</a>
-    <a href="../php/rescueOngoing.php" class="sub-link">Ongoing</a>
-    <a href="../php/rescueRescued.php" class="sub-link">Rescued</a>
-    <a href="../php/rescueDeclined.php" class="sub-link">Declined</a>
+    <a href="rescuePending.php" class="sub-link">Pending</a>
+    <a href="rescueReviewing.php" class="sub-link">Reviewing</a>
+    <a href="rescueOngoing.php" class="sub-link">Ongoing</a>
+    <a href="rescueRescued.php" class="sub-link">Rescued</a>
+    <a href="rescueDeclined.php" class="sub-link">Declined</a>
   </div>
   <a data-bs-toggle="collapse" href="#historyMenu" role="button" aria-expanded="false" aria-controls="adoptionMenu">
     History
   </a>
   <div class="collapse" id="historyMenu">
-    <a href="missing_history.php" class="sub-link">Missing</a>
-    <a href="wandering_history.php" class="sub-link">Wandering</a>
+    <a href="../history/missing_history.php" class="sub-link">Missing</a>
+    <a href="../history/wandering_history.php" class="sub-link">Wandering</a>
     <a href="#adopted-history" class="sub-link">Adopted</a>
-    <a href="found_history.php" class="sub-link">Found</a>
+    <a href="../history/found_history.php" class="sub-link">Found</a>
   </div>
 </div>
 
@@ -95,36 +87,34 @@ if (isset($_GET['petid'])) {
 </nav>
 
 <div class="container my-5">
-  <h2 class="text-center">Missing History</h2>
+  <h2 class="text-center">Reviewing Rescue Reports</h2>
   <div class="table-responsive">
     <table class="table table-striped mx-auto" style="width: 90%;">
       <thead>
-        <tr>    
+        <tr>
           <th>Name</th>
-          <th>Breed</th>
           <th>Type</th>
+          <th>Phone Number</th>
           <th>Status</th>
-          <th>Removed At</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
-    <?php if (!empty($missingHistory)) : ?>
-        <?php foreach ($missingHistory as $historyId => $history) : ?>
+    <?php if (!empty($pendingPets)) : ?>
+        <?php foreach ($pendingPets as $petid => $pet) :?>
             <tr>
-                <td><?= htmlspecialchars($history['name'] ?? 'N/A') ?></td>
-                <td><?= htmlspecialchars($history['breed'] ?? 'N/A') ?></td>
-                <td><?= htmlspecialchars($history['petType'] ?? 'N/A') ?></td>
-                <td><?= htmlspecialchars($history['postType'] ?? 'N/A') ?></td>
-                <td><?= htmlspecialchars($history['removedAt'] ?? 'N/A') ?></td>
+                <td><?= htmlspecialchars($pet['firstName'] ?? 'N/A') ?> <?= htmlspecialchars($pet['lastName'] ?? 'N/A') ?></td>
+                <td><?= htmlspecialchars($pet['petType'] ?? 'N/A') ?></td>
+                <td><?= htmlspecialchars($pet['phoneNumber'] ?? 'N/A') ?></td>
+                <td><?= htmlspecialchars($pet['reportStatus'] ?? 'N/A') ?></td>
                 <td>
-                    <a href="view_detailsMissing.php?petid=<?= urlencode($historyId) ?>" class="btn btn-primary btn-sm">View Details</a>
+                    <a href="view_profileReviewing.php?petid=<?= urlencode($petid) ?>" class="btn btn-primary btn-sm">View Profile</a>
                 </td>
             </tr>
         <?php endforeach; ?>
     <?php else : ?>
         <tr>
-            <td colspan="6" class="text-center">No records found in history</td>
+            <td colspan="5" class="text-center">No pending reports found</td>
         </tr>
     <?php endif; ?>
 </tbody>
