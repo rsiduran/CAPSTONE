@@ -1,8 +1,31 @@
 <?php
 
 $firebase = include('config/firebase.php');
+session_start();
 
+// Check if the user is logged in and has the correct user type
+if (!isset($_SESSION['user_type'])) {
+    // Redirect to login page if not logged in
+    header("Location: loginForm.php");
+    exit;
+}
+
+// Restrict access based on user type
+if ($_SESSION['user_type'] == 'superadmin' && basename($_SERVER['PHP_SELF']) != 'index.php') {
+    // Superadmins should only access the index page
+    header("Location: index.php");
+    exit;
+} elseif ($_SESSION['user_type'] == 'admin' && basename($_SERVER['PHP_SELF']) != 'admin.php') {
+    // Admins should only access the admin page
+    header("Location: admin.php");
+    exit;
+} elseif ($_SESSION['user_type'] == 'staff' && basename($_SERVER['PHP_SELF']) != 'supremo.php') {
+    // Staff should only access the supremo page
+    header("Location: supremo.php");
+    exit;
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +42,7 @@ $firebase = include('config/firebase.php');
 <!-- Sidebar -->
 <div class="sidebar">
   <a href="index.php">Dashboard</a>
-  <a href="php/missing.php">Inquiry</a>
+  <a href="#inquiry.php">Inquiry</a>
   <a href="php/missing.php">Missing</a>
   <a href="php/wandering.php">Wandering</a>
   <a href="php/found.php">Found</a>
@@ -29,27 +52,27 @@ $firebase = include('config/firebase.php');
   <div class="collapse" id="adoptionMenu">
     <a href="#petAdoptionList" class="sub-link">Pet Adoption List</a>
     <a href="#adoptedPets" class="sub-link">Adopted Pets</a>
-    <a href="addPetAdoption.php" class="sub-link">Add Pet</a>
+    <a href="php/addPetAdoption.php" class="sub-link">Add Pet</a>
   </div>
   <a data-bs-toggle="collapse" href="#applicationMenu" role="button" aria-expanded="false" aria-controls="adoptionMenu">
     Adoption Application
   </a>
   <div class="collapse" id="applicationMenu">
-    <a href="php/applicationPending.php" class="sub-link">Pending</a>
-    <a href="php/applicationReviewing.php" class="sub-link">Reviewing</a>
-    <a href="php/applicationApproved.php" class="sub-link">Approved</a>
-    <a href="php/applicationCompleted.php" class="sub-link">Completed</a>
-    <a href="php/applicationRejected.php" class="sub-link">Rejected</a>
+    <a href="php/application/applicationPending.php" class="sub-link">Pending</a>
+    <a href="php/application/applicationReviewing.php" class="sub-link">Reviewing</a>
+    <a href="php/application/applicationApproved.php" class="sub-link">Approved</a>
+    <a href="php/application/applicationCompleted.php" class="sub-link">Completed</a>
+    <a href="php/application/applicationRejected.php" class="sub-link">Rejected</a>
   </div>
   <a data-bs-toggle="collapse" href="#rescueMenu" role="button" aria-expanded="false" aria-controls="rescueMenu">
     Rescue
   </a>
   <div class="collapse" id="rescueMenu">
-    <a href="php/rescuePending.php" class="sub-link">Pending</a>
-    <a href="php/rescueReviewing.php" class="sub-link">Reviewing</a>
-    <a href="php/rescueOngoing.php" class="sub-link">Ongoing</a>
-    <a href="php/rescueRescued.php" class="sub-link">Rescued</a>
-    <a href="php/rescueDeclined.php" class="sub-link">Declined</a>
+    <a href="php/rescue/rescuePending.php" class="sub-link">Pending</a>
+    <a href="php/rescue/rescueReviewing.php" class="sub-link">Reviewing</a>
+    <a href="php/rescue/rescueOngoing.php" class="sub-link">Ongoing</a>
+    <a href="php/rescue/rescueRescued.php" class="sub-link">Rescued</a>
+    <a href="php/rescue/rescueDeclined.php" class="sub-link">Declined</a>
   </div>
   <a data-bs-toggle="collapse" href="#historyMenu" role="button" aria-expanded="false" aria-controls="adoptionMenu">
     History
@@ -57,7 +80,7 @@ $firebase = include('config/firebase.php');
   <div class="collapse" id="historyMenu">
     <a href="history/missing_history.php" class="sub-link">Missing</a>
     <a href="history/wandering_history.php" class="sub-link">Wandering</a>
-    <a href="history/wandering_history.php" class="sub-link">Adopted</a>
+    <a href="#history/wandering_history" class="sub-link">Adopted</a>
     <a href="history/found_history.php" class="sub-link">Found</a>
   </div>
 </div>
@@ -74,7 +97,7 @@ $firebase = include('config/firebase.php');
           <a class="nav-link" href="#profile">Profile</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#logout">Logout</a>
+          <a class="nav-link" href="php/login/logout.php">Logout</a>
         </li>
       </ul>
     </div>

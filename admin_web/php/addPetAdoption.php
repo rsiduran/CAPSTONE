@@ -1,5 +1,6 @@
 <?php
-require '../config/firebase.php'; // Include your Firebase configuration
+require '../config/firebase.php'; 
+include('../config/auth.php');
 
 try {
     // Initialize FirebaseService with the configuration
@@ -16,7 +17,7 @@ try {
             'petType' => $_POST['petType'],
             'characteristic' => $_POST['characteristic'],   
             'message' => $_POST['message'],
-            'timestamp' => date('Y-m-d H:i:s'),
+            'timestamp' => (new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d\TH:i:s\Z')
         ];
 
         // Handle file uploads
@@ -91,21 +92,21 @@ try {
     Adoption Application
   </a>
   <div class="collapse" id="applicationMenu">
-    <a href="applicationPending.php" class="sub-link">Pending</a>
-    <a href="applicationReviewing.php" class="sub-link">Reviewing</a>
-    <a href="applicationApproved.php" class="sub-link">Approved</a>
-    <a href="applicationCompleted.php" class="sub-link">Completed</a>
-    <a href="applicationRejected.php" class="sub-link">Rejected</a>
+    <a href="application/applicationPending.php" class="sub-link">Pending</a>
+    <a href="application/applicationReviewing.php" class="sub-link">Reviewing</a>
+    <a href="application/applicationApproved.php" class="sub-link">Approved</a>
+    <a href="application/applicationCompleted.php" class="sub-link">Completed</a>
+    <a href="application/applicationRejected.php" class="sub-link">Rejected</a>
   </div>
   <a data-bs-toggle="collapse" href="#rescueMenu" role="button" aria-expanded="false" aria-controls="rescueMenu">
     Rescue
   </a>
   <div class="collapse" id="rescueMenu">
-    <a href="rescuePending.php" class="sub-link">Pending</a>
-    <a href="rescueReviewing.php" class="sub-link">Reviewing</a>
-    <a href="rescueOngoing.php" class="sub-link">Ongoing</a>
-    <a href="rescueRescued.php" class="sub-link">Rescued</a>
-    <a href="rescueDeclined.php" class="sub-link">Declined</a>
+    <a href="rescue/rescuePending.php" class="sub-link">Pending</a>
+    <a href="rescue/rescueReviewing.php" class="sub-link">Reviewing</a>
+    <a href="rescue/rescueOngoing.php" class="sub-link">Ongoing</a>
+    <a href="rescue/rescueRescued.php" class="sub-link">Rescued</a>
+    <a href="rescue/rescueDeclined.php" class="sub-link">Declined</a>
   </div>
   <a data-bs-toggle="collapse" href="#historyMenu" role="button" aria-expanded="false" aria-controls="adoptionMenu">
     History
@@ -130,7 +131,7 @@ try {
           <a class="nav-link" href="#profile">Profile</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#logout">Logout</a>
+          <a class="nav-link" href="login/logout.php">Logout</a>
         </li>
       </ul>
     </div>

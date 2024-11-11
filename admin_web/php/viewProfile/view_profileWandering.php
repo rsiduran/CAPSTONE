@@ -1,68 +1,58 @@
 <?php
 
-$firebase = include('../config/firebase.php');
+$firebase = include('../../config/firebase.php');
+include('../../config/auth.php');
 
 $petid = $_GET['petid'] ?? null;
 
-$petDetails = $firebase->getDocuments("wanderingHistory")[$petid] ?? null;
+$petDetails = $firebase->getDocuments("wandering")[$petid] ?? null;
 
 if (!$petDetails) {
     die("Pet not found.");
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add Pet Adoption</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../assets/style.css">
-</head>
-<body>
-
 <div class="sidebar">
-  <a href="../index.php">Dashboard</a>
-  <a href="#inquiry">Inquiry</a>
-  <a href="../php/missing.php">Missing</a>
-  <a href="../php/wandering.php">Wandering</a>
-  <a href="../php/found.php">Found</a>
+  <a href="../../index.php">Dashboard</a>
+  <a href="#inquiry.php">Inquiry</a>
+  <a href="../missing.php">Missing</a>
+  <a href="../wandering.php">Wandering</a>
+  <a href="../found.php">Found</a>
   <a data-bs-toggle="collapse" href="#adoptionMenu" role="button" aria-expanded="false" aria-controls="adoptionMenu">
     Adoption
   </a>
   <div class="collapse" id="adoptionMenu">
     <a href="#petAdoptionList" class="sub-link">Pet Adoption List</a>
     <a href="#adoptedPets" class="sub-link">Adopted Pets</a>
-    <a href="addPetAdoption.php" class="sub-link">Add Pet</a>
+    <a href="../addPetAdoption.php" class="sub-link">Add Pet</a>
   </div>
   <a data-bs-toggle="collapse" href="#applicationMenu" role="button" aria-expanded="false" aria-controls="adoptionMenu">
     Adoption Application
   </a>
   <div class="collapse" id="applicationMenu">
-    <a href="../php/application/applicationPending.php" class="sub-link">Pending</a>
-    <a href="../php/application/applicationReviewing.php" class="sub-link">Reviewing</a>
-    <a href="../php/application/applicationApproved.php" class="sub-link">Approved</a>
-    <a href="../php/application/applicationCompleted.php" class="sub-link">Completed</a>
-    <a href="../php/application/applicationRejected.php" class="sub-link">Rejected</a>
+    <a href="../application/applicationPending.php" class="sub-link">Pending</a>
+    <a href="../application/applicationReviewing.php" class="sub-link">Reviewing</a>
+    <a href="../application/applicationApproved.php" class="sub-link">Approved</a>
+    <a href="../application/applicationCompleted.php" class="sub-link">Completed</a>
+    <a href="../application/applicationRejected.php" class="sub-link">Rejected</a>
   </div>
   <a data-bs-toggle="collapse" href="#rescueMenu" role="button" aria-expanded="false" aria-controls="rescueMenu">
     Rescue
   </a>
   <div class="collapse" id="rescueMenu">
-    <a href="../php/rescue/rescuePending.php" class="sub-link">Pending</a>
-    <a href="../php/rescue/rescueReviewing.php" class="sub-link">Reviewing</a>
-    <a href="../php/rescue/rescueOngoing.php" class="sub-link">Ongoing</a>
-    <a href="../php/rescue/rescueRescued.php" class="sub-link">Rescued</a>
-    <a href="../php/rescue/rescueDeclined.php" class="sub-link">Declined</a>
+    <a href="../rescue/rescuePending.php" class="sub-link">Pending</a>
+    <a href="../rescueReviewing.php" class="sub-link">Reviewing</a>
+    <a href="../rescue/rescueOngoing.php" class="sub-link">Ongoing</a>
+    <a href="../rescue/rescueRescued.php" class="sub-link">Rescued</a>
+    <a href="../rescue/rescueDeclined.php" class="sub-link">Declined</a>
   </div>
   <a data-bs-toggle="collapse" href="#historyMenu" role="button" aria-expanded="false" aria-controls="adoptionMenu">
     History
   </a>
   <div class="collapse" id="historyMenu">
-    <a href="missing_history.php" class="sub-link">Missing</a>
-    <a href="wandering_history.php" class="sub-link">Wandering</a>  
-    <a href="#adopted-history" class="sub-link">Adopted</a>
-    <a href="found_history.php" class="sub-link">Found</a>
+    <a href="../../history/missing_history.php" class="sub-link">Missing</a>
+    <a href="../../history/wandering_history.php" class="sub-link">Wandering</a>
+    <a href="#history/wandering_history" class="sub-link">Adopted</a>
+    <a href="../../history/found_history.php" class="sub-link">Found</a>
   </div>
 </div>
 
@@ -78,12 +68,13 @@ if (!$petDetails) {
           <a class="nav-link" href="#profile">Profile</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="../php/login/logout.php">Logout</a>
+          <a class="nav-link" href="../login/logout.php">Logout</a>
         </li>
-      </ul>
+      </ul> 
     </div>
   </div>
 </nav>
+
 
 <div class="container main-content">
 <div class="back-button-container">

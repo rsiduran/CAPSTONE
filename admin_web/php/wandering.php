@@ -1,6 +1,7 @@
 <?php
 // Include Firebase service instance
 $firebase = include('../config/firebase.php');
+include('../config/auth.php');
 
 // Fetch missing pets data from Firebase
 $pets = $firebase->getDocuments("wandering");
@@ -28,7 +29,7 @@ if (isset($_GET['petid'])) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard</title>
+  <title>Add Pet Adoption</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="../assets/style.css">
 </head>
@@ -52,21 +53,21 @@ if (isset($_GET['petid'])) {
     Adoption Application
   </a>
   <div class="collapse" id="applicationMenu">
-    <a href="applicationPending.php" class="sub-link">Pending</a>
-    <a href="applicationReviewing.php" class="sub-link">Reviewing</a>
-    <a href="applicationApproved.php" class="sub-link">Approved</a>
-    <a href="applicationCompleted.php" class="sub-link">Completed</a>
-    <a href="applicationRejected.php" class="sub-link">Rejected</a>
+    <a href="application/applicationPending.php" class="sub-link">Pending</a>
+    <a href="application/applicationReviewing.php" class="sub-link">Reviewing</a>
+    <a href="application/applicationApproved.php" class="sub-link">Approved</a>
+    <a href="application/applicationCompleted.php" class="sub-link">Completed</a>
+    <a href="application/applicationRejected.php" class="sub-link">Rejected</a>
   </div>
   <a data-bs-toggle="collapse" href="#rescueMenu" role="button" aria-expanded="false" aria-controls="rescueMenu">
     Rescue
   </a>
   <div class="collapse" id="rescueMenu">
-    <a href="rescuePending.php" class="sub-link">Pending</a>
-    <a href="rescueReviewing.php" class="sub-link">Reviewing</a>
-    <a href="rescueOngoing.php" class="sub-link">Ongoing</a>
-    <a href="rescueRescued.php" class="sub-link">Rescued</a>
-    <a href="rescueDeclined.php" class="sub-link">Declined</a>
+    <a href="rescue/rescuePending.php" class="sub-link">Pending</a>
+    <a href="rescue/rescueReviewing.php" class="sub-link">Reviewing</a>
+    <a href="rescue/rescueOngoing.php" class="sub-link">Ongoing</a>
+    <a href="rescue/rescueRescued.php" class="sub-link">Rescued</a>
+    <a href="rescue/rescueDeclined.php" class="sub-link">Declined</a>
   </div>
   <a data-bs-toggle="collapse" href="#historyMenu" role="button" aria-expanded="false" aria-controls="adoptionMenu">
     History
@@ -91,7 +92,7 @@ if (isset($_GET['petid'])) {
           <a class="nav-link" href="#profile">Profile</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#logout">Logout</a>
+          <a class="nav-link" href="login/logout.php">Logout</a>
         </li>
       </ul>
     </div>
@@ -121,7 +122,7 @@ if (isset($_GET['petid'])) {
                 <td><?= htmlspecialchars($pet['postType'] ?? 'N/A') ?></td>
                 <td>
                     <a href="view_profileWandering.php?petid=<?= urlencode($petid) ?>" class="btn btn-primary btn-sm">View Profile</a>
-                    <a href="wandering.php?petid=<?= urlencode($petid) ?>" class="btn btn-danger btn-sm">Delete</a>
+                    <a href="viewProfile/wandering.php?petid=<?= urlencode($petid) ?>" class="btn btn-danger btn-sm">Delete</a>
                 </td>
             </tr>
         <?php endforeach; ?>

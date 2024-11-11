@@ -3,19 +3,19 @@
 $firebase = include('../config/firebase.php');
 include('../config/auth.php');
 
-$wanderingHistory = $firebase->getDocuments("wanderingHistory");
+$missingHistory = $firebase->getDocuments("missingHistory");
 
 if (isset($_GET['petid'])) {
     $petid = $_GET['petid'];
-    $petDetails = $firebase->getDocuments("wandering")[$petid] ?? null;
+    $petDetails = $firebase->getDocuments("missing")[$petid] ?? null;
 
     if ($petDetails) {
 
-        $firebase->copyDocumentToHistoryWandering($petDetails, $petid);
+        $firebase->copyDocumentToHistoryMissing($petDetails, $petid);
 
-        $firebase->deleteDocument("wandering", $petid);
+        $firebase->deleteDocument("missing", $petid);
 
-        header("Location: wandering.php");
+        header("Location: missing_admin.php");
         exit();
     }
 }
@@ -25,54 +25,22 @@ if (isset($_GET['petid'])) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add Pet Adoption</title>
+  <title>WanderPet</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="../assets/style.css">
 </head>
 <body>
 
 <div class="sidebar">
-  <a href="../index.php">Dashboard</a>
-  <a href="#inquiry">Inquiry</a>
-  <a href="../php/missing.php">Missing</a>
-  <a href="../php/wandering.php">Wandering</a>
-  <a href="../php/found.php">Found</a>
-  <a data-bs-toggle="collapse" href="#adoptionMenu" role="button" aria-expanded="false" aria-controls="adoptionMenu">
-    Adoption
-  </a>
-  <div class="collapse" id="adoptionMenu">
-    <a href="#petAdoptionList" class="sub-link">Pet Adoption List</a>
-    <a href="#adoptedPets" class="sub-link">Adopted Pets</a>
-    <a href="addPetAdoption.php" class="sub-link">Add Pet</a>
-  </div>
-  <a data-bs-toggle="collapse" href="#applicationMenu" role="button" aria-expanded="false" aria-controls="adoptionMenu">
-    Adoption Application
-  </a>
-  <div class="collapse" id="applicationMenu">
-    <a href="../php/application/applicationPending.php" class="sub-link">Pending</a>
-    <a href="../php/application/applicationReviewing.php" class="sub-link">Reviewing</a>
-    <a href="../php/application/applicationApproved.php" class="sub-link">Approved</a>
-    <a href="../php/application/applicationCompleted.php" class="sub-link">Completed</a>
-    <a href="../php/application/applicationRejected.php" class="sub-link">Rejected</a>
-  </div>
-  <a data-bs-toggle="collapse" href="#rescueMenu" role="button" aria-expanded="false" aria-controls="rescueMenu">
-    Rescue
-  </a>
-  <div class="collapse" id="rescueMenu">
-    <a href="../php/rescue/rescuePending.php" class="sub-link">Pending</a>
-    <a href="../php/rescue/rescueReviewing.php" class="sub-link">Reviewing</a>
-    <a href="../php/rescue/rescueOngoing.php" class="sub-link">Ongoing</a>
-    <a href="../php/rescue/rescueRescued.php" class="sub-link">Rescued</a>
-    <a href="../php/rescue/rescueDeclined.php" class="sub-link">Declined</a>
-  </div>
+  <a href="admin.php">Dashboard</a>
+  <a href="missing_admin.php">Missing</a>
+  <a href="found_admin.php">Found</a>
   <a data-bs-toggle="collapse" href="#historyMenu" role="button" aria-expanded="false" aria-controls="adoptionMenu">
     History
   </a>
   <div class="collapse" id="historyMenu">
-    <a href="missing_history.php" class="sub-link">Missing</a>
-    <a href="wandering_history.php" class="sub-link">Wandering</a>  
-    <a href="#adopted-history" class="sub-link">Adopted</a>
-    <a href="found_history.php" class="sub-link">Found</a>
+    <a href="historyMissingAdmin.php" class="sub-link">Missing</a>
+    <a href="historyFoundAdmin.php" class="sub-link">Found</a>
   </div>
 </div>
 
@@ -110,8 +78,8 @@ if (isset($_GET['petid'])) {
         </tr>
       </thead>
       <tbody>
-    <?php if (!empty($wanderingHistory)) : ?>
-        <?php foreach ($wanderingHistory as $historyId => $history) : ?>
+    <?php if (!empty($missingHistory)) : ?>
+        <?php foreach ($missingHistory as $historyId => $history) : ?>
             <tr>
                 <td><?= htmlspecialchars($history['name'] ?? 'N/A') ?></td>
                 <td><?= htmlspecialchars($history['breed'] ?? 'N/A') ?></td>
@@ -119,7 +87,7 @@ if (isset($_GET['petid'])) {
                 <td><?= htmlspecialchars($history['postType'] ?? 'N/A') ?></td>
                 <td><?= htmlspecialchars($history['removedAt'] ?? 'N/A') ?></td>
                 <td>
-                    <a href="view_detailsWandering.php?petid=<?= urlencode($historyId) ?>" class="btn btn-primary btn-sm">View Details</a>
+                    <a href="details_missing.php?petid=<?= urlencode($historyId) ?>" class="btn btn-primary btn-sm">View Details</a>
                 </td>
             </tr>
         <?php endforeach; ?>
