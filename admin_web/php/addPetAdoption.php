@@ -15,7 +15,7 @@ try {
             'gender' => $_POST['gender'],
             'size' => $_POST['size'], 
             'petType' => $_POST['petType'],
-            'characteristic' => $_POST['characteristic'],   
+            'description' => $_POST['description'],   
             'message' => $_POST['message'],
             'timestamp' => (new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d\TH:i:s\Z')
         ];
@@ -250,8 +250,8 @@ try {
         <input type="file" class="form-control" name="petPicture" required>
       </div>
       <div class="mb-3">
-        <label for="characteristic" class="form-label">Characteristic</label>
-        <input type="text" class="form-control" name="characteristic" required>
+        <label for="characteristic" class="form-label">Description</label>
+        <input type="text" class="form-control" name="description" required>
       </div>
       <div class="mb-3">
         <label for="gender" class="form-label">Gender</label>

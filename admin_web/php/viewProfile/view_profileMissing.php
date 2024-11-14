@@ -196,14 +196,14 @@ if (!$petDetails) {
         <div class="row">
           <div class="col-md-6 mb-3">
             <div class="border p-3 rounded bg-white text-dark">
-              <strong>Message</strong>
-              <p><?= htmlspecialchars($petDetails['message'] ?? 'N/A') ?></p>
+              <strong>Note</strong>
+              <p><?= htmlspecialchars($petDetails['note'] ?? 'N/A') ?></p>
             </div>
           </div>
           <div class="col-md-6 mb-3">
             <div class="border p-3 rounded bg-white text-dark">
-              <strong>Characteristics</strong>
-              <p><?= htmlspecialchars($petDetails['characteristic'] ?? 'N/A') ?></p>
+              <strong>Description</strong>
+              <p><?= htmlspecialchars($petDetails['description'] ?? 'N/A') ?></p>
             </div>
           </div>
         </div>

@@ -105,7 +105,7 @@ if (!$petDetails) {
       <p><strong>Message:</strong> <?= htmlspecialchars($petDetails['message'] ?? 'N/A') ?></p> 
       <p><strong>Pet Type:</strong> <?= htmlspecialchars($petDetails['petType'] ?? 'N/A') ?></p>
       <p><strong>Status:</strong> <?= htmlspecialchars($petDetails['postType'] ?? 'N/A') ?></p>
-      <p><strong>Characteristic:</strong> <?= htmlspecialchars($petDetails['characteristic'] ?? 'N/A') ?></p>
+      <p><strong>Description:</strong> <?= htmlspecialchars($petDetails['description'] ?? 'N/A') ?></p>
       <p>
     <strong>Posted Date:</strong> 
     <?= htmlspecialchars(

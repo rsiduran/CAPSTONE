@@ -15,7 +15,7 @@ if ($_SESSION['user_type'] === 'superadmin') {
 
 // Define allowed pages for each user type
 $allowed_pages = [
-    'admin' => ['admin.php', 'missing_admin.php', 'found_admin.php', 'historyFoundAdmin.php', 'historyMissingAdmin.php' ],
+    'admin' => ['admin.php', 'missing_admin.php', 'found_admin.php', 'historyFoundAdmin.php', 'historyMissingAdmin.php', 'profile_missing.php', 'profile_found.php', 'details_missing.php', 'details_found.php' ],
     'staff' => ['supremo.php']
 ];
 

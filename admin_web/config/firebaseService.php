@@ -44,6 +44,7 @@
                         'address'=> $fields['address']['stringValue'] ?? 'N/A',
                         'streetNumber'=> $fields['address']['stringValue'] ?? 'N/A',
                         'city' => $fields['city']['stringValue'] ?? 'N/A', 
+                        'note' => $fields['note']['stringValue'] ?? 'N/A', 
                         'message' => $fields['message']['stringValue'] ?? 'N/A',
                         'removedAt' => $fields['removedAt']['timestampValue'] ?? 'N/A',
                         'firstName' => $fields['firstName']['stringValue'] ?? 'N/A',
