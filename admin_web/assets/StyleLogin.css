@@ -1,48 +1,110 @@
-/* Center the login form on the page */
+/* General Reset */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: 'Arial', sans-serif;
+	background: linear-gradient(135deg, #4caf50, #2e7d32); /* Modern gradient background */
+	color: #fff;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+}
+
+/* Wrapper for centering */
+.login-wrapper {
+	width: 100%;
+	max-width: 400px;
+	padding: 20px;
+}
+
+/* Login container */
 .login-container {
-    width: 100%;
-    max-width: 400px;
-    background-color: #fff;
-    padding: 30px;
-    margin: 50px auto;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-  }
-  
-  /* Styling for input fields */
-  .input-group input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 4px;
-    border: 1px solid #ddd;
-    font-size: 16px;
-  }
-  
-  /* Styling for the submit button */
-  .input-group input[type="submit"] {
-    background-color: #007bff;
-    color: #fff;
-    cursor: pointer;
-    font-size: 16px;
-    border: none;
-    padding: 12px;
-    width: 100%;
-    border-radius: 4px;
-  }
-  
-  .input-group input[type="submit"]:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Error message styling */
-  .error-message {
-    color: red;
-    background-color: #f8d7da;
-    padding: 10px;
-    border: 1px solid #f5c6cb;
-    border-radius: 5px;
-    margin-top: 20px;
-    text-align: center;
-  }
+	background: rgba(255, 255, 255, 0.15);
+	padding: 30px;
+	border-radius: 15px;
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+	backdrop-filter: blur(10px);
+	text-align: center;
+}
+
+/* Logo */
+.login-image img {
+	width: 80px;
+	height: 80px;
+	margin-bottom: 20px;
+	border-radius: 50%;
+	background: #fff;
+	padding: 10px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Input fields */
+.input-group input {
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 15px;
+	border: none;
+	border-radius: 5px;
+	background: rgba(255, 255, 255, 0.8);
+	color: #333;
+	font-size: 16px;
+	outline: none;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.input-group input:focus {
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Login button */
+.login-btn {
+	background: #4caf50;
+	color: #fff;
+	padding: 10px;
+	width: 100%;
+	border: none;
+	border-radius: 5px;
+	font-size: 16px;
+	cursor: pointer;
+	transition: background 0.3s ease;
+}
+
+.login-btn:hover {
+	background: #388e3c;
+}
+
+/* Options (Remember me and Forgot Password) */
+.options {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 10px;
+	font-size: 14px;
+}
+
+.options a {
+	color: #c8e6c9;
+	text-decoration: none;
+	transition: color 0.3s ease;
+}
+
+.options a:hover {
+	color: #fff;
+}
+
+/* Error Message */
+.error-message {
+	color: #ffcccb;
+	background: rgba(255, 0, 0, 0.1);
+	padding: 10px;
+	border: 1px solid rgba(255, 0, 0, 0.2);
+	border-radius: 5px;
+	margin-bottom: 15px;
+	font-size: 14px;
+	text-align: center;
+}

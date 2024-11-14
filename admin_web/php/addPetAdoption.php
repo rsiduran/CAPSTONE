@@ -50,7 +50,7 @@ try {
         $response = $firebaseService->insertDocument('adoption', $adoptionData);
 
         if (isset($response['name'])) {
-            echo "Pet adoption entry created successfully with ID: " . basename($response['name']);
+          echo "<script>alert('Pet adoption entry created successfully with ID: " . basename($response['name']) . "');</script>";
         } else {
             error_log("Error creating pet adoption entry: " . json_encode($response));
             echo "Error creating pet adoption entry.";
@@ -60,9 +60,6 @@ try {
     echo "An error occurred: " . $e->getMessage();
 }
 ?>
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -70,132 +67,229 @@ try {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Add Pet Adoption</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../assets/style.css">
+  <style>
+    .sidebar {
+      height: 100vh;
+      width: 250px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background: linear-gradient(135deg, #4caf50, #2e7d32);
+      color: #fff;
+      padding-top: 20px;
+      overflow-y: auto;
+    }
+
+    .sidebar .logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .sidebar .logo img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: #fff;
+      padding: 10px;
+    }
+
+    .sidebar h4 {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 20px;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 10px 20px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 16px;
+      border-radius: 5px;
+      transition: background 0.3s ease;
+    }
+
+    .sidebar a:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .sidebar .sub-link {
+      padding-left: 40px;
+      font-size: 14px;
+    }
+
+    /* Profile and Logout */
+    .sidebar .profile-section {
+      margin-top: auto;
+      padding: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* Main content */
+    .main-content {
+      margin-left: 250px;
+      padding: 20px;
+    }
+
+    /* Form Styling */
+    .form-container {
+      background-color: #f9f9f9;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .form-container h2 {
+      color: #2e7d32;
+      font-weight: bold;
+    }
+
+    .form-label {
+      color: #555;
+    }
+
+    .form-control, .form-select {
+      border-radius: 5px;
+      border: 1px solid #ced4da;
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: #4caf50;
+      box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25);
+    }
+
+    .btn-primary {
+      background-color: #4caf50;
+      border-color: #4caf50;
+      transition: background 0.3s;
+    }
+
+    .btn-primary:hover {
+      background-color: #3e8e41;
+      border-color: #3e8e41;
+    }
+  </style>
 </head>
 <body>
 
+<!-- Sidebar -->
 <div class="sidebar">
-  <a href="../index.php">Dashboard</a>
-  <a href="#inquiry">Inquiry</a>
-  <a href="missing.php">Missing</a>
-  <a href="wandering.php">Wandering</a>
-  <a href="found.php">Found</a>
-  <a data-bs-toggle="collapse" href="#adoptionMenu" role="button" aria-expanded="false" aria-controls="adoptionMenu">
-    Adoption
-  </a>
-  <div class="collapse" id="adoptionMenu">
-    <a href="#petAdoptionList" class="sub-link">Pet Adoption List</a>
-    <a href="#adoptedPets" class="sub-link">Adopted Pets</a>
-    <a href="addPetAdoption.php" class="sub-link">Add Pet</a>
+    <div class="logo">
+      <img src="../assets/images/logo.png" alt="WanderPets Logo">
+      <h4>WanderPets</h4>
+    </div>
+    <a href="../index.php">Dashboard</a>
+    <a href="#inquiry">Inquiry</a>
+    <a href="missing.php">Missing</a>
+    <a href="wandering.php">Wandering</a>
+    <a href="found.php">Found</a>
+    <a data-bs-toggle="collapse" href="#adoptionMenu" role="button" aria-expanded="false" aria-controls="adoptionMenu">
+      Adoption
+    </a>
+    <div class="collapse" id="adoptionMenu">
+      <a href="#petAdoptionList" class="sub-link">Pet Adoption List</a>
+      <a href="#adoptedPets" class="sub-link">Adopted Pets</a>
+      <a href="addPetAdoption.php" class="sub-link">Add Pet</a>
+    </div>
+    <a data-bs-toggle="collapse" href="#applicationMenu" role="button" aria-expanded="false" aria-controls="applicationMenu">
+      Adoption Application
+    </a>
+    <div class="collapse" id="applicationMenu">
+      <a href="application/applicationPending.php" class="sub-link">Pending</a>
+      <a href="application/applicationReviewing.php" class="sub-link">Reviewing</a>
+      <a href="application/applicationApproved.php" class="sub-link">Approved</a>
+      <a href="application/applicationCompleted.php" class="sub-link">Completed</a>
+      <a href="application/applicationRejected.php" class="sub-link">Rejected</a>
+    </div>
+    <a data-bs-toggle="collapse" href="#rescueMenu" role="button" aria-expanded="false" aria-controls="rescueMenu">
+      Rescue
+    </a>
+    <div class="collapse" id="rescueMenu">
+      <a href="rescue/rescuePending.php" class="sub-link">Pending</a>
+      <a href="rescue/rescueReviewing.php" class="sub-link">Reviewing</a>
+      <a href="rescue/rescueOngoing.php" class="sub-link">Ongoing</a>
+      <a href="rescue/rescueRescued.php" class="sub-link">Rescued</a>
+      <a href="rescue/rescueDeclined.php" class="sub-link">Declined</a>
+    </div>
+    <a data-bs-toggle="collapse" href="#historyMenu" role="button" aria-expanded="false" aria-controls="historyMenu">
+      History
+    </a>
+    <div class="collapse" id="historyMenu">
+      <a href="../history/missing_history.php" class="sub-link">Missing</a>
+      <a href="../history/wandering_history.php" class="sub-link">Wandering</a>
+      <a href="#adopted-history" class="sub-link">Adopted</a>
+      <a href="../history/found_history.php" class="sub-link">Found</a>
+    </div>
+    <!-- Profile and Logout -->
+    <div class="profile-section">
+      <a href="#profile">Profile</a>
+      <a href="login/logout.php">Logout</a>
+    </div>
   </div>
-  <a data-bs-toggle="collapse" href="#applicationMenu" role="button" aria-expanded="false" aria-controls="adoptionMenu">
-    Adoption Application
-  </a>
-  <div class="collapse" id="applicationMenu">
-    <a href="application/applicationPending.php" class="sub-link">Pending</a>
-    <a href="application/applicationReviewing.php" class="sub-link">Reviewing</a>
-    <a href="application/applicationApproved.php" class="sub-link">Approved</a>
-    <a href="application/applicationCompleted.php" class="sub-link">Completed</a>
-    <a href="application/applicationRejected.php" class="sub-link">Rejected</a>
-  </div>
-  <a data-bs-toggle="collapse" href="#rescueMenu" role="button" aria-expanded="false" aria-controls="rescueMenu">
-    Rescue
-  </a>
-  <div class="collapse" id="rescueMenu">
-    <a href="rescue/rescuePending.php" class="sub-link">Pending</a>
-    <a href="rescue/rescueReviewing.php" class="sub-link">Reviewing</a>
-    <a href="rescue/rescueOngoing.php" class="sub-link">Ongoing</a>
-    <a href="rescue/rescueRescued.php" class="sub-link">Rescued</a>
-    <a href="rescue/rescueDeclined.php" class="sub-link">Declined</a>
-  </div>
-  <a data-bs-toggle="collapse" href="#historyMenu" role="button" aria-expanded="false" aria-controls="adoptionMenu">
-    History
-  </a>
-  <div class="collapse" id="historyMenu">
-    <a href="../history/missing_history.php" class="sub-link">Missing</a>
-    <a href="../history/wandering_history.php" class="sub-link">Wandering</a>
-    <a href="#adopted-history" class="sub-link">Adopted</a>
-    <a href="../history/found_history.php" class="sub-link">Found</a>
-  </div>
-</div>
 
-<!-- Top Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light top-navbar">
-  <div class="container-fluid">
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" href="#profile">Profile</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="login/logout.php">Logout</a>
-        </li>
-      </ul>
-    </div>
+<div class="main-content">
+  <div class="form-container">
+    <h2>Add Pet Adoption</h2>
+    <form method="POST" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <input type="text" class="form-control" name="name" required>
+      </div>
+      <div class="mb-3">
+        <label for="age" class="form-label">Age</label>
+        <input type="text" class="form-control" name="age" required>
+      </div>
+      <div class="mb-3">
+        <label for="breed" class="form-label">Breed</label>
+        <input type="text" class="form-control" name="breed" required>
+      </div>
+      <div class="mb-3">
+        <label for="petPicture" class="form-label">Pet Picture</label>
+        <input type="file" class="form-control" name="petPicture" required>
+      </div>
+      <div class="mb-3">
+        <label for="characteristic" class="form-label">Characteristic</label>
+        <input type="text" class="form-control" name="characteristic" required>
+      </div>
+      <div class="mb-3">
+        <label for="gender" class="form-label">Gender</label>
+        <select class="form-select" name="gender" required>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="medical" class="form-label">Medical Records</label>
+        <input type="file" class="form-control" name="medical" required>
+      </div>
+      <div class="mb-3">
+        <label for="spay" class="form-label">Spay Certificate</label>
+        <input type="file" class="form-control" name="spay" required>
+      </div>
+      <div class="mb-3">
+        <label for="vaccination" class="form-label">Vaccination Records</label>
+        <input type="file" class="form-control" name="vaccination" required>
+      </div>
+      <div class="mb-3">
+        <label for="message" class="form-label">Message</label>
+        <textarea class="form-control" name="message" rows="3" required></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="size" class="form-label">Size</label>
+        <input type="text" class="form-control" name="size" required>
+      </div>
+      <div class="mb-3">
+        <label for="petType" class="form-label">Pet Type</label>
+        <input type="text" class="form-control" name="petType" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
   </div>
-</nav>
-
-<div class="container mt-5">
-  <h2>Add Pet Adoption</h2>
-  <form method="POST" enctype="multipart/form-data">
-  <div class="mb-3">
-      <label for="name" class="form-label">Name</label>
-      <input type="text" class="form-control" name="name" required>
-    </div>
-    <div class="mb-3">
-      <label for="age" class="form-label">Age</label>
-      <input type="text" class="form-control" name="age" required>
-    </div>
-    <div class="mb-3">
-      <label for="breed" class="form-label">Breed</label>
-      <input type="text" class="form-control" name="breed" required>
-    </div>
-    <div class="mb-3">
-      <label for="petPicture" class="form-label">Pet Picture</label>
-      <input type="file" class="form-control" name="petPicture" required>
-    </div>
-    <div class="mb-3">
-      <label for="characteristic" class="form-label">Characteristic</label>
-      <input type="text" class="form-control" name="characteristic" required>
-    </div>
-    <div class="mb-3">
-      <label for="gender" class="form-label">Gender</label>
-      <select class="form-select" name="gender" required>
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-      </select>
-    </div>
-    <div class="mb-3">
-      <label for="medical" class="form-label">Medical Records</label>
-      <input type="file" class="form-control" name="medical" required>
-    </div>
-    <div class="mb-3">
-      <label for="spay" class="form-label">Spay Certificate</label>
-      <input type="file" class="form-control" name="spay" required>
-    </div>
-    <div class="mb-3">
-      <label for="vaccination" class="form-label">Vaccination Records</label>
-      <input type="file" class="form-control" name="vaccination" required>
-    </div>
-    <div class="mb-3">
-      <label for="message" class="form-label">Message</label>
-      <textarea class="form-control" name="message" rows="3" required></textarea>
-    </div>
-    <div class="mb-3">
-      <label for="size" class="form-label">Size</label>
-      <input type="text" class="form-control" name="size" required>
-    </div>
-    <div class="mb-3">
-      <label for="petType" class="form-label">Pet Type</label>
-      <input type="text" class="form-control" name="petType" required>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
