@@ -62,7 +62,11 @@
                         'contactPhone' => $fields['contactPhone']['stringValue'] ?? 'N/A',
                         'contactRelationship' => $fields['contactRelationship']['stringValue'] ?? 'N/A',
                         'description' => $fields['description']['stringValue'] ?? 'N/A',
-                        'homePhotos' => $fields['homePhotos']['string'] ?? 'N/A',
+                        'homePhotos' => isset($fields['homePhotos']['arrayValue']['values']) 
+                            ? array_map(function ($value) {
+                                return $value['stringValue'] ?? 'N/A';
+                            }, $fields['homePhotos']['arrayValue']['values'])
+                            : [],
                         'idealPet' => $fields['idealPet']['stringValue'] ?? 'N/A',
                         'introduceSurroundings' => $fields['introduceSurroundings']['stringValue'] ?? 'N/A',
                         'liveAlone' => $fields['liveAlone']['stringValue'] ?? 'N/A',
@@ -86,6 +90,11 @@
                         'vaccination' => $fields['vaccination']['stringValue'] ?? 'N/A',
                         'validID' => $fields['validID']['stringValue'] ?? 'N/A',
                         'workHours' => $fields['workHours']['stringValue'] ?? 'N/A',
+                        'additionalPhotos' => isset($fields['additionalPhotos']['arrayValue']['values']) 
+                            ? array_map(function ($value) {
+                                return $value['stringValue'] ?? 'N/A';
+                            }, $fields['additionalPhotos']['arrayValue']['values'])
+                            : [],
                     ];
                 }
                 return $result;
@@ -239,18 +248,33 @@
         public function updateDocument($collection, $documentId, $data) {
             $url = "https://firestore.googleapis.com/v1/projects/{$this->projectId}/databases/(default)/documents/{$collection}/{$documentId}?key={$this->apiKey}";
         
-            // Prepare the data for the request to update only specified fields
-            $fields = json_encode([
+            // Convert data to Firestore format
+            $fields = [
                 'fields' => array_map(function ($value) {
-                    return ['stringValue' => $value];
+                    if (is_string($value)) {
+                        return ['stringValue' => $value];
+                    } elseif ($value instanceof DateTime) {
+                        return ['timestampValue' => $value->format(DateTime::ATOM)];
+                    } elseif (is_array($value)) {
+                        return [
+                            'arrayValue' => [
+                                'values' => array_map(function ($item) {
+                                    return is_array($item) && isset($item['stringValue'])
+                                        ? ['stringValue' => $item['stringValue']]
+                                        : ['nullValue' => null];
+                                }, $value)
+                            ]
+                        ];
+                    }
+                    return ['nullValue' => null];
                 }, $data)
-            ]);
+            ];
         
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PATCH");
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
                 'Content-Type: application/json'
             ]);
@@ -260,6 +284,7 @@
         
             return json_decode($response, true);
         }
+        
 
         public function getDocument($collection, $documentId) {
             $url = "https://firestore.googleapis.com/v1/projects/{$this->projectId}/databases/(default)/documents/{$collection}/{$documentId}?key={$this->apiKey}";

@@ -7,7 +7,6 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
     $currentStatus = $_POST['currentStatus'];
 
     if (isset($_POST['confirm']) && $_POST['confirm'] === 'yes') {
-        
         $currentDocument = $firebase->getDocument("adoptionApplication", $petid);
         
         if (empty($currentDocument) || !isset($currentDocument['fields'])) {
@@ -16,16 +15,26 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
 
         $newStatus = ($currentStatus === 'REVIEWING') ? 'APPROVED' : $currentStatus;
 
+        // Create the properly formatted timestamp
+        $statusChange = new DateTime('now', new DateTimeZone('Asia/Manila')); // Timestamp
+        $formattedStatusChange = $statusChange->format(DateTime::ATOM); // Firestore-friendly format
+        $homePhotos = isset($currentDocument['fields']['homePhotos']['arrayValue']['values']) 
+            ? $currentDocument['fields']['homePhotos']['arrayValue']['values'] 
+            : [];  // Default to empty array if it's not set
+
         $updateData = [
             'applicationStatus' => $newStatus,
-            'statusChange' => date('m-d-Y H:i')
+            'statusChange' => new DateTime('now', new DateTimeZone('Asia/Manila')), // Timestamp
+            'homePhotos' => array_map(fn($photo) => ['stringValue' => $photo['stringValue']], $homePhotos), // Ensure proper array handling
+            'timestamp' => new DateTime($currentDocument['fields']['timestamp']['timestampValue'] ?? 'now'), // Timestamp
+            'postedTimestamp' => new DateTime($currentDocument['fields']['postedTimestamp']['timestampValue'] ?? 'now'), // Timestamp
         ];
 
         $fieldsToKeep = [
             'address',
             'age',
             'firstName',
-            'lastName',
+            'lastName', 
             'birthdate',
             'breed',
             'socials',
@@ -85,7 +94,7 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
         if (isset($updateResponse['error'])) {
             echo "Error updating document: " . $updateResponse['error']['message'];
         } else {
-            header("Location: ../viewApplication/view_applicationReviewing.php?petid=" . urlencode($petid));
+            header("Location: ../applicationReviewing.php?petid=" . urlencode($petid));
             exit();
         }
     } else {

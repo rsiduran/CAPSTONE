@@ -24,6 +24,7 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
 
         // Define the fields to keep
         $fieldsToKeep = [
+            'additionalPhotos',
             'address',
             'age',
             'firstName',

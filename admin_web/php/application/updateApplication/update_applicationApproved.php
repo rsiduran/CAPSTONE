@@ -17,10 +17,19 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
 
         $newStatus = ($currentStatus === 'APPROVED') ? 'COMPLETED' : $currentStatus;
 
-        $updateData = [
-            'applicationStatus' => $newStatus,
-            'statusChange' => date('m-d-Y H:i') 
-        ];
+         $statusChange = new DateTime('now', new DateTimeZone('Asia/Manila')); 
+         $formattedStatusChange = $statusChange->format(DateTime::ATOM); 
+         $homePhotos = isset($currentDocument['fields']['homePhotos']['arrayValue']['values']) 
+             ? $currentDocument['fields']['homePhotos']['arrayValue']['values'] 
+             : [];  
+ 
+         $updateData = [
+             'applicationStatus' => $newStatus,
+             'statusChange' => new DateTime('now', new DateTimeZone('Asia/Manila')), 
+             'homePhotos' => array_map(fn($photo) => ['stringValue' => $photo['stringValue']], $homePhotos), 
+             'timestamp' => new DateTime($currentDocument['fields']['timestamp']['timestampValue'] ?? 'now'), 
+             'postedTimestamp' => new DateTime($currentDocument['fields']['postedTimestamp']['timestampValue'] ?? 'now'), 
+         ];
 
         if ($newStatus === 'COMPLETED') {
             if (empty($_POST['personnel']) || !preg_match("/^[a-zA-Z\s]+$/", $_POST['personnel'])) {
@@ -29,7 +38,9 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
 
             $personnel = filter_var($_POST['personnel'], FILTER_SANITIZE_STRING);
             $updateData['personnel'] = $personnel;
-            $updateData['adoptionDate'] = date('m-d-Y H:i');
+            $adoptionDate = new DateTime('now', new DateTimeZone('Asia/Manila')); 
+            $formattedadoptionDate = $adoptionDate->format(DateTime::ATOM);
+            $updateData['adoptionDate'] = new DateTime('now', new DateTimeZone('Asia/Manila')); 
         }
 
         $fieldsToKeep = [
@@ -56,7 +67,7 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
         if (isset($updateResponse['error'])) {
             echo "Error updating document: " . $updateResponse['error']['message'];
         } else {
-            header("Location: ../viewApplication/view_applicationApproved.php?petid=" . urlencode($petid));
+            header("Location: ../applicationApproved.php?petid=" . urlencode($petid));
             exit();
         }
     } else {

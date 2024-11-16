@@ -1,22 +1,18 @@
 <?php
 $firebase = include('../../../config/firebase.php');
 
-// Check if the pet ID and current status are set
 if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
     $petid = $_POST['petid'];
     $currentStatus = $_POST['currentStatus'];
 
-    // Check if confirmation is requested
     if (isset($_POST['confirm']) && $_POST['confirm'] === 'yes') {
-        // Fetch the existing document data
+
         $currentDocument = $firebase->getDocument("rescue", $petid);
-        
-        // Check if the document exists
+
         if (empty($currentDocument) || !isset($currentDocument['fields'])) {
             die("Document not found or has no fields.");
         }
 
-        // Validate and sanitize rescuer input
         $rescuer = isset($_POST['rescuer']) ? trim($_POST['rescuer']) : '';
         $remarks = isset($_POST['remarks']) ? $_POST['remarks'] : '';
         $errorMessage = '';
@@ -24,9 +20,9 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
         if (empty($rescuer)) {
             $errorMessage = "Input field required";
         } elseif (preg_match('/\d/', $rescuer) || preg_match('/<script\b[^>]*>(.*?)<\/script>/is', $rescuer)) {
-            $errorMessage = "Invalid name"; // Prevent digits and script tags
+            $errorMessage = "Invalid name"; 
         } else {
-            $rescuer = filter_var($rescuer, FILTER_SANITIZE_STRING); // Sanitize the input
+            $rescuer = filter_var($rescuer, FILTER_SANITIZE_STRING); 
         }
         if (!empty($errorMessage)) {
             echo '
@@ -83,19 +79,26 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
         }
 
         $newStatus = ($currentStatus === 'ONGOING') ? 'RESCUED' : $currentStatus;
-        $rescuedDate = date('m-d-Y H:i'); 
+        $statusChange = new DateTime('now', new DateTimeZone('Asia/Manila')); 
+        $formattedStatusChange = $statusChange->format(DateTime::ATOM);
+        $additionalPhotos = isset($currentDocument['fields']['additionalPhotos']['arrayValue']['values']) 
+             ? $currentDocument['fields']['additionalPhotos']['arrayValue']['values'] 
+             : [];   
+        $rescuedDate = new DateTime('now', new DateTimeZone('Asia/Manila'));
+        $formattedrescuedDate = $rescuedDate->format(DateTime::ATOM);      
 
         $updateData = [
             'reportStatus' => $newStatus,
-            'statusChange' => $rescuedDate, 
+            'statusChange' => new DateTime('now', new DateTimeZone('Asia/Manila')),
+            'additionalPhotos' => array_map(fn($photo) => ['stringValue' => $photo['stringValue']], $additionalPhotos),  
             'rescuer' => $rescuer,
-            'rescuedDate' => $rescuedDate 
+            'rescuedDate' => new DateTime('now', new DateTimeZone('Asia/Manila')),
         ];
 
         $updateData['remarks'] = $remarks;
 
         $fieldsToKeep = [
-            'address', 'age', 'firstName', 'lastName', 'city', 'streetNumber',
+            'additionalPhotos','address', 'age', 'firstName', 'lastName', 'city', 'streetNumber',
             'socials', 'email', 'message', 'petPicture', 'profilePicture',
             'gender', 'size', 'petType', 'timestamp', 'phoneNumber',
         ];

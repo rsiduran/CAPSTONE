@@ -114,6 +114,26 @@ if (!$petDetails) {
         : date('Y-m-d H:i:s', time())
     ) ?>
 </p>
+
+<div class="col-md-6">
+      <div class="row">
+      <?php if (!empty($petDetails['additionalPhotos']) && is_array($petDetails['additionalPhotos'])): ?>
+    <h3>Additional Photos</h3>
+    <div class="row">
+        <?php foreach ($petDetails['additionalPhotos'] as $photo): ?>
+            <div class="col-md-4">
+                <img src="<?= htmlspecialchars($photo) ?>" 
+                     alt="Additional Photos" 
+                     class="img-fluid rounded mb-3" 
+                     style="border: 2px solid #ccc; object-fit: cover;">
+            </div>
+        <?php endforeach; ?>
+    </div>
+<?php else: ?>
+    <p>No house photos available.</p>
+<?php endif; ?>
+      </div>
+    </div>
       
       <p><strong>Reporter Name:</strong> <?= htmlspecialchars($petDetails['firstName'] ?? 'N/A') ?> <?= htmlspecialchars($petDetails['lastName'] ?? 'N/A') ?></p>  
       <p><strong>Email:</strong> <?= htmlspecialchars($petDetails['email'] ?? 'N/A') ?></p>

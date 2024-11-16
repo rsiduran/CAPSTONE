@@ -16,15 +16,23 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
 
         $newStatus = ($currentStatus === 'PENDING') ? 'REVIEWING' : $currentStatus;
 
+        $statusChange = new DateTime('now', new DateTimeZone('Asia/Manila')); 
+        $formattedStatusChange = $statusChange->format(DateTime::ATOM);
+        $additionalPhotos = isset($currentDocument['fields']['additionalPhotos']['arrayValue']['values']) 
+             ? $currentDocument['fields']['additionalPhotos']['arrayValue']['values'] 
+             : [];   
+
         $updateData = [
             'reportStatus' => $newStatus,
-            'statusChange' => date('m-d-Y H:i') 
+            'statusChange' => new DateTime('now', new DateTimeZone('Asia/Manila')),
+            'additionalPhotos' => array_map(fn($photo) => ['stringValue' => $photo['stringValue']], $additionalPhotos), 
         ];
 
         $remarks = isset($_POST['remarks']) ? filter_var($_POST['remarks'], FILTER_SANITIZE_STRING) : '';
         $updateData['remarks'] = $remarks;
 
         $fieldsToKeep = [
+            'additionalPhotos',
             'address',
             'age',
             'firstName',
@@ -118,3 +126,5 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
     die("Invalid request.");
 }
 ?>
+
+

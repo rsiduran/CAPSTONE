@@ -158,11 +158,22 @@ if (!$petDetails) {
                  style="width: 4in; height: 2in; object-fit: cover; border: 2px solid #ccc; border-radius: 8px;">
           </div>
         </div>
-        <h3>House Picture</h3>
-        <img src="<?= htmlspecialchars($petDetails['homePhotos'] ?? 'default-house.jpg') ?>" 
-             alt="House Picture" 
-             class="pet-image" 
-             style="width: 100%; height: auto; object-fit: cover; border: 2px solid #ccc; border-radius: 8px;">
+      <div class="row">
+      <?php if (!empty($petDetails['homePhotos']) && is_array($petDetails['homePhotos'])): ?>
+    <h3>House Pictures</h3>
+    <div class="row">
+        <?php foreach ($petDetails['homePhotos'] as $photo): ?>
+            <div class="col-md-4">
+                <img src="<?= htmlspecialchars($photo) ?>" 
+                     alt="House Photo" 
+                     class="img-fluid rounded mb-3" 
+                     style="border: 2px solid #ccc; object-fit: cover;">
+            </div>
+        <?php endforeach; ?>
+    </div>
+<?php else: ?>
+    <p>No house photos available.</p>
+<?php endif; ?>
       </div>
     </div>
 
