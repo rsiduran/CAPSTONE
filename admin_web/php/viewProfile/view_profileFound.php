@@ -104,18 +104,36 @@ if (!$petDetails) {
       <p><strong>City:</strong> <?= htmlspecialchars($petDetails['city'] ?? 'N/A') ?></p>
       <p><strong>Street Number:</strong> <?= htmlspecialchars($petDetails['streetNumber'] ?? 'N/A') ?></p>
       <p><strong>Address</strong> <?= htmlspecialchars($petDetails['address'] ?? 'N/A') ?></p>
-      <p><strong>Message:</strong> <?= htmlspecialchars($petDetails['message'] ?? 'N/A') ?></p> 
+      <p><strong>Note:</strong> <?= htmlspecialchars($petDetails['note'] ?? 'N/A') ?></p> 
       <p><strong>Pet Type:</strong> <?= htmlspecialchars($petDetails['petType'] ?? 'N/A') ?></p>
       <p><strong>Status:</strong> <?= htmlspecialchars($petDetails['postType'] ?? 'N/A') ?></p>
-      <p><strong>Characteristic:</strong> <?= htmlspecialchars($petDetails['characteristic'] ?? 'N/A') ?></p>
+      <p><strong>Description:</strong> <?= htmlspecialchars($petDetails['description'] ?? 'N/A') ?></p>
       <p>
-    <strong>Posted Date:</strong> 
-    <?= htmlspecialchars(
-        is_numeric($petDetails['timestamp']) && $petDetails['timestamp'] > 0 
-        ? date('Y-m-d H:i:s', (int)$petDetails['timestamp']) 
-        : date('Y-m-d H:i:s', time())
-    ) ?>
-</p>
+        <strong>Posted Date:</strong> 
+        <?= htmlspecialchars(
+            is_numeric($petDetails['timestamp']) && $petDetails['timestamp'] > 0 
+            ? date('Y-m-d H:i:s', (int)$petDetails['timestamp']) 
+            : date('Y-m-d H:i:s', time())
+        ) ?>
+      </p>
+
+<div class="row">
+      <?php if (!empty($petDetails['additionalPhotos']) && is_array($petDetails['additionalPhotos'])): ?>
+    <h3>Additional Photos</h3>
+    <div class="row">
+        <?php foreach ($petDetails['additionalPhotos'] as $photo): ?>
+            <div class="col-md-4">
+                <img src="<?= htmlspecialchars($photo) ?>" 
+                     alt="Additional Photos" 
+                     class="img-fluid rounded mb-3" 
+                     style="border: 2px solid #ccc; object-fit: cover;">
+            </div>
+        <?php endforeach; ?>
+    </div>
+<?php else: ?>
+    <p>No house photos available.</p>
+<?php endif; ?>
+      </div>
       
       <h2>OWNER INFORMATION</h2>
       <p><strong>Owner Name:</strong> <?= htmlspecialchars($petDetails['firstName'] ?? 'N/A') ?> <?= htmlspecialchars($petDetails['lastName'] ?? 'N/A') ?></p>  

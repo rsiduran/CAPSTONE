@@ -305,12 +305,21 @@
         public function insertDocument($collection, $data) {
             $url = "https://firestore.googleapis.com/v1/projects/{$this->projectId}/databases/(default)/documents/{$collection}?key={$this->apiKey}";
         
+            // Transform the data for Firestore
             $fields = json_encode([
                 'fields' => array_map(function($value) {
-                    return ['stringValue' => $value];
+                    if (is_array($value)) {
+                        // Handle arrays
+                        return ['arrayValue' => ['values' => array_map(function($item) {
+                            return $this->convertField($item);
+                        }, $value)]];
+                    } else {
+                        return $this->convertField($value);
+                    }
                 }, $data)
             ]);
         
+            // Initialize cURL
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -319,10 +328,27 @@
                 'Content-Type: application/json'
             ]);
         
+            // Execute and close
             $response = curl_exec($ch);
             curl_close($ch);
         
             return json_decode($response, true);
+        }
+        
+        // Helper method to convert fields to appropriate Firestore types
+        private function convertField($value) {
+            if (is_string($value)) {
+                return ['stringValue' => $value];
+            } elseif (is_numeric($value)) {
+                return ['doubleValue' => $value]; // or 'integerValue' based on the data
+            } elseif (is_bool($value)) {
+                return ['booleanValue' => $value];
+            } elseif ($value instanceof DateTime) {
+                return ['timestampValue' => $value->format('c')]; // ISO 8601 format
+            } elseif (is_null($value)) {
+                return ['nullValue' => null];
+            }
+            // Handle other complex types (e.g., Map, GeoPoint) if necessary
         }
         
         

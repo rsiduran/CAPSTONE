@@ -191,8 +191,8 @@ if (isset($_GET['petid'])) {
                 <td><?= htmlspecialchars($pet['petType'] ?? 'N/A') ?></td>
                 <td><?= htmlspecialchars($pet['postType'] ?? 'N/A') ?></td>
                 <td>
-                  <a href="view_profileWandering.php?petid=<?= urlencode($petid) ?>" class="btn btn-primary btn-sm">View Profile</a>
-                  <a href="viewProfile/wandering.php?petid=<?= urlencode($petid) ?>" class="btn btn-danger btn-sm">Delete</a>
+                  <a href="viewProfile/view_profileWandering.php?petid=<?= urlencode($petid) ?>" class="btn btn-primary btn-sm">View Profile</a>
+                  <a href="wandering.php?petid=<?= urlencode($petid) ?>" class="btn btn-danger btn-sm">Delete</a>
                 </td>
               </tr>
             <?php endforeach; ?>

@@ -16,35 +16,46 @@ try {
             'size' => $_POST['size'], 
             'petType' => $_POST['petType'],
             'description' => $_POST['description'],   
-            'message' => $_POST['message'],
-            'timestamp' => (new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d\TH:i:s\Z')
+            'timestamp' => new DateTime('now', new DateTimeZone('Asia/Manila')),
+
         ];
 
-        // Handle file uploads
-        $uploadedFiles = [];
-
-        function uploadFile($file, $firebaseService) {
+        // Function to handle file upload
+        function uploadFile($file, $firebaseService, $uploadFolder) {
             if ($file['error'] === UPLOAD_ERR_OK) {
-                $uploadPath = 'pet-adoptions/' . basename($file['name']);
+                $uploadPath = $uploadFolder . '/' . basename($file['name']);
                 $url = $firebaseService->uploadFile($file['tmp_name'], $uploadPath); // Ensure this method exists
                 return $url;
             }
             return null;
         }
 
-        $petPictureUrl = uploadFile($_FILES['petPicture'], $firebaseService);
+        // Handle primary pet picture
+        $petPictureUrl = uploadFile($_FILES['petPicture'], $firebaseService, 'pet-adoptions');
         if ($petPictureUrl) {
             $adoptionData['petPicture'] = $petPictureUrl;
         }
 
         // Upload other documents
-        $uploadedFiles['medical'] = uploadFile($_FILES['medical'], $firebaseService);
-        $uploadedFiles['spay'] = uploadFile($_FILES['spay'], $firebaseService);
-        $uploadedFiles['vaccination'] = uploadFile($_FILES['vaccination'], $firebaseService);
+        $adoptionData['medical'] = uploadFile($_FILES['medical'], $firebaseService, 'pet-medical');
+        $adoptionData['spay'] = uploadFile($_FILES['spay'], $firebaseService, 'pet-spay');
+        $adoptionData['vaccination'] = uploadFile($_FILES['vaccination'], $firebaseService, 'pet-vaccinations');
 
-        $adoptionData['medicalRecords'] = $uploadedFiles['medical'];
-        $adoptionData['spayCertificate'] = $uploadedFiles['spay'];
-        $adoptionData['vaccinationRecords'] = $uploadedFiles['vaccination'];
+        // Handle additional photos
+        $additionalPhotos = [];
+        if (!empty($_FILES['additionalPhotos']['name'][0])) {
+            foreach ($_FILES['additionalPhotos']['name'] as $index => $fileName) {
+                $fileTempPath = $_FILES['additionalPhotos']['tmp_name'][$index];
+                $fileUploadError = $_FILES['additionalPhotos']['error'][$index];
+
+                if ($fileUploadError === UPLOAD_ERR_OK) {
+                    $uploadPath = 'pet-additional/' . basename($fileName);
+                    $photoUrl = $firebaseService->uploadFile($fileTempPath, $uploadPath);
+                    $additionalPhotos[] = $photoUrl;
+                }
+            }
+        }
+        $adoptionData['additionalPhotos'] = $additionalPhotos;
 
         // Insert the adoption data into the 'adoption' collection
         $response = $firebaseService->insertDocument('adoption', $adoptionData);
@@ -60,6 +71,7 @@ try {
     echo "An error occurred: " . $e->getMessage();
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -250,6 +262,10 @@ try {
         <input type="file" class="form-control" name="petPicture" required>
       </div>
       <div class="mb-3">
+        <label for="additionalPhotos" class="form-label">Additional Photos</label>
+        <input type="file" class="form-control" name="additionalPhotos[]" multiple>
+      </div>
+      <div class="mb-3">
         <label for="characteristic" class="form-label">Description</label>
         <input type="text" class="form-control" name="description" required>
       </div>
@@ -271,10 +287,6 @@ try {
       <div class="mb-3">
         <label for="vaccination" class="form-label">Vaccination Records</label>
         <input type="file" class="form-control" name="vaccination" required>
-      </div>
-      <div class="mb-3">
-        <label for="message" class="form-label">Message</label>
-        <textarea class="form-control" name="message" rows="3" required></textarea>
       </div>
       <div class="mb-3">
         <label for="size" class="form-label">Size</label>
