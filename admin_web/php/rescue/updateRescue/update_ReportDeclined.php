@@ -19,14 +19,26 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
         // Define the new status based on the current status
         $newStatus = ($currentStatus === 'REVIEWING') ? 'DECLINED' : $currentStatus;
 
+        $statusChange = new DateTime('now', new DateTimeZone('Asia/Manila')); 
+        $formattedStatusChange = $statusChange->format(DateTime::ATOM);
+        $additionalPhotos = isset($currentDocument['fields']['additionalPhotos']['arrayValue']['values']) 
+             ? $currentDocument['fields']['additionalPhotos']['arrayValue']['values'] 
+             : []; 
+
         // Prepare data to update
-        $updateData = ['reportStatus' => $newStatus]; // Initialize with new status
+        $updateData = [
+            'reportStatus' => $newStatus,
+            'statusChange' => new DateTime('now', new DateTimeZone('Asia/Manila')),
+            'additionalPhotos' => array_map(fn($photo) => ['stringValue' => $photo['stringValue']], $additionalPhotos), 
+            'timestamp' => new DateTime($currentDocument['fields']['timestamp']['timestampValue'] ?? 'now'),
+        ]; // Initialize with new status
 
         // Define the fields to keep
         $fieldsToKeep = [
             'additionalPhotos',
             'address',
             'age',
+            'breed',
             'firstName',
             'lastName',
             'city',

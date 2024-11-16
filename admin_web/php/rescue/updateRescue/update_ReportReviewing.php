@@ -26,6 +26,7 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
             'reportStatus' => $newStatus,
             'statusChange' => new DateTime('now', new DateTimeZone('Asia/Manila')),
             'additionalPhotos' => array_map(fn($photo) => ['stringValue' => $photo['stringValue']], $additionalPhotos), 
+            'timestamp' => new DateTime($currentDocument['fields']['timestamp']['timestampValue'] ?? 'now'), 
         ];
 
         $remarks = isset($_POST['remarks']) ? filter_var($_POST['remarks'], FILTER_SANITIZE_STRING) : '';
@@ -38,6 +39,7 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
             'firstName',
             'lastName',
             'city',
+            'breed',
             'streetNumber',
             'socials',
             'email',

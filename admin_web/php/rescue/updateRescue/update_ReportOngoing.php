@@ -90,6 +90,7 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
         $updateData = [
             'reportStatus' => $newStatus,
             'statusChange' => new DateTime('now', new DateTimeZone('Asia/Manila')),
+            'timestamp' => new DateTime($currentDocument['fields']['timestamp']['timestampValue'] ?? 'now'), 
             'additionalPhotos' => array_map(fn($photo) => ['stringValue' => $photo['stringValue']], $additionalPhotos),  
             'rescuer' => $rescuer,
             'rescuedDate' => new DateTime('now', new DateTimeZone('Asia/Manila')),
@@ -98,7 +99,7 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
         $updateData['remarks'] = $remarks;
 
         $fieldsToKeep = [
-            'additionalPhotos','address', 'age', 'firstName', 'lastName', 'city', 'streetNumber',
+            'additionalPhotos','address','breed', 'age', 'firstName', 'lastName', 'city', 'streetNumber',
             'socials', 'email', 'message', 'petPicture', 'profilePicture',
             'gender', 'size', 'petType', 'timestamp', 'phoneNumber',
         ];
