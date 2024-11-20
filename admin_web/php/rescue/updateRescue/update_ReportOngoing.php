@@ -99,9 +99,27 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
         $updateData['remarks'] = $remarks;
 
         $fieldsToKeep = [
-            'additionalPhotos','address','breed', 'age', 'firstName', 'lastName', 'city', 'streetNumber',
-            'socials', 'email', 'message', 'petPicture', 'profilePicture',
-            'gender', 'size', 'petType', 'timestamp', 'phoneNumber',
+            'additionalPhotos',
+            'address',
+            'age',
+            'breed',
+            'firstName',
+            'lastName',
+            'city',
+            'streetNumber',
+            'socials',
+            'email',
+            'message',
+            'petPicture',
+            'profilePicture',
+            'gender',
+            'size',
+            'petType',
+            'timestamp',
+            'transactionNumber',
+            'phoneNumber',
+            'note',
+            'description',
         ];
 
         foreach ($fieldsToKeep as $field) {

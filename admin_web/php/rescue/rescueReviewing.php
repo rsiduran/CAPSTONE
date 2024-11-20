@@ -165,8 +165,8 @@ $pendingPets = array_filter($pets, function($pet) {
           <thead class="table-success">
             <tr>
               <th>Name</th>
-              <th>Breed</th>
               <th>Type</th>
+              <th>Phone Number</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>

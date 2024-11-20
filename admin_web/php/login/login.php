@@ -19,9 +19,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($userType == 'superadmin') {
             header("Location: ../../index.php");
         } elseif ($userType == 'admin') {
-            header("Location: ../../admin/admin.php");
+            header("Location: ../../index.php");
         } elseif ($userType == 'staff') {
-            header("Location: ../../supremo/supremo.php");
+            header("Location: ../../index.php");
         }
         exit;
     } else {

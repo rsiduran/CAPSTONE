@@ -164,9 +164,9 @@ $pendingPets = array_filter($pets, function($pet) {
         <table class="table table-hover mx-auto" style="width: 90%;">
           <thead class="table-success">
             <tr>
-              <th>Name</th>
-              <th>Breed</th>
+            <th>Name</th>
               <th>Type</th>
+              <th>Phone Number</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>

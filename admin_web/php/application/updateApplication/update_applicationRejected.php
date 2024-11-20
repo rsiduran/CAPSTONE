@@ -61,10 +61,10 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
             'liveAlone',
             'lookAfter',
             'meet',
-            'more',
+            'move',
             'occupation',
             'otherPets',
-            'postPets',
+            'pastPets',
             'medical',
             'name',
             'pronouns',
@@ -75,9 +75,11 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
             'status',
             'vaccination',
             'typeBuilding',
+            'petId',
             'validID',
             'workHours',
             'previouslyAdopted',
+            'transactionNumber',
         ];
 
         foreach ($fieldsToKeep as $field) {

@@ -50,11 +50,11 @@ if (!$petDetails) {
     Rescue
   </a>
   <div class="collapse" id="rescueMenu">
-    <a href="../rescue/rescuePending.php" class="sub-link">Pending</a>
-    <a href="../rescue/rescueReviewing.php" class="sub-link">Reviewing</a>
-    <a href="../rescue/rescueOngoing.php" class="sub-link">Ongoing</a>
-    <a href="../rescue/rescueRescued.php" class="sub-link">Rescued</a>
-    <a href="../rescue/rescueDeclined.php" class="sub-link">Declined</a>
+    <a href="../../../php/rescue/rescuePending.php" class="sub-link">Pending</a>
+    <a href="../../../php/rescue/rescueReviewing.php" class="sub-link">Reviewing</a>
+    <a href="../../../php/rescue/rescueOngoing.php" class="sub-link">Ongoing</a>
+    <a href="../../../php/rescue/rescueRescued.php" class="sub-link">Rescued</a>
+    <a href="../../../php/rescue/rescueDeclined.php" class="sub-link">Declined</a>
   </div>
   <a data-bs-toggle="collapse" href="#historyMenu" role="button" aria-expanded="false" aria-controls="adoptionMenu">
     History
@@ -92,6 +92,7 @@ if (!$petDetails) {
 </div>
   <div class="row">
     <div class="col-md-6">
+    <p><span class="fw-bold">Transaction Number:</span> <?= htmlspecialchars($petDetails['transactionNumber'] ?? 'N/A') ?></p>
       <img src="<?= htmlspecialchars($petDetails['petPicture'] ?? 'default-pet.jpg') ?>" alt="<?= htmlspecialchars($petDetails['name'] ?? 'Pet Image') ?>" class="pet-image">
       <img src="<?= htmlspecialchars($petDetails['profilePicture'] ?? 'default-pet.jpg') ?>"class="pet-image">
     </div>
@@ -103,9 +104,9 @@ if (!$petDetails) {
       <p><strong>City:</strong> <?= htmlspecialchars($petDetails['city'] ?? 'N/A') ?></p>
       <p><strong>Street Number:</strong> <?= htmlspecialchars($petDetails['streetNumber'] ?? 'N/A') ?></p>
       <p><strong>Address</strong> <?= htmlspecialchars($petDetails['address'] ?? 'N/A') ?></p>
-      <p><strong>Message:</strong> <?= htmlspecialchars($petDetails['message'] ?? 'N/A') ?></p> 
+      <p><strong>Note:</strong> <?= htmlspecialchars($petDetails['note'] ?? 'N/A') ?></p> 
       <p><strong>Pet Type:</strong> <?= htmlspecialchars($petDetails['petType'] ?? 'N/A') ?></p>
-      <p><strong>Characteristic:</strong> <?= htmlspecialchars($petDetails['characteristic'] ?? 'N/A') ?></p>
+      <p><strong>Description:</strong> <?= htmlspecialchars($petDetails['description'] ?? 'N/A') ?></p>
       <p>
     <strong>Posted Date:</strong> 
     <?= htmlspecialchars(

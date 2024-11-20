@@ -52,7 +52,10 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
             'size',
             'petType',
             'timestamp',
+            'transactionNumber',
             'phoneNumber',
+            'note',
+            'description',
         ];
 
         // Loop through each field and check if it exists

@@ -1,16 +1,17 @@
 <?php
 
-$firebase = include('../../../config/firebase.php');
-include('../../../config/auth.php');
+$firebase = include('../../config/firebase.php');
+include('../../config/auth.php');
 
 $petid = $_GET['petid'] ?? null;
 
-$petDetails = $firebase->getDocuments("rescue")[$petid] ?? null;
+$petDetails = $firebase->getDocuments("adoption")[$petid] ?? null;
 
 if (!$petDetails) {
     die("Pet not found.");
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -137,63 +138,62 @@ if (!$petDetails) {
   </style>
 </head>
 <body>
-
-  <!-- Sidebar -->
-  <div class="sidebar">
+<!-- Sidebar -->
+<div class="sidebar">
     <div class="logo">
-      <img src="../../../assets/images/logo.png" alt="WanderPets Logo">
+      <img src="../../assets/images/logo.png" alt="WanderPets Logo">
       <h4>WanderPets</h4>
     </div>
-    <a href="../../../index.php">Dashboard</a>
+    <a href="../../index.php">Dashboard</a>
     <a href="#inquiry">Inquiry</a>
-    <a href="../../../php/missing.php">Missing</a>
-    <a href="../../../php/wandering.php">Wandering</a>
-    <a href="../../../php/found.php">Found</a>
+    <a href="../../php/missing.php">Missing</a>
+    <a href="../../php/wandering.php">Wandering</a>
+    <a href="../../php/found.php">Found</a>
     <a data-bs-toggle="collapse" href="#adoptionMenu" role="button" aria-expanded="false" aria-controls="adoptionMenu">
       Adoption
     </a>
     <div class="collapse" id="adoptionMenu">
       <a href="#petAdoptionList" class="sub-link">Pet Adoption List</a>
       <a href="#adoptedPets" class="sub-link">Adopted Pets</a>
-      <a href="../../../php/addPetAdoption.php" class="sub-link">Add Pet</a>
+      <a href="../../php/addPetAdoption.php" class="sub-link">Add Pet</a>
     </div>
     <a data-bs-toggle="collapse" href="#applicationMenu" role="button" aria-expanded="false" aria-controls="applicationMenu">
       Adoption Application
     </a>
     <div class="collapse" id="applicationMenu">
-      <a href="../../../php/application/applicationPending.php" class="sub-link">Pending</a>
-      <a href="../../../php/application/applicationReviewing.php" class="sub-link">Reviewing</a>
-      <a href="../../../php/application/applicationApproved.php" class="sub-link">Approved</a>
-      <a href="../../../php/application/applicationCompleted.php" class="sub-link">Completed</a>
-      <a href="../../../php/application/applicationRejected.php" class="sub-link">Rejected</a>
+      <a href="../../php/application/applicationPending.php" class="sub-link">Pending</a>
+      <a href="../../php/application/applicationReviewing.php" class="sub-link">Reviewing</a>
+      <a href="../../php/application/applicationApproved.php" class="sub-link">Approved</a>
+      <a href="../../php/application/applicationCompleted.php" class="sub-link">Completed</a>
+      <a href="../../php/application/applicationRejected.php" class="sub-link">Rejected</a>
     </div>
     <a data-bs-toggle="collapse" href="#rescueMenu" role="button" aria-expanded="false" aria-controls="rescueMenu">
       Rescue
     </a>
     <div class="collapse" id="rescueMenu">
-      <a href="../../../php/rescue/rescuePending.php" class="sub-link">Pending</a>
-      <a href="../../../php/rescue/rescueReviewing.php" class="sub-link">Reviewing</a>
-      <a href="../../../php/rescue/rescueOngoing.php" class="sub-link">Ongoing</a>
-      <a href="../../../php/rescue/rescueRescued.php" class="sub-link">Rescued</a>
-      <a href="../../../php/rescue/rescueDeclined.php" class="sub-link">Declined</a>
+      <a href="../../php/rescue/rescuePending.php" class="sub-link">Pending</a>
+      <a href="../../php/rescue/rescueReviewing.php" class="sub-link">Reviewing</a>
+      <a href="../../php/rescue/rescueOngoing.php" class="sub-link">Ongoing</a>
+      <a href="../../php/rescue/rescueRescued.php" class="sub-link">Rescued</a>
+      <a href="../../php/rescue/rescueDeclined.php" class="sub-link">Declined</a>
     </div>
     <a data-bs-toggle="collapse" href="#historyMenu" role="button" aria-expanded="false" aria-controls="historyMenu">
       History
     </a>
     <div class="collapse" id="historyMenu">
-      <a href="../../../history/missing_history.php" class="sub-link">Missing</a>
-      <a href="../../../history/wandering_history.php" class="sub-link">Wandering</a>
+      <a href="../../history/missing_history.php" class="sub-link">Missing</a>
+      <a href="../../history/wandering_history.php" class="sub-link">Wandering</a>
       <a href="#adopted-history" class="sub-link">Adopted</a>
-      <a href="../../../history/found_history.php" class="sub-link">Found</a>
+      <a href="../../history/found_history.php" class="sub-link">Found</a>
     </div>
     <!-- Profile and Logout -->
     <div class="profile-section">
       <a href="#profile">Profile</a>
-      <a href="../../../php/login/logout.php">Logout</a>
+      <a href="../../php/login/logout.php">Logout</a>
     </div>    
   </div>
 
-  <!-- Main Content -->
+<!-- Main Content -->
   <div class="main-content">
     <div class="container my-5">
       <div class="card profile-card shadow-lg p-4">
@@ -206,13 +206,12 @@ if (!$petDetails) {
         <div class="row g-4">
           <!-- Pet Section -->
           <div class="col-md-6 text-center">
-          <p><span class="fw-bold">Transaction Number:</span> <?= htmlspecialchars($petDetails['transactionNumber'] ?? 'N/A') ?></p>
             <img src="<?= htmlspecialchars($petDetails['petPicture'] ?? 'default-pet.jpg') ?>" 
                 alt="<?= htmlspecialchars($petDetails['name'] ?? 'Pet Image') ?>" 
                 class="profile-image rounded-circle mb-3">
             <h4 class="fw-bold"><?= htmlspecialchars($petDetails['name'] ?? 'N/A') ?></h4>
             <button class="btn btn-danger btn-disabled px-4 fw-bold mb-3" disabled>
-              <?= htmlspecialchars(strtoupper($petDetails['reportStatus'] ?? 'Unknown')) ?>
+              <?= htmlspecialchars(strtoupper($petDetails['postType'] ?? 'Unknown')) ?>
             </button>
             <p class="mb-4">Posted Date: <?= htmlspecialchars(
                 is_numeric($petDetails['timestamp']) && $petDetails['timestamp'] > 0 
@@ -231,20 +230,6 @@ if (!$petDetails) {
             </div>
           </div>
 
-          <!-- Owner Section -->
-          <div class="col-md-6">
-            <div class="text-center mb-3">
-              <img src="<?= htmlspecialchars($petDetails['profilePicture'] ?? 'default-owner.jpg') ?>" 
-                  alt="<?= htmlspecialchars($petDetails['firstName'] . ' ' . $petDetails['lastName'] ?? 'Owner Image') ?>" 
-                  class="owner-image rounded-circle">
-            </div>
-            <div class="details-section">
-              <h5 class="text-center mb-3 text-highlight">Owner Information</h5>
-              <p><span class="text-highlight">Name:</span> <?= htmlspecialchars($petDetails['firstName'] ?? 'N/A') ?> <?= htmlspecialchars($petDetails['lastName'] ?? 'N/A') ?></p>
-              <p><span class="text-highlight">Email:</span> <?= htmlspecialchars($petDetails['email'] ?? 'N/A') ?></p>
-              <p><span class="text-highlight">Phone Number:</span> <?= htmlspecialchars($petDetails['phoneNumber'] ?? 'N/A') ?></p>
-            </div>
-          </div>
         </div>
 
         <hr class="text-white my-4">
@@ -253,16 +238,11 @@ if (!$petDetails) {
         <div class="row g-4">
           <div class="col-md-6">
             <div class="details-section">
-              <strong>Note</strong>
-              <p><?= htmlspecialchars($petDetails['note'] ?? 'N/A') ?></p>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="details-section">
               <strong>Description</strong>
               <p><?= htmlspecialchars($petDetails['description'] ?? 'N/A') ?></p>
             </div>
           </div>
+          
         </div>
 
         <!-- Additional Photos -->
@@ -274,7 +254,7 @@ if (!$petDetails) {
             <div class="col-md-4">
               <img src="<?= htmlspecialchars($photo) ?>" 
                   alt="Additional Photo" 
-                  class="img-fluid rounded" style="height: 500px; object-fit: cover;">
+                  class="img-fluid rounded">
             </div>
             <?php endforeach; ?>
           </div>

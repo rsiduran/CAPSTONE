@@ -38,10 +38,6 @@ session_start();
 				<div class="input-group">
 					<input type="password" name="password" placeholder="Password" required>
 				</div>
-				<div class="options">
-					<label><input type="checkbox"> Remember me</label>
-					<a href="#" class="forgot-password">Forgot Password?</a>
-				</div>
 				<div class="input-group">
 					<input type="submit" value="Login" class="login-btn">
 				</div>

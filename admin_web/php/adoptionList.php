@@ -1,21 +1,35 @@
 <?php
+// Include Firebase service instance
+$firebase = include('../config/firebase.php');
+include('../config/auth.php');
 
-$firebase = include('../../config/firebase.php');
-include('../../config/auth.php');
+// Fetch missing pets data from Firebase
+$pets = $firebase->getDocuments("adoption");
 
-$pets = $firebase->getDocuments("rescue");
+// Check if a pet needs to be deleted
+if (isset($_GET['petid'])) {
+    $petid = $_GET['petid'];
+    $petDetails = $pets[$petid] ?? null;
 
-$pendingPets = array_filter($pets, function($pet) {
-    return isset($pet['reportStatus']) && $pet['reportStatus'] === 'ONGOING';
-});
+    if ($petDetails) {  
+        // Copy to missingHistory
+        $firebase->copyDocumentToHistoryMissing($petDetails, $petid);
+
+        // Delete from missing
+        $firebase->deleteDocument("adoption", $petid);
+
+        // Redirect after deletion
+        header("Location: adoptionList.php");
+        exit();
+    }
+}
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard</title>
+  <title>Adoption List - WanderPets</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
   <style>
     /* Sidebar Styles */
@@ -96,94 +110,94 @@ $pendingPets = array_filter($pets, function($pet) {
   </style>
 </head>
 <body>
-
-<!-- Sidebar -->
-<div class="sidebar">
+  <!-- Sidebar -->
+  <div class="sidebar">
     <div class="logo">
-      <img src="../../assets/images/logo.png" alt="WanderPets Logo">
+      <img src="../assets/images/logo.png" alt="WanderPets Logo">
       <h4>WanderPets</h4>
     </div>
-    <a href="../../index.php">Dashboard</a>
+    <a href="../index.php">Dashboard</a>
     <a href="#inquiry">Inquiry</a>
-    <a href="../missing.php">Missing</a>
-    <a href="../wandering.php">Wandering</a>
-    <a href="../found.php">Found</a>
+    <a href="missing.php">Missing</a>
+    <a href="wandering.php">Wandering</a>
+    <a href="found.php">Found</a>
     <a data-bs-toggle="collapse" href="#adoptionMenu" role="button" aria-expanded="false" aria-controls="adoptionMenu">
       Adoption
     </a>
     <div class="collapse" id="adoptionMenu">
       <a href="#petAdoptionList" class="sub-link">Pet Adoption List</a>
       <a href="#adoptedPets" class="sub-link">Adopted Pets</a>
-      <a href="../addPetAdoption.php" class="sub-link">Add Pet</a>
+      <a href="addPetAdoption.php" class="sub-link">Add Pet</a>
     </div>
     <a data-bs-toggle="collapse" href="#applicationMenu" role="button" aria-expanded="false" aria-controls="applicationMenu">
       Adoption Application
     </a>
     <div class="collapse" id="applicationMenu">
-      <a href="../application/applicationPending.php" class="sub-link">Pending</a>
-      <a href="../application/applicationReviewing.php" class="sub-link">Reviewing</a>
-      <a href="../application/applicationApproved.php" class="sub-link">Approved</a>
-      <a href="../application/applicationCompleted.php" class="sub-link">Completed</a>
-      <a href="../application/applicationRejected.php" class="sub-link">Rejected</a>
+      <a href="application/applicationPending.php" class="sub-link">Pending</a>
+      <a href="application/applicationReviewing.php" class="sub-link">Reviewing</a>
+      <a href="application/applicationApproved.php" class="sub-link">Approved</a>
+      <a href="application/applicationCompleted.php" class="sub-link">Completed</a>
+      <a href="application/applicationRejected.php" class="sub-link">Rejected</a>
     </div>
     <a data-bs-toggle="collapse" href="#rescueMenu" role="button" aria-expanded="false" aria-controls="rescueMenu">
       Rescue
     </a>
     <div class="collapse" id="rescueMenu">
-      <a href="../rescue/rescuePending.php" class="sub-link">Pending</a>
-      <a href="../rescue/rescueReviewing.php" class="sub-link">Reviewing</a>
-      <a href="../rescue/rescueOngoing.php" class="sub-link">Ongoing</a>
-      <a href="../rescue/rescueRescued.php" class="sub-link">Rescued</a>
-      <a href="../rescue/rescueDeclined.php" class="sub-link">Declined</a>
+      <a href="rescue/rescuePending.php" class="sub-link">Pending</a>
+      <a href="rescue/rescueReviewing.php" class="sub-link">Reviewing</a>
+      <a href="rescue/rescueOngoing.php" class="sub-link">Ongoing</a>
+      <a href="rescue/rescueRescued.php" class="sub-link">Rescued</a>
+      <a href="rescue/rescueDeclined.php" class="sub-link">Declined</a>
     </div>
     <a data-bs-toggle="collapse" href="#historyMenu" role="button" aria-expanded="false" aria-controls="historyMenu">
       History
     </a>
     <div class="collapse" id="historyMenu">
-      <a href="../../history/missing_history.php" class="sub-link">Missing</a>
-      <a href="../../history/wandering_history.php" class="sub-link">Wandering</a>
+      <a href="../history/missing_history.php" class="sub-link">Missing</a>
+      <a href="../history/wandering_history.php" class="sub-link">Wandering</a>
       <a href="#adopted-history" class="sub-link">Adopted</a>
-      <a href="../../history/found_history.php" class="sub-link">Found</a>
+      <a href="../history/found_history.php" class="sub-link">Found</a>
     </div>
     <!-- Profile and Logout -->
     <div class="profile-section">
       <a href="#profile">Profile</a>
-      <a href="../login/logout.php">Logout</a>
+      <a href="login/logout.php">Logout</a>
     </div>
   </div>
 
   <!-- Main Content -->
   <div class="main-content">
     <div class="container-fluid mt-5 pt-3">
-      <h1>Ongoing Rescue Reports</h1>
-      <p>Below is the list of Ongoing Rescue Reports currently registered in the system:</p>
+      <h1>Adoption List</h1>
+      <p>Below is the list of pets currently registered in the system for adoption:</p>
       <div class="table-responsive">
         <table class="table table-hover mx-auto" style="width: 90%;">
           <thead class="table-success">
             <tr>
-            <th>Name</th>
+              <th>Name</th>
+              <th>Breed</th>
               <th>Type</th>
-              <th>Phone Number</th>
-              <th>Status</th>
+              <th>Age</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-          <?php if (!empty($pendingPets)) : ?>
-            <?php foreach ($pendingPets as $petid => $pet) : ?>
+          <?php if (!empty($pets)) : ?>
+            <?php foreach ($pets as $petid => $pet) : ?>
               <tr>
-                <td><?= htmlspecialchars($pet['firstName'] ?? 'N/A') ?> <?= htmlspecialchars($pet['lastName'] ?? 'N/A') ?></td>
+                <td><?= htmlspecialchars($pet['name'] ?? 'N/A') ?></td>
+                <td><?= htmlspecialchars($pet['breed'] ?? 'N/A') ?></td>
                 <td><?= htmlspecialchars($pet['petType'] ?? 'N/A') ?></td>
-                <td><?= htmlspecialchars($pet['phoneNumber'] ?? 'N/A') ?></td>
-                <td><?= htmlspecialchars($pet['reportStatus'] ?? 'N/A') ?></td>
+                <td><?= htmlspecialchars($pet['age'] ?? 'N/A') ?></td>
                 <td>
-                  <a href="viewProfile/view_profileOngoing.php?petid=<?= urlencode($petid) ?>" class="btn btn-primary btn-sm">View Profile</a>
+                  <a href="viewProfile/view_profileAdoptionList.php?petid=<?= urlencode($petid) ?>" class="btn btn-primary btn-sm">View Profile</a>
+                  <a href="adoptionList.php?petid=<?= urlencode($petid) ?>" class="btn btn-danger btn-sm">Delete</a>
                 </td>
-            </tr>
+              </tr>
             <?php endforeach; ?>
           <?php else : ?>
             <tr>
-              <td colspan="5" class="text-center">No Ongoing Rescue applications found</td>
+              <td colspan="5" class="text-center">No records found</td>
             </tr>
           <?php endif; ?>
           </tbody>
@@ -192,6 +206,7 @@ $pendingPets = array_filter($pets, function($pet) {
     </div>
   </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Bootstrap JavaScript Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

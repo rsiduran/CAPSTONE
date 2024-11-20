@@ -50,7 +50,10 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
             'size',
             'petType',
             'timestamp',
+            'transactionNumber',
             'phoneNumber',
+            'note',
+            'description',
         ];
 
         foreach ($fieldsToKeep as $field) {

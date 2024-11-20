@@ -97,6 +97,7 @@ if (!$petDetails) {
     <div class="row mb-4">
       <div class="col-md-6">
         <h3>Person Information</h3>
+        <p><span class="fw-bold">Transaction Number:</span> <?= htmlspecialchars($petDetails['transactionNumber'] ?? 'N/A') ?></p>
         <p><strong>Application Status:</strong> <span id="status" class="status"><?= htmlspecialchars($petDetails['applicationStatus'] ?? 'N/A') ?></span></p>
         <p><strong>Name:</strong> <?= htmlspecialchars($petDetails['firstName'] ?? 'N/A') ?> <?= htmlspecialchars($petDetails['lastName'] ?? 'N/A') ?></p>
         <p><strong>Pronouns:</strong> <?= htmlspecialchars($petDetails['pronouns'] ?? 'N/A') ?></p>
@@ -110,7 +111,7 @@ if (!$petDetails) {
         <p><strong>Work Hours:</strong> <?= htmlspecialchars($petDetails['workHours'] ?? 'N/A') ?></p>
         <p><strong>Allergic:</strong> <?= htmlspecialchars($petDetails['allergic'] ?? 'N/A') ?></p>
         <p><strong>Financial Responsibillities:</strong> <?= htmlspecialchars($petDetails['responsibleFinancial'] ?? 'N/A') ?></p>
-        <p><strong>Grroming Responsibillities:</strong> <?= htmlspecialchars($petDetails['responsibleGrooming'] ?? 'N/A') ?></p>
+        <p><strong>Grooming Responsibillities:</strong> <?= htmlspecialchars($petDetails['responsibleGrooming'] ?? 'N/A') ?></p>
         <p><strong>Meet ups?:</strong> <?= htmlspecialchars($petDetails['meet'] ?? 'N/A') ?></p>
         <p><strong>Move?</strong> <?= htmlspecialchars($petDetails['move'] ?? 'N/A') ?></p>
         <p><strong>Ideal Pet:</strong> <?= htmlspecialchars($petDetails['idealPet'] ?? 'N/A') ?></p>

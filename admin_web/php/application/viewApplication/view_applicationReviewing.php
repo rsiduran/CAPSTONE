@@ -108,6 +108,7 @@ if (!$petDetails) {
     <div class="row mb-4">
       <div class="col-md-6">
         <h3>Person Information</h3>
+        <p><span class="fw-bold">Transaction Number:</span> <?= htmlspecialchars($petDetails['transactionNumber'] ?? 'N/A') ?></p>
         <p><strong>Application Status:</strong> <span id="status" class="status"><?= htmlspecialchars($petDetails['applicationStatus'] ?? 'N/A') ?></span></p>
         <p><strong>Name:</strong> <?= htmlspecialchars($petDetails['firstName'] ?? 'N/A') ?> <?= htmlspecialchars($petDetails['lastName'] ?? 'N/A') ?></p>
         <p><strong>Pronouns:</strong> <?= htmlspecialchars($petDetails['pronouns'] ?? 'N/A') ?></p>

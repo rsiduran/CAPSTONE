@@ -6,7 +6,6 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
     $petid = $_POST['petid'];
     $currentStatus = $_POST['currentStatus'];
 
-    
     if (isset($_POST['confirm']) && $_POST['confirm'] === 'yes') {
         
         $currentDocument = $firebase->getDocument("adoptionApplication", $petid);
@@ -22,7 +21,7 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
          $homePhotos = isset($currentDocument['fields']['homePhotos']['arrayValue']['values']) 
              ? $currentDocument['fields']['homePhotos']['arrayValue']['values'] 
              : [];  
- 
+
          $updateData = [
              'applicationStatus' => $newStatus,
              'statusChange' => new DateTime('now', new DateTimeZone('Asia/Manila')), 
@@ -44,13 +43,55 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
         }
 
         $fieldsToKeep = [
-            'address', 'age', 'firstName', 'lastName', 'birthdate', 'breed', 'socials', 'email', 'company', 
-            'petPicture', 'profilePicture', 'gender', 'size', 'petType', 'postedTimestamp', 'timestamp', 
-            'phoneNumber', 'contactEmail', 'contactFirstName', 'contactLastName', 'contactPhone', 
-            'contactRelationship', 'description', 'allergic', 'homePhotos', 'idealPet', 'introduceSurroundings', 
-            'liveAlone', 'lookAfter', 'meet', 'more', 'occupation', 'otherPets', 'postPets', 'medical', 
-            'name', 'pronouns', 'rent', 'responsibleFinancial', 'responsibleGrooming', 'spay', 'status', 
-            'vaccination', 'typeBuilding', 'validID', 'workHours', 'previouslyAdopted'
+            'address',
+            'age',
+            'firstName',
+            'lastName', 
+            'birthdate',
+            'breed',
+            'socials',
+            'email',
+            'company',
+            'petPicture',
+            'profilePicture',
+            'gender',
+            'size',
+            'petType',
+            'postedTimestamp',
+            'timestamp',
+            'phoneNumber',
+            'contactEmail',
+            'contactFirstName',
+            'contactLastName',
+            'contactPhone',
+            'contactRelationship',
+            'description',
+            'allergic',
+            'homePhotos',
+            'idealPet',
+            'introduceSurroundings',
+            'liveAlone',
+            'lookAfter',
+            'meet',
+            'move',
+            'occupation',
+            'otherPets',
+            'pastPets',
+            'medical',
+            'name',
+            'pronouns',
+            'rent',
+            'responsibleFinancial',
+            'responsibleGrooming',
+            'spay',
+            'status',
+            'vaccination',
+            'typeBuilding',
+            'validID',
+            'workHours',
+            'previouslyAdopted',
+            'petId',
+            'transactionNumber',
         ];
 
         foreach ($fieldsToKeep as $field) {
@@ -62,14 +103,62 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
         $remarks = isset($_POST['remarks']) ? filter_var($_POST['remarks'], FILTER_SANITIZE_STRING) : '';
         $updateData['remarks'] = $remarks;
 
+        // Update document
         $updateResponse = $firebase->updateDocument("adoptionApplication", $petid, $updateData);
-        
+
         if (isset($updateResponse['error'])) {
             echo "Error updating document: " . $updateResponse['error']['message'];
-        } else {
-            header("Location: ../applicationApproved.php?petid=" . urlencode($petid));
             exit();
+        } else {
+            echo "Document updated successfully.";
         }
+
+        // Step 2: Check if petId exists in adoptionApplication collection and match it with document ID in adoption collection
+        $petIdField = $currentDocument['fields']['petId']['stringValue'];
+
+// Retrieve the document from the 'adoption' collection using petId as the document ID
+$adoptionDocument = $firebase->getDocument("adoption", $petIdField);
+
+// Check if the document was retrieved successfully and contains the 'fields' key
+if (!empty($adoptionDocument) && isset($adoptionDocument['fields'])) {
+    // Prepare the document for transfer to the 'adopted' collection
+    $adoptedDocument = [
+        'fields' => array_map(function($field) {
+            if (isset($field['stringValue'])) {
+                return ['stringValue' => $field['stringValue']];
+            } elseif (isset($field['timestampValue'])) {
+                return ['timestampValue' => $field['timestampValue']];
+            } elseif (isset($field['arrayValue'])) {
+                return ['arrayValue' => $field['arrayValue']];
+            }
+            return $field; // Add other types as needed
+        }, $adoptionDocument['fields']) // Ensure 'fields' is an array before calling array_map
+    ];
+
+    // Step 4: Add the adoption document to the 'adopted' collection
+    $addResponse = $firebase->addDocument("adopted", $adoptedDocument['fields']);
+
+    if (isset($addResponse['error'])) {
+        echo "Error adding document to 'adopted' collection: " . $addResponse['error']['message'];
+        exit();
+    } else {
+        // Step 5: After successful insertion, delete the document from the 'adoption' collection
+        $deleteResponse = $firebase->deleteDocument("adoption", $petIdField); // Use petIdField as the document ID in adoption collection
+        if (isset($deleteResponse['error'])) {
+            echo "Error deleting document from 'adoption' collection: " . $deleteResponse['error']['message'];
+            exit();
+        } else {
+            echo "Document successfully moved to 'adopted' and deleted from 'adoption'.";
+        }
+    }
+} else {
+    // If no document or no fields are found, display an error message
+    echo "No matching petId found in 'adoption' collection or the document does not have fields.";
+}
+        
+        // Redirect after successful status change
+        header("Location: ../applicationApproved.php?petid=" . urlencode($petid));
+        exit();
     } else {
         $showPersonnelField = ($currentStatus === 'APPROVED') ? "block" : "none";
         
@@ -138,17 +227,14 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
                         event.preventDefault();
                         personnelInput.classList.add("is-invalid");
                     } else {
-                        personnelInput.classList.remove("is-invalid");
-                        document.getElementById("hiddenRemarks").value = document.getElementById("remarks").value;
                         document.getElementById("hiddenPersonnel").value = personnelValue;
+                        document.getElementById("hiddenRemarks").value = document.getElementById("remarks").value;
                     }
                 });
             </script>
         </body>
-        </html>';
-        exit();
+        </html>
+        ';
     }
-} else {
-    die("Invalid request.");
 }
 ?>

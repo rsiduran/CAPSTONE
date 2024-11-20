@@ -206,10 +206,11 @@ if (!$petDetails) {
         <div class="row g-4">
           <!-- Pet Section -->
           <div class="col-md-6 text-center">
+          <p><span class="fw-bold">Transaction Number:</span> <?= htmlspecialchars($petDetails['transactionNumber'] ?? 'N/A') ?></p>
             <img src="<?= htmlspecialchars($petDetails['petPicture'] ?? 'default-pet.jpg') ?>" 
                 alt="<?= htmlspecialchars($petDetails['name'] ?? 'Pet Image') ?>" 
                 class="profile-image rounded-circle mb-3">
-            <h4 class="fw-bold"><?= htmlspecialchars($petDetails['name'] ?? 'N/A') ?></h4>
+            <h4 class="fw-bold"></h4>
             <button class="btn btn-danger btn-disabled px-4 fw-bold mb-3" disabled>
               <?= htmlspecialchars(strtoupper($petDetails['reportStatus'] ?? 'Unknown')) ?>
             </button>

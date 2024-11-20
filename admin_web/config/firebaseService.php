@@ -89,12 +89,14 @@
                         'typeBuilding' => $fields['typeBuilding']['stringValue'] ?? 'N/A',
                         'vaccination' => $fields['vaccination']['stringValue'] ?? 'N/A',
                         'validID' => $fields['validID']['stringValue'] ?? 'N/A',
+                        'petId' => $fields['petId']['stringValue'] ?? 'N/A',
                         'workHours' => $fields['workHours']['stringValue'] ?? 'N/A',
                         'additionalPhotos' => isset($fields['additionalPhotos']['arrayValue']['values']) 
                             ? array_map(function ($value) {
                                 return $value['stringValue'] ?? 'N/A';
                             }, $fields['additionalPhotos']['arrayValue']['values'])
                             : [],
+                        'transactionNumber' => $fields['transactionNumber']['stringValue'] ?? 'N/A',
                     ];
                 }
                 return $result;
@@ -339,16 +341,48 @@
         private function convertField($value) {
             if (is_string($value)) {
                 return ['stringValue' => $value];
-            } elseif (is_numeric($value)) {
-                return ['doubleValue' => $value]; // or 'integerValue' based on the data
+            } elseif (is_int($value)) {
+                return ['integerValue' => $value];
+            } elseif (is_float($value)) {
+                return ['doubleValue' => $value];
             } elseif (is_bool($value)) {
                 return ['booleanValue' => $value];
             } elseif ($value instanceof DateTime) {
-                return ['timestampValue' => $value->format('c')]; // ISO 8601 format
+                return ['timestampValue' => $value->format(DateTime::ATOM)]; // ISO 8601 format
+            } elseif (is_array($value)) {
+                // Check if the array is associative (map) or indexed (array)
+                if (array_keys($value) === range(0, count($value) - 1)) {
+                    // Indexed array: Treat as Firestore array
+                    return [
+                        'arrayValue' => [
+                            'values' => array_map([$this, 'convertField'], $value),
+                        ],
+                    ];
+                } else {
+                    // Associative array: Treat as Firestore map
+                    return [
+                        'mapValue' => [
+                            'fields' => array_map([$this, 'convertField'], $value),
+                        ],
+                    ];
+                }
             } elseif (is_null($value)) {
                 return ['nullValue' => null];
             }
-            // Handle other complex types (e.g., Map, GeoPoint) if necessary
+        
+            // Add support for GeoPoint if required
+            // Example: Assuming $value is an object with lat and lng properties
+            if (is_object($value) && isset($value->lat, $value->lng)) {
+                return [
+                    'geoPointValue' => [
+                        'latitude' => $value->lat,
+                        'longitude' => $value->lng,
+                    ],
+                ];
+            }
+        
+            // Fallback for unsupported types
+            throw new InvalidArgumentException('Unsupported field type: ' . gettype($value));
         }
         
         
@@ -507,5 +541,29 @@
             // Return null if username or password is incorrect or type is missing
             return null;
         }
+
+        public function addDocument($collection, $data) {
+            $url = "https://firestore.googleapis.com/v1/projects/{$this->projectId}/databases/(default)/documents/{$collection}?key={$this->apiKey}";
+            
+            // Prepare data to be sent to Firestore
+            $postData = json_encode([
+                'fields' => $data // Ensure that data is formatted as a map of field names to values
+            ]);
+        
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'Content-Type: application/json'
+            ]);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST"); // Use POST for adding a document
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+        
+            $response = curl_exec($ch);
+            curl_close($ch);
+        
+            return json_decode($response, true);
+        }
+        
     
     }

@@ -1,29 +1,8 @@
 <?php
 
 $firebase = include('config/firebase.php');
-session_start();
 
-// Check if the user is logged in and has the correct user type
-if (!isset($_SESSION['user_type'])) {
-    // Redirect to login page if not logged in
-    header("Location: loginForm.php");
-    exit;
-}
-
-// Restrict access based on user type
-if ($_SESSION['user_type'] == 'superadmin' && basename($_SERVER['PHP_SELF']) != 'index.php') {
-    // Superadmins should only access the index page
-    header("Location: index.php");
-    exit;
-} elseif ($_SESSION['user_type'] == 'admin' && basename($_SERVER['PHP_SELF']) != 'admin.php') {
-    // Admins should only access the admin page
-    header("Location: admin.php");
-    exit;
-} elseif ($_SESSION['user_type'] == 'staff' && basename($_SERVER['PHP_SELF']) != 'supremo.php') {
-    // Staff should only access the supremo page
-    header("Location: supremo.php");
-    exit;
-}
+include('config/auth.php');
 ?>
 
 <!DOCTYPE html>
