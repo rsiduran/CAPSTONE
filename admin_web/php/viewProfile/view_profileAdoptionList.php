@@ -138,8 +138,8 @@ if (!$petDetails) {
   </style>
 </head>
 <body>
-<!-- Sidebar -->
-<div class="sidebar">
+  <!-- Sidebar -->
+  <div class="sidebar">
     <div class="logo">
       <img src="../../assets/images/logo.png" alt="WanderPets Logo">
       <h4>WanderPets</h4>
@@ -193,7 +193,7 @@ if (!$petDetails) {
     </div>    
   </div>
 
-<!-- Main Content -->
+  <!-- Main Content -->
   <div class="main-content">
     <div class="container my-5">
       <div class="card profile-card shadow-lg p-4">

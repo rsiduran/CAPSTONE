@@ -186,8 +186,8 @@ try {
 </head>
 <body>
 
-<!-- Sidebar -->
-<div class="sidebar">
+  <!-- Sidebar -->
+  <div class="sidebar">
     <div class="logo">
       <img src="../assets/images/logo.png" alt="WanderPets Logo">
       <h4>WanderPets</h4>
