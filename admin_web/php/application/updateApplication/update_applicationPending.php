@@ -79,6 +79,7 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
             'workHours',
             'previouslyAdopted',
             'petId',
+            'salaryRange',
         ];
 
         foreach ($fieldsToKeep as $field) {

@@ -146,6 +146,8 @@ if (!$petDetails) {
     </div>
     <a href="../../../index.php">Dashboard</a>
     <a href="#inquiry">Inquiry</a>
+    <a href="../../../users.php">Users</a>
+    <a href="../../../postedPets.php">Posted Pets</a>
     <a href="../../../php/missing.php">Missing</a>
     <a href="../../../php/wandering.php">Wandering</a>
     <a href="../../../php/found.php">Found</a>
@@ -153,8 +155,8 @@ if (!$petDetails) {
       Adoption
     </a>
     <div class="collapse" id="adoptionMenu">
-      <a href="#petAdoptionList" class="sub-link">Pet Adoption List</a>
-      <a href="#adoptedPets" class="sub-link">Adopted Pets</a>
+      <a href="../../../php/adoptionList.php" class="sub-link">Pet Adoption List</a>
+      <a href="../../../php/adoptedPets.php" class="sub-link">Adopted Pets</a>
       <a href="../../../php/addPetAdoption.php" class="sub-link">Add Pet</a>
     </div>
     <a data-bs-toggle="collapse" href="#applicationMenu" role="button" aria-expanded="false" aria-controls="applicationMenu">
@@ -214,11 +216,24 @@ if (!$petDetails) {
             <button class="btn btn-danger btn-disabled px-4 fw-bold mb-3" disabled>
               <?= htmlspecialchars(strtoupper($petDetails['reportStatus'] ?? 'Unknown')) ?>
             </button>
-            <p class="mb-4">Posted Date: <?= htmlspecialchars(
-                is_numeric($petDetails['timestamp']) && $petDetails['timestamp'] > 0 
-                ? date('Y-m-d H:i:s', (int)$petDetails['timestamp']) 
-                : date('Y-m-d H:i:s', time())
-            ) ?></p>
+            <p>
+    <strong>Posted Date:</strong> 
+    <?php 
+    if (isset($petDetails['timestamp']) && !empty($petDetails['timestamp'])) {
+        try {
+            // Parse the date into a DateTime object
+            $rescuedDate = new DateTime($petDetails['timestamp']);
+            // Format the date as 'Month day, Year at H:i:s A'
+            echo $rescuedDate->format('F j, Y \a\t g:i:s A');
+        } catch (Exception $e) {
+            // Handle invalid date formats gracefully
+            echo 'Invalid Date';
+        }
+    } else {
+        echo 'N/A'; // Display N/A if the date is not set
+    }
+    ?>
+</p>
             <div class="text-start details-section">
               <p><span class="text-highlight">Breed:</span> <?= htmlspecialchars($petDetails['breed'] ?? 'N/A') ?></p>
               <p><span class="text-highlight">Age:</span> <?= htmlspecialchars($petDetails['age'] ?? 'N/A') ?></p>

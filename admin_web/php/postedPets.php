@@ -1,16 +1,10 @@
 <?php
-// Include Firebase service instance
-$firebase = include('../../config/firebase.php');
-include('../../config/auth.php');
 
-// Fetch missing pets data from Firebase
-$pets = $firebase->getDocuments("rescue");
+$firebase = include('../config/firebase.php');
+include('../config/auth.php');
 
+$pets = $firebase->getDocuments("userPets");
 
-// Filter the pets to only include those with a reportStatus of "pending"
-$pendingPets = array_filter($pets, function($pet) {
-    return isset($pet['reportStatus']) && $pet['reportStatus'] === 'PENDING';
-});
 ?>
 
 <!DOCTYPE html>
@@ -103,92 +97,93 @@ $pendingPets = array_filter($pets, function($pet) {
   <!-- Sidebar -->
   <div class="sidebar">
     <div class="logo">
-      <img src="../../assets/images/logo.png" alt="WanderPets Logo">
+      <img src="../assets/images/logo.png" alt="WanderPets Logo">
       <h4>WanderPets</h4>
     </div>
-    <a href="../../index.php">Dashboard</a>
+    <a href="../index.php">Dashboard</a>
     <a href="#inquiry">Inquiry</a>
-    <a href="../users.php">Users</a>
-    <a href="../postedPets.php">Posted Pets</a>
-    <a href="../missing.php">Missing</a>
-    <a href="../wandering.php">Wandering</a>
-    <a href="../found.php">Found</a>
+    <a href="users.php">Users</a>
+    <a href="postedPets.php">Posted Pets</a>
+    <a href="missing.php">Missing</a>
+    <a href="wandering.php">Wandering</a>
+    <a href="found.php">Found</a>
     <a data-bs-toggle="collapse" href="#adoptionMenu" role="button" aria-expanded="false" aria-controls="adoptionMenu">
       Adoption
     </a>
     <div class="collapse" id="adoptionMenu">
-      <a href="../adoptionList.php" class="sub-link">Pet Adoption List</a>
-      <a href="../adoptedPets.php" class="sub-link">Adopted Pets</a>
-      <a href="../addPetAdoption.php" class="sub-link">Add Pet</a>
+      <a href="adoptionList.php" class="sub-link">Pet Adoption List</a>
+      <a href="adoptedPets.php" class="sub-link">Adopted Pets</a>
+      <a href="addPetAdoption.php" class="sub-link">Add Pet</a>
     </div>
     <a data-bs-toggle="collapse" href="#applicationMenu" role="button" aria-expanded="false" aria-controls="applicationMenu">
       Adoption Application
     </a>
     <div class="collapse" id="applicationMenu">
-      <a href="../application/applicationPending.php" class="sub-link">Pending</a>
-      <a href="../application/applicationReviewing.php" class="sub-link">Reviewing</a>
-      <a href="../application/applicationApproved.php" class="sub-link">Approved</a>
-      <a href="../application/applicationCompleted.php" class="sub-link">Completed</a>
-      <a href="../application/applicationRejected.php" class="sub-link">Rejected</a>
+      <a href="application/applicationPending.php" class="sub-link">Pending</a>
+      <a href="application/applicationReviewing.php" class="sub-link">Reviewing</a>
+      <a href="application/applicationApproved.php" class="sub-link">Approved</a>
+      <a href="application/applicationCompleted.php" class="sub-link">Completed</a>
+      <a href="application/applicationRejected.php" class="sub-link">Rejected</a>
     </div>
     <a data-bs-toggle="collapse" href="#rescueMenu" role="button" aria-expanded="false" aria-controls="rescueMenu">
       Rescue
     </a>
     <div class="collapse" id="rescueMenu">
-      <a href="../rescue/rescuePending.php" class="sub-link">Pending</a>
-      <a href="../rescue/rescueReviewing.php" class="sub-link">Reviewing</a>
-      <a href="../rescue/rescueOngoing.php" class="sub-link">Ongoing</a>
-      <a href="../rescue/rescueRescued.php" class="sub-link">Rescued</a>
-      <a href="../rescue/rescueDeclined.php" class="sub-link">Declined</a>
+      <a href="rescue/rescuePending.php" class="sub-link">Pending</a>
+      <a href="rescue/rescueReviewing.php" class="sub-link">Reviewing</a>
+      <a href="rescue/rescueOngoing.php" class="sub-link">Ongoing</a>
+      <a href="rescue/rescueRescued.php" class="sub-link">Rescued</a>
+      <a href="rescue/rescueDeclined.php" class="sub-link">Declined</a>
     </div>
     <a data-bs-toggle="collapse" href="#historyMenu" role="button" aria-expanded="false" aria-controls="historyMenu">
       History
     </a>
     <div class="collapse" id="historyMenu">
-      <a href="../../history/missing_history.php" class="sub-link">Missing</a>
-      <a href="../../history/wandering_history.php" class="sub-link">Wandering</a>
+      <a href="../history/missing_history.php" class="sub-link">Missing</a>
+      <a href="../history/wandering_history.php" class="sub-link">Wandering</a>
       <a href="#adopted-history" class="sub-link">Adopted</a>
-      <a href="../../history/found_history.php" class="sub-link">Found</a>
+      <a href="../history/found_history.php" class="sub-link">Found</a>
     </div>
     <!-- Profile and Logout -->
     <div class="profile-section">
       <a href="#profile">Profile</a>
-      <a href="../login/logout.php">Logout</a>
+      <a href="login/logout.php">Logout</a>
     </div>
   </div>
-
   <!-- Main Content -->
   <div class="main-content">
     <div class="container-fluid mt-5 pt-3">
-      <h1>Pending Rescue Reports</h1>
-      <p>Below is the list of Pending Rescue Reports currently registered in the system:</p>
+      <h1>Posted Pets </h1>
+      <p>Below is the list of pets posted by certain authors which currently registered in the system:</p>
       <div class="table-responsive">
         <table class="table table-hover mx-auto" style="width: 90%;">
           <thead class="table-success">
             <tr>
-            <th>Name</th>
+              <th>Author Name</th>
               <th>Type</th>
-              <th>Phone Number</th>
-              <th>Status</th>
+              <th>Breed</th>
+              <th>Age</th>
+              <th>Size</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-          <?php if (!empty($pendingPets)) : ?>
-            <?php foreach ($pendingPets as $petid => $pet) : ?>
+          <?php if (!empty($pets)) : ?>
+            <?php foreach ($pets as $petid => $pet) : ?>
               <tr>
                 <td><?= htmlspecialchars($pet['firstName'] ?? 'N/A') ?> <?= htmlspecialchars($pet['lastName'] ?? 'N/A') ?></td>
                 <td><?= htmlspecialchars($pet['petType'] ?? 'N/A') ?></td>
-                <td><?= htmlspecialchars($pet['phoneNumber'] ?? 'N/A') ?></td>
-                <td><?= htmlspecialchars($pet['reportStatus'] ?? 'N/A') ?></td>
+                <td><?= htmlspecialchars($pet['breed'] ?? 'N/A') ?></td>
+                <td><?= htmlspecialchars($pet['age'] ?? 'N/A') ?></td>
+                <td><?= htmlspecialchars($pet['size'] ?? 'N/A') ?></td>
                 <td>
-                  <a href="viewProfile/view_profilePending.php?petid=<?= urlencode($petid) ?>" class="btn btn-primary btn-sm">View Profile</a>
+                    <a href="viewProfile/view_profilePosted.php?petid=<?= urlencode($petid) ?>" class="btn btn-primary btn-sm">View Profile</a>
                 </td>
             </tr>
             <?php endforeach; ?>
           <?php else : ?>
             <tr>
-              <td colspan="5" class="text-center">No Pending Rescue applications found</td>
+              <td colspan="5" class="text-center">No pending applications found</td>
             </tr>
           <?php endif; ?>
           </tbody>

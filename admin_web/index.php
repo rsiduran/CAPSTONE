@@ -3,6 +3,14 @@
 $firebase = include('config/firebase.php');
 
 include('config/auth.php');
+
+$missingReport = $firebase->getCollectionCount('missing');
+$wanderingReport = $firebase->getCollectionCount('wandering');
+$foundReport = $firebase->getCollectionCount('found');
+$rescueReport = $firebase->getCollectionCount('rescue');
+$adoptionApplication = $firebase->getCollectionCount('adoptionApplication');
+$adoptedPets = $firebase->getCollectionCount('adopted');
+
 ?>
 
 <!DOCTYPE html>
@@ -94,13 +102,15 @@ include('config/auth.php');
     </div>
     <a href="index.php">Dashboard</a>
     <a href="#inquiry.php">Inquiry</a>
+    <a href="php/users.php">Users</a>
+    <a href="php/postedPets.php">Posted Pets</a>
     <a href="php/missing.php">Missing</a>
     <a href="php/wandering.php">Wandering</a>
     <a href="php/found.php">Found</a>
     <a data-bs-toggle="collapse" href="#adoptionMenu" role="button" aria-expanded="false" aria-controls="adoptionMenu">Adoption</a>
     <div class="collapse" id="adoptionMenu">
-      <a href="#petAdoptionList" class="sub-link">Pet Adoption List</a>
-      <a href="#adoptedPets" class="sub-link">Adopted Pets</a>
+      <a href="php/adoptionList.php" class="sub-link">Pet Adoption List</a>
+      <a href="php/adoptedPets.php" class="sub-link">Adopted Pets</a>
       <a href="php/addPetAdoption.php" class="sub-link">Add Pet</a>
     </div>
     <a data-bs-toggle="collapse" href="#applicationMenu" role="button" aria-expanded="false" aria-controls="applicationMenu">Adoption Application</a>
@@ -142,30 +152,61 @@ include('config/auth.php');
         <div class="col-md-4">
           <div class="card mb-3">
             <div class="card-body">
-              <h5 class="card-title">Total Inquiries</h5>
-              <p class="card-text">120</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card mb-3">
-            <div class="card-body">
               <h5 class="card-title">Missing Reports</h5>
-              <p class="card-text">50</p>
+              <p class="card-text"><?php echo $missingReport; ?></p>
             </div>
           </div>
         </div>
         <div class="col-md-4">
           <div class="card mb-3">
             <div class="card-body">
-              <h5 class="card-title">Adoption Applications</h5>
-              <p class="card-text">200</p>
+              <h5 class="card-title">Wandering Reports</h5>
+              <p class="card-text"><?php echo $wanderingReport; ?></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Found Reports</h5>
+              <p class="card-text"><?php echo $foundReport; ?></p>
             </div>
           </div>
         </div>
       </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <div class="card mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Adoption Applications</h5>
+              <p class="card-text"><?php echo $adoptionApplication; ?></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Rescue Reports</h5>
+              <p class="card-text"><?php echo $rescueReport; ?></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Adopted Pets</h5>
+              <p class="card-text"><?php echo $adoptedPets; ?></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+     
     </div>
   </div>
+
+  
 
   <!-- Bootstrap JavaScript Bundle with Popper -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>

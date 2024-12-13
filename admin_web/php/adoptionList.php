@@ -1,35 +1,18 @@
 <?php
-// Include Firebase service instance
+
 $firebase = include('../config/firebase.php');
 include('../config/auth.php');
 
-// Fetch missing pets data from Firebase
 $pets = $firebase->getDocuments("adoption");
 
-// Check if a pet needs to be deleted
-if (isset($_GET['petid'])) {
-    $petid = $_GET['petid'];
-    $petDetails = $pets[$petid] ?? null;
-
-    if ($petDetails) {  
-        // Copy to missingHistory
-        $firebase->copyDocumentToHistoryMissing($petDetails, $petid);
-
-        // Delete from missing
-        $firebase->deleteDocument("adoption", $petid);
-
-        // Redirect after deletion
-        header("Location: adoptionList.php");
-        exit();
-    }
-}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Adoption List - WanderPets</title>
+  <title>Admin Dashboard</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
   <style>
     /* Sidebar Styles */
@@ -110,6 +93,7 @@ if (isset($_GET['petid'])) {
   </style>
 </head>
 <body>
+
   <!-- Sidebar -->
   <div class="sidebar">
     <div class="logo">
@@ -118,6 +102,8 @@ if (isset($_GET['petid'])) {
     </div>
     <a href="../index.php">Dashboard</a>
     <a href="#inquiry">Inquiry</a>
+    <a href="users.php">Users</a>
+    <a href="postedPets.php">Posted Pets</a>
     <a href="missing.php">Missing</a>
     <a href="wandering.php">Wandering</a>
     <a href="found.php">Found</a>
@@ -125,8 +111,8 @@ if (isset($_GET['petid'])) {
       Adoption
     </a>
     <div class="collapse" id="adoptionMenu">
-      <a href="#petAdoptionList" class="sub-link">Pet Adoption List</a>
-      <a href="#adoptedPets" class="sub-link">Adopted Pets</a>
+      <a href="adoptionList.php" class="sub-link">Pet Adoption List</a>
+      <a href="adoptedPets.php" class="sub-link">Adopted Pets</a>
       <a href="addPetAdoption.php" class="sub-link">Add Pet</a>
     </div>
     <a data-bs-toggle="collapse" href="#applicationMenu" role="button" aria-expanded="false" aria-controls="applicationMenu">
@@ -168,8 +154,8 @@ if (isset($_GET['petid'])) {
   <!-- Main Content -->
   <div class="main-content">
     <div class="container-fluid mt-5 pt-3">
-      <h1>Adoption List</h1>
-      <p>Below is the list of pets currently registered in the system for adoption:</p>
+      <h1>Pets Available for Adoption </h1>
+      <p>Below is the list of pets available for adoption which currently registered in the system:</p>
       <div class="table-responsive">
         <table class="table table-hover mx-auto" style="width: 90%;">
           <thead class="table-success">
@@ -178,6 +164,7 @@ if (isset($_GET['petid'])) {
               <th>Breed</th>
               <th>Type</th>
               <th>Age</th>
+              <th>Size</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -185,19 +172,19 @@ if (isset($_GET['petid'])) {
           <?php if (!empty($pets)) : ?>
             <?php foreach ($pets as $petid => $pet) : ?>
               <tr>
-                <td><?= htmlspecialchars($pet['name'] ?? 'N/A') ?></td>
+                <td><?= htmlspecialchars($pet['name'] ?? 'N/A') ?> </td>
                 <td><?= htmlspecialchars($pet['breed'] ?? 'N/A') ?></td>
                 <td><?= htmlspecialchars($pet['petType'] ?? 'N/A') ?></td>
                 <td><?= htmlspecialchars($pet['age'] ?? 'N/A') ?></td>
+                <td><?= htmlspecialchars($pet['size'] ?? 'N/A') ?></td>
                 <td>
-                  <a href="viewProfile/view_profileAdoptionList.php?petid=<?= urlencode($petid) ?>" class="btn btn-primary btn-sm">View Profile</a>
-                  <a href="adoptionList.php?petid=<?= urlencode($petid) ?>" class="btn btn-danger btn-sm">Delete</a>
+                    <a href="viewProfile/view_profilelistAdoption.php?petid=<?= urlencode($petid) ?>" class="btn btn-primary btn-sm">View Profile</a>
                 </td>
-              </tr>
+            </tr>
             <?php endforeach; ?>
           <?php else : ?>
             <tr>
-              <td colspan="5" class="text-center">No records found</td>
+              <td colspan="5" class="text-center">No pending applications found</td>
             </tr>
           <?php endif; ?>
           </tbody>
@@ -206,7 +193,6 @@ if (isset($_GET['petid'])) {
     </div>
   </div>
 
-  <!-- Bootstrap JavaScript Bundle with Popper -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

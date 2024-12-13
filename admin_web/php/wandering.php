@@ -119,6 +119,8 @@ if (isset($_GET['petid'])) {
     </div>
     <a href="../index.php">Dashboard</a>
     <a href="#inquiry">Inquiry</a>
+    <a href="users.php">Users</a>
+    <a href="postedPets.php">Posted Pets</a>
     <a href="missing.php">Missing</a>
     <a href="wandering.php">Wandering</a>
     <a href="found.php">Found</a>
@@ -126,8 +128,8 @@ if (isset($_GET['petid'])) {
       Adoption
     </a>
     <div class="collapse" id="adoptionMenu">
-      <a href="#petAdoptionList" class="sub-link">Pet Adoption List</a>
-      <a href="#adoptedPets" class="sub-link">Adopted Pets</a>
+      <a href="adoptionList.php" class="sub-link">Pet Adoption List</a>
+      <a href="adoptedPets.php" class="sub-link">Adopted Pets</a>
       <a href="addPetAdoption.php" class="sub-link">Add Pet</a>
     </div>
     <a data-bs-toggle="collapse" href="#applicationMenu" role="button" aria-expanded="false" aria-controls="applicationMenu">

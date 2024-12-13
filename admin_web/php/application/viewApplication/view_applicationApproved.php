@@ -5,6 +5,7 @@ include('../../../config/auth.php');
 
 $petid = $_GET['petid'] ?? null;
 
+
 $petDetails = $firebase->getDocuments("adoptionApplication")[$petid] ?? null;
 
 if (!$petDetails) {
@@ -187,6 +188,8 @@ if (!$petDetails) {
     </div>
     <a href="../../../index.php">Dashboard</a>
     <a href="#inquiry">Inquiry</a>
+    <a href="../../../users.php">Users</a>
+    <a href="../../../postedPets.php">Posted Pets</a>
     <a href="../../../php/missing.php">Missing</a>
     <a href="../../../php/wandering.php">Wandering</a>
     <a href="../../../php/found.php">Found</a>
@@ -194,8 +197,8 @@ if (!$petDetails) {
       Adoption
     </a>
     <div class="collapse" id="adoptionMenu">
-      <a href="#petAdoptionList" class="sub-link">Pet Adoption List</a>
-      <a href="#adoptedPets" class="sub-link">Adopted Pets</a>
+      <a href="../../../php/adoptionList.php" class="sub-link">Pet Adoption List</a>
+      <a href="../../../php/adoptedPets.php" class="sub-link">Adopted Pets</a>
       <a href="../../../php/addPetAdoption.php" class="sub-link">Add Pet</a>
     </div>
     <a data-bs-toggle="collapse" href="#applicationMenu" role="button" aria-expanded="false" aria-controls="applicationMenu">
@@ -257,10 +260,10 @@ if (!$petDetails) {
             <p><strong>Phone Number:</strong> <?= htmlspecialchars($petDetails['phoneNumber'] ?? 'N/A') ?></p>
             <p><strong>Birthdate:</strong> <?= htmlspecialchars($petDetails['birthdate'] ?? 'N/A') ?></p>
             <p><strong>Status:</strong> <?= htmlspecialchars($petDetails['status'] ?? 'N/A') ?></p>
-            <p><strong>Socials:</strong> <?= htmlspecialchars($petDetails['socials'] ?? 'N/A') ?></p>
             <p><strong>Occupation:</strong> <?= htmlspecialchars($petDetails['occupation'] ?? 'N/A') ?></p>
             <p><strong>Company:</strong> <?= htmlspecialchars($petDetails['company'] ?? 'N/A') ?></p>
             <p><strong>Work Hours:</strong> <?= htmlspecialchars($petDetails['workHours'] ?? 'N/A') ?></p>
+            <p><strong>Salary Range:</strong> <?= htmlspecialchars($petDetails['salaryRange'] ?? 'N/A') ?></p>
             <p><strong>Allergic:</strong> <?= htmlspecialchars($petDetails['allergic'] ?? 'N/A') ?></p>
             <p><strong>Financial Responsibilities:</strong> <?= htmlspecialchars($petDetails['responsibleFinancial'] ?? 'N/A') ?></p>
             <p><strong>Grooming Responsibilities:</strong> <?= htmlspecialchars($petDetails['responsibleGrooming'] ?? 'N/A') ?></p>

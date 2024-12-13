@@ -15,7 +15,7 @@ if (isset($_GET['petid'])) {
 
         $firebase->deleteDocument("missing", $petid);
 
-        header("Location: missing.php");
+        header("Location: ../php/missing.php");
         exit();
     }
 }
@@ -115,6 +115,8 @@ if (isset($_GET['petid'])) {
     </div>
     <a href="../index.php">Dashboard</a>
     <a href="#inquiry">Inquiry</a>
+    <a href="../php/users.php">Users</a>
+    <a href="../php/postedPets.php">Posted Pets</a>
     <a href="../php/missing.php">Missing</a>
     <a href="../php/wandering.php">Wandering</a>
     <a href="../php/found.php">Found</a>
@@ -122,8 +124,8 @@ if (isset($_GET['petid'])) {
       Adoption
     </a>
     <div class="collapse" id="adoptionMenu">
-      <a href="#petAdoptionList" class="sub-link">Pet Adoption List</a>
-      <a href="#adoptedPets" class="sub-link">Adopted Pets</a>
+      <a href="../php/adoptionList.php" class="sub-link">Pet Adoption List</a>
+      <a href="../php/adoptedPets.php" class="sub-link">Adopted Pets</a>
       <a href="../php/addPetAdoption.php" class="sub-link">Add Pet</a>
     </div>
     <a data-bs-toggle="collapse" href="#applicationMenu" role="button" aria-expanded="false" aria-controls="applicationMenu">

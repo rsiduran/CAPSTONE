@@ -97,6 +97,14 @@
                             }, $fields['additionalPhotos']['arrayValue']['values'])
                             : [],
                         'transactionNumber' => $fields['transactionNumber']['stringValue'] ?? 'N/A',
+                        'viewed' => $fields['viewed']['stringValue'] ?? 'N/A',
+                        'foundAt' => $fields['foundAt']['stringValue'] ?? 'N/A',
+                        'foundBy' => $fields['foundBy']['stringValue'] ?? 'N/A',
+                        'foundOn' => $fields['foundOn']['timestampValue'] ?? 'N/A',
+                        'rescuer' => $fields['rescuer']['stringValue'] ?? 'N/A',
+                        'rescuedDate' => $fields['rescuedDate']['timestampValue'] ?? 'N/A',
+                        'salaryRange' => $fields['salaryRange']['stringValue'] ?? 'N/A',
+                        'createdAt' => $fields['createdAt']['timestampValue'] ?? 'N/A',
                     ];
                 }
                 return $result;
@@ -114,53 +122,80 @@
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
             
             $response = curl_exec($ch);
-            curl_close($ch);
             
+            if (curl_errno($ch)) {
+                // Log curl errors
+                echo 'Curl error: ' . curl_error($ch);
+            } else {
+                // Log response from Firestore
+                echo 'Response: ' . $response;
+            }
+            
+            curl_close($ch);
             return json_decode($response, true);
         }
 
         public function copyDocumentToHistoryMissing($document, $documentId) {
             $url = "https://firestore.googleapis.com/v1/projects/{$this->projectId}/databases/(default)/documents/missingHistory/{$documentId}?key={$this->apiKey}";
             
-            // Add a timestamp field
-            $fields = json_encode([
+            // Build fields payload
+            $fields = [
                 'fields' => [
-                    'name' => ['stringValue' => $document['name']],
-                    'breed' => ['stringValue' => $document['breed']],
-                    'age' => ['stringValue' => $document['age']],
-                    'gender' => ['stringValue' => $document['gender']],
-                    'size' => ['stringValue' => $document['size']],
-                    'petType' => ['stringValue' => $document['petType']],
-                    'postType' => ['stringValue' => $document['postType']],
-                    'profilePicture' => ['stringValue' => $document['profilePicture']],
-                    'petPicture' => ['stringValue' => $document['petPicture']],
-                    'characteristic' => ['stringValue' => $document['characteristic']],
-                    'streetNumber' => ['stringValue' => $document['streetNumber']],
-                    'city' => ['stringValue' => $document['city']],
-                    'message' => ['stringValue' => $document['message']],
-                    'address' => ['stringValue' => $document['address']],
-                    'firstName' => ['stringValue' => $document['firstName']],
-                    'lastName' => ['stringValue' => $document['lastName']],
-                    'email' => ['stringValue' => $document['email']],
-                    'phoneNumber' => ['stringValue' => $document['phoneNumber']],
-                    'removedAt' => ['timestampValue' => date('Y-m-d\TH:i:sP')], // Timestamp for when the pet was removed
+                    'name' => ['stringValue' => $document['name'] ?? ''],
+                    'breed' => ['stringValue' => $document['breed'] ?? ''],
+                    'age' => ['stringValue' => $document['age'] ?? ''],
+                    'gender' => ['stringValue' => $document['gender'] ?? ''],
+                    'size' => ['stringValue' => $document['size'] ?? ''],
+                    'petType' => ['stringValue' => $document['petType'] ?? ''],
+                    'postType' => ['stringValue' => $document['postType'] ?? ''],
+                    'profilePicture' => ['stringValue' => $document['profilePicture'] ?? ''],
+                    'petPicture' => ['stringValue' => $document['petPicture'] ?? ''],
+                    'description' => ['stringValue' => $document['description'] ?? ''],
+                    'streetNumber' => ['stringValue' => $document['streetNumber'] ?? ''],
+                    'city' => ['stringValue' => $document['city'] ?? ''],
+                    'message' => ['stringValue' => $document['message'] ?? ''],
+                    'address' => ['stringValue' => $document['address'] ?? ''],
+                    'firstName' => ['stringValue' => $document['firstName'] ?? ''],
+                    'lastName' => ['stringValue' => $document['lastName'] ?? ''],
+                    'email' => ['stringValue' => $document['email'] ?? ''],
+                    'phoneNumber' => ['stringValue' => $document['phoneNumber'] ?? ''],
+                    'removedAt' => ['timestampValue' => date('Y-m-d\TH:i:sP')],
+                    'note' => ['stringValue' => $document['note'] ?? ''],
                 ]
-            ]);
+            ];
+            
+            $jsonPayload = json_encode($fields);
+            
+            // Debug payload
+            error_log("Payload to Firestore: " . $jsonPayload);
             
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PATCH");
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonPayload);
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
                 'Content-Type: application/json'
             ]);
             
             $response = curl_exec($ch);
+            
+            // Debug response
+            error_log("Firestore API Response: " . $response);
+            
+            if (curl_errno($ch)) {
+                error_log("cURL Error: " . curl_error($ch));
+            }
+            
             curl_close($ch);
             
-            return json_decode($response, true);
+            $responseData = json_decode($response, true);
+            
+            // Return response data or false in case of error
+            return $responseData ? true : false;
         }
+        
+        
 
         public function copyDocumentToHistoryWandering($document, $documentId) {
             $url = "https://firestore.googleapis.com/v1/projects/{$this->projectId}/databases/(default)/documents/wanderingHistory/{$documentId}?key={$this->apiKey}";
@@ -168,25 +203,26 @@
             // Add a timestamp field
             $fields = json_encode([
                 'fields' => [
-                    'name' => ['stringValue' => $document['name']],
-                    'breed' => ['stringValue' => $document['breed']],
-                    'age' => ['stringValue' => $document['age']],
-                    'gender' => ['stringValue' => $document['gender']],
-                    'size' => ['stringValue' => $document['size']],
-                    'petType' => ['stringValue' => $document['petType']],
-                    'postType' => ['stringValue' => $document['postType']],
-                    'profilePicture' => ['stringValue' => $document['profilePicture']],
-                    'petPicture' => ['stringValue' => $document['petPicture']],
-                    'characteristic' => ['stringValue' => $document['characteristic']],
-                    'streetNumber' => ['stringValue' => $document['streetNumber']],
-                    'city' => ['stringValue' => $document['city']],
-                    'message' => ['stringValue' => $document['message']],
-                    'address' => ['stringValue' => $document['address']],
-                    'firstName' => ['stringValue' => $document['firstName']],
-                    'lastName' => ['stringValue' => $document['lastName']],
-                    'email' => ['stringValue' => $document['email']],
-                    'phoneNumber' => ['stringValue' => $document['phoneNumber']],
-                    'removedAt' => ['timestampValue' => date('Y-m-d\TH:i:sP')] // Timestamp for when the pet was removed
+                    'name' => ['stringValue' => $document['name'] ?? ''],
+                    'breed' => ['stringValue' => $document['breed'] ?? ''],
+                    'age' => ['stringValue' => $document['age'] ?? ''],
+                    'gender' => ['stringValue' => $document['gender'] ?? ''],
+                    'size' => ['stringValue' => $document['size'] ?? ''],
+                    'petType' => ['stringValue' => $document['petType'] ?? ''],
+                    'postType' => ['stringValue' => $document['postType'] ?? ''],
+                    'profilePicture' => ['stringValue' => $document['profilePicture'] ?? ''],
+                    'petPicture' => ['stringValue' => $document['petPicture'] ?? ''],
+                    'description' => ['stringValue' => $document['description'] ?? ''],
+                    'streetNumber' => ['stringValue' => $document['streetNumber'] ?? ''],
+                    'city' => ['stringValue' => $document['city'] ?? ''],
+                    'message' => ['stringValue' => $document['message'] ?? ''],
+                    'address' => ['stringValue' => $document['address'] ?? ''],
+                    'firstName' => ['stringValue' => $document['firstName'] ?? ''],
+                    'lastName' => ['stringValue' => $document['lastName'] ?? ''],
+                    'email' => ['stringValue' => $document['email'] ?? ''],
+                    'phoneNumber' => ['stringValue' => $document['phoneNumber'] ?? ''],
+                    'removedAt' => ['timestampValue' => date('Y-m-d\TH:i:sP')],
+                    'note' => ['stringValue' => $document['note'] ?? ''],
                 ]
             ]);
             
@@ -211,25 +247,33 @@
             // Add a timestamp field
             $fields = json_encode([
                 'fields' => [
-                    'name' => ['stringValue' => $document['name']],
-                    'breed' => ['stringValue' => $document['breed']],
-                    'age' => ['stringValue' => $document['age']],
-                    'gender' => ['stringValue' => $document['gender']],
-                    'size' => ['stringValue' => $document['size']],
-                    'petType' => ['stringValue' => $document['petType']],
-                    'postType' => ['stringValue' => $document['postType']],
-                    'profilePicture' => ['stringValue' => $document['profilePicture']],
-                    'petPicture' => ['stringValue' => $document['petPicture']],
-                    'characteristic' => ['stringValue' => $document['characteristic']],
-                    'streetNumber' => ['stringValue' => $document['streetNumber']],
-                    'city' => ['stringValue' => $document['city']],
-                    'message' => ['stringValue' => $document['message']],
-                    'address' => ['stringValue' => $document['address']],
-                    'firstName' => ['stringValue' => $document['firstName']],
-                    'lastName' => ['stringValue' => $document['lastName']],
-                    'email' => ['stringValue' => $document['email']],
-                    'phoneNumber' => ['stringValue' => $document['phoneNumber']],
-                    'removedAt' => ['timestampValue' => date('Y-m-d\TH:i:sP')], // Timestamp for when the pet was removed
+                    'name' => ['stringValue' => $document['name'] ?? ''],
+                    'breed' => ['stringValue' => $document['breed'] ?? ''],
+                    'age' => ['stringValue' => $document['age'] ?? ''],
+                    'gender' => ['stringValue' => $document['gender'] ?? ''],
+                    'size' => ['stringValue' => $document['size'] ?? ''],
+                    'petType' => ['stringValue' => $document['petType'] ?? ''],
+                    'postType' => ['stringValue' => $document['postType'] ?? ''],
+                    'profilePicture' => ['stringValue' => $document['profilePicture'] ?? ''],
+                    'petPicture' => ['stringValue' => $document['petPicture'] ?? ''],
+                    'description' => ['stringValue' => $document['description'] ?? ''],
+                    'streetNumber' => ['stringValue' => $document['streetNumber'] ?? ''],
+                    'city' => ['stringValue' => $document['city'] ?? ''],
+                    'message' => ['stringValue' => $document['message'] ?? ''],
+                    'address' => ['stringValue' => $document['address'] ?? ''],
+                    'firstName' => ['stringValue' => $document['firstName'] ?? ''],
+                    'lastName' => ['stringValue' => $document['lastName'] ?? ''],
+                    'email' => ['stringValue' => $document['email'] ?? ''],
+                    'phoneNumber' => ['stringValue' => $document['phoneNumber'] ?? ''],
+                    'removedAt' => ['timestampValue' => date('Y-m-d\TH:i:sP')],
+                    'note' => ['stringValue' => $document['note'] ?? ''],
+                    'foundOn' => ['stringValue' => $document['foundOn'] ?? ''],
+                    'foundBy' => ['stringValue' => $document['foundBy'] ?? ''],
+                    'foundAt' => isset($document['foundAt']) && 
+             !empty($document['foundAt']) && 
+             strtoupper(trim($document['foundAt'])) !== 'N/A'
+    ? ['timestampValue' => (new DateTime($document['foundAt']))->format(DateTime::ATOM)]
+    : ['nullValue' => null],
                 ]
             ]);
             
@@ -565,5 +609,34 @@
             return json_decode($response, true);
         }
         
+        public function getCollectionCount($collection) {
+            $url = "https://firestore.googleapis.com/v1/projects/{$this->projectId}/databases/(default)/documents/{$collection}?key={$this->apiKey}";
+            
+            // Initialize CURL
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'Content-Type: application/json'
+            ]);
+            
+            // Execute CURL request
+            $response = curl_exec($ch);
+            curl_close($ch);
+        
+            // Decode JSON response
+            $responseData = json_decode($response, true);
+        
+            // Count the documents in the collection
+            if (isset($responseData['documents']) && is_array($responseData['documents'])) {
+                return count($responseData['documents']);
+            }
+        
+            // Return 0 if no documents or in case of error
+            return 0;
+        }
+        
     
     }
+
+    

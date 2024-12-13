@@ -38,6 +38,8 @@ if (isset($_GET['petid'])) {
 <div class="sidebar">
   <a href="../index.php">Dashboard</a>
   <a href="#inquiry">Inquiry</a>
+  <a href="../php/users.php">Users</a>
+  <a href="../php/postedPets.php">Posted Pets</a>
   <a href="../php/missing.php">Missing</a>
   <a href="../php/wandering.php">Wandering</a>
   <a href="../php/found.php">Found</a>

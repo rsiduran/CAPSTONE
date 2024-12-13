@@ -25,6 +25,8 @@ if (!$petDetails) {
 <div class="sidebar">
   <a href="../../../index.php">Dashboard</a>
   <a href="#inquiry.php">Inquiry</a>
+  <a href="../../../users.php">Users</a>
+    <a href="../../../postedPets.php">Posted Pets</a>
   <a href="../../missing.php">Missing</a>
   <a href="../../wandering.php">Wandering</a>
   <a href="../../found.php">Found</a>
@@ -32,10 +34,10 @@ if (!$petDetails) {
     Adoption
   </a>
   <div class="collapse" id="adoptionMenu">
-    <a href="#petAdoptionList" class="sub-link">Pet Adoption List</a>
-    <a href="#adoptedPets" class="sub-link">Adopted Pets</a>
-    <a href="../../addPetAdoption.php" class="sub-link">Add Pet</a>
-  </div>
+      <a href="../../../php/adoptionList.php" class="sub-link">Pet Adoption List</a>
+      <a href="../../../php/adoptedPets.php" class="sub-link">Adopted Pets</a>
+      <a href="../../../php/addPetAdoption.php" class="sub-link">Add Pet</a>
+    </div>
   <a data-bs-toggle="collapse" href="#applicationMenu" role="button" aria-expanded="false" aria-controls="adoptionMenu">
     Adoption Application
   </a>
@@ -104,17 +106,42 @@ if (!$petDetails) {
       <p><strong>City:</strong> <?= htmlspecialchars($petDetails['city'] ?? 'N/A') ?></p>
       <p><strong>Street Number:</strong> <?= htmlspecialchars($petDetails['streetNumber'] ?? 'N/A') ?></p>
       <p><strong>Address</strong> <?= htmlspecialchars($petDetails['address'] ?? 'N/A') ?></p>
-      <p><strong>Note:</strong> <?= htmlspecialchars($petDetails['note'] ?? 'N/A') ?></p> 
       <p><strong>Pet Type:</strong> <?= htmlspecialchars($petDetails['petType'] ?? 'N/A') ?></p>
-      <p><strong>Description:</strong> <?= htmlspecialchars($petDetails['description'] ?? 'N/A') ?></p>
       <p>
     <strong>Posted Date:</strong> 
-    <?= htmlspecialchars(
-        is_numeric($petDetails['timestamp']) && $petDetails['timestamp'] > 0 
-        ? date('Y-m-d H:i:s', (int)$petDetails['timestamp']) 
-        : date('Y-m-d H:i:s', time())
-    ) ?>
+    <?php 
+    if (isset($petDetails['timestamp']) && !empty($petDetails['timestamp'])) {
+        try {
+            // Parse the date into a DateTime object
+            $rescuedDate = new DateTime($petDetails['timestamp']);
+            // Format the date as 'Month day, Year at H:i:s A'
+            echo $rescuedDate->format('F j, Y \a\t g:i:s A');
+        } catch (Exception $e) {
+            // Handle invalid date formats gracefully
+            echo 'Invalid Date';
+        }
+    } else {
+        echo 'N/A'; // Display N/A if the date is not set
+    }
+    ?>
 </p>
+
+ <!-- Additional Details -->
+ <div class="row g-4">
+          <div class="col-md-6">
+            <div class="details-section">
+              <strong>Note</strong>
+              <p><?= htmlspecialchars($petDetails['note'] ?? 'N/A') ?></p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="details-section">
+              <strong>Description</strong>
+              <p><?= htmlspecialchars($petDetails['description'] ?? 'N/A') ?></p>
+            </div>
+          </div>
+        </div>
+
 <div class="col-md-6">
       <div class="row">
       <?php if (!empty($petDetails['additionalPhotos']) && is_array($petDetails['additionalPhotos'])): ?>
@@ -138,7 +165,24 @@ if (!$petDetails) {
       <p><strong>Reporter Name:</strong> <?= htmlspecialchars($petDetails['firstName'] ?? 'N/A') ?> <?= htmlspecialchars($petDetails['lastName'] ?? 'N/A') ?></p>  
       <p><strong>Email:</strong> <?= htmlspecialchars($petDetails['email'] ?? 'N/A') ?></p>
       <p><strong>Phone Number:</strong> <?= htmlspecialchars($petDetails['phoneNumber'] ?? 'N/A') ?></p>
-      <p><strong>Socials:</strong> <?= htmlspecialchars($petDetails['socials'] ?? 'N/A') ?></p>
+
+      <p><strong>Rescuer:</strong> <?= htmlspecialchars($petDetails['rescuer'] ?? 'N/A') ?></p>
+      
+      <p><strong>Rescued Date:</strong><?php 
+    if (isset($petDetails['rescuedDate']) && !empty($petDetails['rescuedDate'])) {
+        try {
+            // Parse the date into a DateTime object
+            $rescuedDate = new DateTime($petDetails['rescuedDate']);
+            // Format the date as 'Month day, Year at H:i:s A'
+            echo $rescuedDate->format('F j, Y \a\t g:i:s A');
+        } catch (Exception $e) {
+            // Handle invalid date formats gracefully
+            echo 'Invalid Date';
+        }
+    } else {
+        echo 'N/A'; // Display N/A if the date is not set
+    }
+    ?></p>
 
       <p><strong>Status:</strong> <span id="status"><?= htmlspecialchars($petDetails['reportStatus'] ?? 'N/A') ?></span></p>
 

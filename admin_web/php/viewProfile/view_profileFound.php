@@ -213,11 +213,24 @@ if (!$petDetails) {
             <button class="btn btn-danger btn-disabled px-4 fw-bold mb-3" disabled>
               <?= htmlspecialchars(strtoupper($petDetails['postType'] ?? 'Unknown')) ?>
             </button>
-            <p class="mb-4">Posted Date: <?= htmlspecialchars(
-                is_numeric($petDetails['timestamp']) && $petDetails['timestamp'] > 0 
-                ? date('Y-m-d H:i:s', (int)$petDetails['timestamp']) 
-                : date('Y-m-d H:i:s', time())
-            ) ?></p>
+            <p>
+    <strong>Posted Date:</strong> 
+    <?php 
+    if (isset($petDetails['timestamp']) && !empty($petDetails['timestamp'])) {
+        try {
+            // Parse the date into a DateTime object
+            $rescuedDate = new DateTime($petDetails['timestamp']);
+            // Format the date as 'Month day, Year at H:i:s A'
+            echo $rescuedDate->format('F j, Y \a\t g:i:s A');
+        } catch (Exception $e) {
+            // Handle invalid date formats gracefully
+            echo 'Invalid Date';
+        }
+    } else {
+        echo 'N/A'; // Display N/A if the date is not set
+    }
+    ?>
+</p>
             <div class="text-start details-section">
               <p><span class="text-highlight">Breed:</span> <?= htmlspecialchars($petDetails['breed'] ?? 'N/A') ?></p>
               <p><span class="text-highlight">Age:</span> <?= htmlspecialchars($petDetails['age'] ?? 'N/A') ?></p>
@@ -260,6 +273,31 @@ if (!$petDetails) {
             <div class="details-section">
               <strong>Description</strong>
               <p><?= htmlspecialchars($petDetails['description'] ?? 'N/A') ?></p>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="details-section">
+              <strong>Found By:</strong>
+              <p><?= htmlspecialchars($petDetails['foundBy'] ?? 'N/A') ?></p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="details-section">
+              <strong>Found At:</strong>
+              <p><?= htmlspecialchars($petDetails['foundAt'] ?? 'N/A') ?></p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="details-section">
+              <strong>Found On:</strong>
+              <p> <?= htmlspecialchars(
+                is_numeric($petDetails['foundOn']) && $petDetails['foundOn'] > 0 
+                ? date('Y-m-d H:i:s', (int)$petDetails['foundOn']) 
+                : date('Y-m-d H:i:s', time())
+            ) ?></p>
             </div>
           </div>
         </div>
