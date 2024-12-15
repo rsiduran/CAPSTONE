@@ -48,6 +48,7 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
             'firstName',
             'lastName', 
             'birthdate',
+            'adoptionDate',
             'breed',
             'socials',
             'email',

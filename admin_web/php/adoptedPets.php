@@ -98,12 +98,11 @@ $pets = $firebase->getDocuments("adopted");
   <div class="sidebar">
     <div class="logo">
       <img src="../assets/images/logo.png" alt="WanderPets Logo">
-      <h4>WanderPets</h4>
+      <h4>Supremo Furbabies</h4>
     </div>
     <a href="../index.php">Dashboard</a>
     <a href="#inquiry">Inquiry</a>
     <a href="users.php">Users</a>
-    <a href="postedPets.php">Posted Pets</a>
     <a href="missing.php">Missing</a>
     <a href="wandering.php">Wandering</a>
     <a href="found.php">Found</a>

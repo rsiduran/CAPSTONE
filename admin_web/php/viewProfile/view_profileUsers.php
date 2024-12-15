@@ -146,7 +146,6 @@ if (!$petDetails) {
     <a href="../../index.php">Dashboard</a>
     <a href="#inquiry">Inquiry</a>
     <a href="../../php/users.php">Users</a>
-    <a href="../../php/postedPets.php">Posted Pets</a>
     <a href="../../php/missing.php">Missing</a>
     <a href="../../php/wandering.php">Wandering</a>
     <a href="../../php/found.php">Found</a>
@@ -198,6 +197,12 @@ if (!$petDetails) {
 <div class="main-content">
     <div class="container my-5">
       <div class="card profile-card shadow-lg p-4">
+        <!-- View Posted Pets Button -->
+<div class="text-left mt-4">
+    <a href="postedPets.php?email=<?= urlencode($petDetails['email']) ?>" class="btn btn-warning">
+        View Posted Pets
+    </a>
+</div>
         <!-- Header -->
         <div class="text-center profile-header mb-4">
           <h3>User Profile</h3>

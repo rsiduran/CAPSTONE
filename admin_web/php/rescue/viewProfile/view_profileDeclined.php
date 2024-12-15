@@ -142,12 +142,11 @@ if (!$petDetails) {
   <div class="sidebar">
     <div class="logo">
       <img src="../../../assets/images/logo.png" alt="WanderPets Logo">
-      <h4>WanderPets</h4>
+      <h4>Supremo Furbabies</h4>
     </div>
     <a href="../../../index.php">Dashboard</a>
     <a href="#inquiry">Inquiry</a>
     <a href="../../../users.php">Users</a>
-    <a href="../../../postedPets.php">Posted Pets</a>
     <a href="../../../php/missing.php">Missing</a>
     <a href="../../../php/wandering.php">Wandering</a>
     <a href="../../../php/found.php">Found</a>

@@ -142,7 +142,6 @@ if (!$petDetails) {
   <div class="sidebar">
     <div class="logo">
       <img src="../../assets/images/logo.png" alt="WanderPets Logo">
-      <h4>WanderPets</h4>
     </div>
     <a href="../../index.php">Dashboard</a>
     <a href="#inquiry">Inquiry</a>
@@ -280,19 +279,19 @@ if (!$petDetails) {
         <div class="row g-4">
           <div class="col-md-4">
             <div class="details-section">
-              <strong>Found By:</strong>
+              <strong>Found By/ Returned By:</strong>
               <p><?= htmlspecialchars($petDetails['foundBy'] ?? 'N/A') ?></p>
             </div>
           </div>
           <div class="col-md-4">
             <div class="details-section">
-              <strong>Found At:</strong>
+              <strong>Found At/ Returned At:</strong>
               <p><?= htmlspecialchars($petDetails['foundAt'] ?? 'N/A') ?></p>
             </div>
           </div>
           <div class="col-md-4">
             <div class="details-section">
-              <strong>Found On:</strong>
+              <strong>Found On/ Returned At:</strong>
               <p> <?= htmlspecialchars(
                 is_numeric($petDetails['foundOn']) && $petDetails['foundOn'] > 0 
                 ? date('Y-m-d H:i:s', (int)$petDetails['foundOn']) 

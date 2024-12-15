@@ -84,6 +84,10 @@ $adoptedPets = $firebase->getCollectionCount('adopted');
       border-radius: 10px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
+    .dash-box{
+      text-decoration: none;
+      color:black;
+    }
     /* Profile and Logout */
     .sidebar .profile-section {
       margin-top: auto;
@@ -150,26 +154,26 @@ $adoptedPets = $firebase->getCollectionCount('adopted');
       <p>Welcome to your dashboard. Below is a summary of key sections:</p>
       <div class="row">
         <div class="col-md-4">
-          <div class="card mb-3">
+          <div class="card mb-3" ><a href ="php/missing.php" class="dash-box"> 
             <div class="card-body">
-              <h5 class="card-title">Missing Reports</h5>
-              <p class="card-text"><?php echo $missingReport; ?></p>
+              <h5 class="card-title" >Missing Reports</h5>
+              <p class="card-text"><?php echo $missingReport; ?></p></a>
             </div>
           </div>
         </div>
         <div class="col-md-4">
-          <div class="card mb-3">
+          <div class="card mb-3" ><a href ="php/wandering.php" class="dash-box">
             <div class="card-body">
               <h5 class="card-title">Wandering Reports</h5>
-              <p class="card-text"><?php echo $wanderingReport; ?></p>
+              <p class="card-text"><?php echo $wanderingReport; ?></p></a>
             </div>
           </div>
         </div>
         <div class="col-md-4">
           <div class="card mb-3">
-            <div class="card-body">
+            <div class="card-body"><a href ="php/found.php" class="dash-box">
               <h5 class="card-title">Found Reports</h5>
-              <p class="card-text"><?php echo $foundReport; ?></p>
+              <p class="card-text"><?php echo $foundReport; ?></p></a>
             </div>
           </div>
         </div>
@@ -178,25 +182,25 @@ $adoptedPets = $firebase->getCollectionCount('adopted');
       <div class="row">
         <div class="col-md-4">
           <div class="card mb-3">
-            <div class="card-body">
+            <div class="card-body"><a href ="php/applicationPending.php" class="dash-box">
               <h5 class="card-title">Adoption Applications</h5>
-              <p class="card-text"><?php echo $adoptionApplication; ?></p>
+              <p class="card-text"><?php echo $adoptionApplication; ?></p></a>
             </div>
           </div>
         </div>
         <div class="col-md-4">
           <div class="card mb-3">
-            <div class="card-body">
+            <div class="card-body"><a href ="php/rescuePending.php" class="dash-box">
               <h5 class="card-title">Rescue Reports</h5>
-              <p class="card-text"><?php echo $rescueReport; ?></p>
+              <p class="card-text"><?php echo $rescueReport; ?></p></a>
             </div>
           </div>
         </div>
         <div class="col-md-4">
           <div class="card mb-3">
-            <div class="card-body">
+            <div class="card-body"><a href ="php/adoptedPets.php" class="dash-box">
               <h5 class="card-title">Adopted Pets</h5>
-              <p class="card-text"><?php echo $adoptedPets; ?></p>
+              <p class="card-text"><?php echo $adoptedPets; ?></p></a>
             </div>
           </div>
         </div>

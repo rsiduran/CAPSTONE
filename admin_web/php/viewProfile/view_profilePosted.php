@@ -1,15 +1,27 @@
 <?php
-
 $firebase = include('../../config/firebase.php');
 include('../../config/auth.php');
 
-$petid = $_GET['petid'] ?? null;
+$userEmail = $_GET['email'] ?? null;
 
-$petDetails = $firebase->getDocuments("userPets")[$petid] ?? null;
+$petDetails = null;
+if ($userEmail) {
+    
+    $allPets = $firebase->getDocuments("userPets");
+    foreach ($allPets as $pet) {
+        if (isset($pet['email']) && $pet['email'] === $userEmail) {
+            $petDetails = $pet;
+            break;
+        }
+    }
 
-if (!$petDetails) {
-    die("Pet not found.");
+    if (!$petDetails) {
+        die("Pet profile not found.");
+    }
+} else {
+    die("Email parameter is missing.");
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -141,12 +153,11 @@ if (!$petDetails) {
 <div class="sidebar">
     <div class="logo">
       <img src="../../assets/images/logo.png" alt="WanderPets Logo">
-      <h4>WanderPets</h4>
+      <h4>Supremo Furbabies</h4>
     </div>
     <a href="../../index.php">Dashboard</a>
     <a href="#inquiry">Inquiry</a>
     <a href="../../php/users.php">Users</a>
-    <a href="../../php/postedPets.php">Posted Pets</a>
     <a href="../../php/missing.php">Missing</a>
     <a href="../../php/wandering.php">Wandering</a>
     <a href="../../php/found.php">Found</a>

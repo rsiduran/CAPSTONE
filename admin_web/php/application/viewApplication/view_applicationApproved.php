@@ -184,12 +184,11 @@ if (!$petDetails) {
   <div class="sidebar">
     <div class="logo">
       <img src="../../../assets/images/logo.png" alt="WanderPets Logo">
-      <h4>WanderPets</h4>
+      <h4>Supremo Furbabies</h4>
     </div>
     <a href="../../../index.php">Dashboard</a>
     <a href="#inquiry">Inquiry</a>
     <a href="../../../users.php">Users</a>
-    <a href="../../../postedPets.php">Posted Pets</a>
     <a href="../../../php/missing.php">Missing</a>
     <a href="../../../php/wandering.php">Wandering</a>
     <a href="../../../php/found.php">Found</a>
@@ -243,54 +242,105 @@ if (!$petDetails) {
   <div class="container mt-4 p-5">
     <h1 class="text-center text-primary mb-4">Pet Application Form</h1>
     
-    <form action="../updateApplication/update_applicationPending.php" method="POST">
+    <form action="../updateApplication/update_applicationApproved.php" method="POST">
       <input type="hidden" name="petid" value="<?= htmlspecialchars($petid) ?>">
       <input type="hidden" name="currentStatus" value="<?= htmlspecialchars($petDetails['applicationStatus'] ?? 'N/A') ?>">
-      <button type="submit" class="btn btn-warning btn-sm mb-4">REVIEWING</button>
+      <button type="submit" class="btn btn-success btn-sm mb-4">COMPLETED</button>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="card p-3 mb-4 shadow-sm">
+      <h3 class="text-info">Person Information</h3>
+      <label><strong>Transaction Number:</strong></label>
+      <input type="text" class="form-control mb-2" value="<?= htmlspecialchars($petDetails['transactionNumber'] ?? 'N/A') ?>" disabled>
+
+      <label><strong>Application Status:</strong></label>
+      <input type="text" class="form-control mb-2" value="<?= htmlspecialchars($petDetails['applicationStatus'] ?? 'N/A') ?>" disabled>
+
+      <label><strong>Name:</strong></label>
+      <input type="text" class="form-control mb-2" value="<?= htmlspecialchars($petDetails['firstName'] ?? 'N/A') ?> <?= htmlspecialchars($petDetails['lastName'] ?? 'N/A') ?>" disabled>
+
+      <label><strong>Pronouns:</strong></label>
+      <input type="text" class="form-control mb-2" value="<?= htmlspecialchars($petDetails['pronouns'] ?? 'N/A') ?>" disabled>
+
+      <label><strong>Email:</strong></label>
+      <input type="text" class="form-control mb-2" value="<?= htmlspecialchars($petDetails['email'] ?? 'N/A') ?>" disabled>
+
+      <label><strong>Phone Number:</strong></label>
+      <input type="text" class="form-control mb-2" value="<?= htmlspecialchars($petDetails['phoneNumber'] ?? 'N/A') ?>" disabled>
+
+      <label><strong>Birthdate:</strong></label>
+      <input type="text" class="form-control mb-2" value="<?= htmlspecialchars($petDetails['birthdate'] ?? 'N/A') ?>" disabled>
+
+      <label><strong>Status:</strong></label>
+      <input type="text" class="form-control mb-2" value="<?= htmlspecialchars($petDetails['status'] ?? 'N/A') ?>" disabled>
+
+      <label><strong>Occupation:</strong></label>
+      <input type="text" class="form-control mb-2" value="<?= htmlspecialchars($petDetails['occupation'] ?? 'N/A') ?>" disabled>
+
+      <label><strong>Company:</strong></label>
+      <input type="text" class="form-control mb-2" value="<?= htmlspecialchars($petDetails['company'] ?? 'N/A') ?>" disabled>
+
+      <label><strong>How many hours in an average workday will your pet be left alone?</strong></label>
+      <input type="text" class="form-control mb-2" value="<?= htmlspecialchars($petDetails['workHours'] ?? 'N/A') ?>" disabled>
+
+      <label><strong>What is his/her monthly salary range?</strong></label>
+      <input type="text" class="form-control mb-2" value="<?= htmlspecialchars($petDetails['salaryRange'] ?? 'N/A') ?>" disabled>
+
+      <label><strong>Have you adopted from Supremo Furbabies before?</strong></label>
+      <input type="text" class="form-control mb-2" value="<?= htmlspecialchars($petDetails['previouslyAdopted'] ?? 'N/A') ?>" disabled>
+
+      <label><strong>Are any members of your household allergic to animals?</strong></label>
+      <input type="text" class="form-control mb-2" value="<?= htmlspecialchars($petDetails['allergic'] ?? 'N/A') ?>" disabled>
+
+      <label><strong>Who will be financially responsible for your pet’s needs?</strong></label>
+      <input type="text" class="form-control mb-2" value="<?= htmlspecialchars($petDetails['responsibleFinancial'] ?? 'N/A') ?>" disabled>
+
+      <label><strong>Who will be responsible for feeding, grooming, and generally caring for your pet?</strong></label>
+      <input type="text" class="form-control mb-2" value="<?= htmlspecialchars($petDetails['responsibleGrooming'] ?? 'N/A') ?>" disabled>
+
+      <label><strong>Meet Ups?</strong></label>
+      <input type="text" class="form-control mb-2" value="<?= htmlspecialchars($petDetails['meet'] ?? 'N/A') ?>" disabled>
+
+      <label><strong>What happens to your pet if or when you move?</strong></label>
+      <input type="text" class="form-control mb-2" value="<?= htmlspecialchars($petDetails['move'] ?? 'N/A') ?>" disabled>
+
+      <label><strong>Describe your ideal Pet:</strong></label>
+      <input type="text" class="form-control mb-2" value="<?= htmlspecialchars($petDetails['idealPet'] ?? 'N/A') ?>" disabled>
+
+      <label><strong>Do you have other pets?</strong></label>
+      <input type="text" class="form-control mb-2" value="<?= htmlspecialchars($petDetails['otherPets'] ?? 'N/A') ?>" disabled>
+
+      <label><strong>Have you had pets in the past?</strong></label>
+      <input type="text" class="form-control mb-2" value="<?= htmlspecialchars($petDetails['pastPets'] ?? 'N/A') ?>" disabled>
 
       <div class="row">
         <div class="col-md-6">
-          <div class="card p-3 mb-4 shadow-sm">
-            <h3 class="text-info">Person Information</h3>
-            <p><strong>Transaction Number:</strong> <?= htmlspecialchars($petDetails['transactionNumber'] ?? 'N/A') ?></p>
-            <p><strong>Application Status:</strong> <span class="status"><?= htmlspecialchars($petDetails['applicationStatus'] ?? 'N/A') ?></span></p>
-            <p><strong>Name:</strong> <?= htmlspecialchars($petDetails['firstName'] ?? 'N/A') ?> <?= htmlspecialchars($petDetails['lastName'] ?? 'N/A') ?></p>
-            <p><strong>Pronouns:</strong> <?= htmlspecialchars($petDetails['pronouns'] ?? 'N/A') ?></p>
-            <p><strong>Email:</strong> <?= htmlspecialchars($petDetails['email'] ?? 'N/A') ?></p>
-            <p><strong>Phone Number:</strong> <?= htmlspecialchars($petDetails['phoneNumber'] ?? 'N/A') ?></p>
-            <p><strong>Birthdate:</strong> <?= htmlspecialchars($petDetails['birthdate'] ?? 'N/A') ?></p>
-            <p><strong>Status:</strong> <?= htmlspecialchars($petDetails['status'] ?? 'N/A') ?></p>
-            <p><strong>Occupation:</strong> <?= htmlspecialchars($petDetails['occupation'] ?? 'N/A') ?></p>
-            <p><strong>Company:</strong> <?= htmlspecialchars($petDetails['company'] ?? 'N/A') ?></p>
-            <p><strong>Work Hours:</strong> <?= htmlspecialchars($petDetails['workHours'] ?? 'N/A') ?></p>
-            <p><strong>Salary Range:</strong> <?= htmlspecialchars($petDetails['salaryRange'] ?? 'N/A') ?></p>
-            <p><strong>Allergic:</strong> <?= htmlspecialchars($petDetails['allergic'] ?? 'N/A') ?></p>
-            <p><strong>Financial Responsibilities:</strong> <?= htmlspecialchars($petDetails['responsibleFinancial'] ?? 'N/A') ?></p>
-            <p><strong>Grooming Responsibilities:</strong> <?= htmlspecialchars($petDetails['responsibleGrooming'] ?? 'N/A') ?></p>
-            <p><strong>Meet Ups?:</strong> <?= htmlspecialchars($petDetails['meet'] ?? 'N/A') ?></p>
-            <p><strong>Move?</strong> <?= htmlspecialchars($petDetails['move'] ?? 'N/A') ?></p>
-            <p><strong>Ideal Pet:</strong> <?= htmlspecialchars($petDetails['idealPet'] ?? 'N/A') ?></p>
-            <p><strong>Other Pets?:</strong> <?= htmlspecialchars($petDetails['otherPets'] ?? 'N/A') ?></p>
-            <p><strong>Past Pets?:</strong> <?= htmlspecialchars($petDetails['pastPets'] ?? 'N/A') ?></p>
-            <p><strong>Previously Adopted:</strong> <?= htmlspecialchars($petDetails['previouslyAdopted'] ?? 'N/A') ?></p>
+          <h3 class="text-info">Contact Person Information</h3>
+          
+          <label><strong>Name:</strong></label>
+          <input type="text" class="form-control mb-2" 
+                value="<?= htmlspecialchars($petDetails['contactFirstName'] ?? 'N/A') . ' ' . htmlspecialchars($petDetails['contactLastName'] ?? 'N/A') ?>" 
+                disabled>
 
-            <h3 class="text-info">House Information</h3>
-            <p><strong>Address:</strong> <?= htmlspecialchars($petDetails['address'] ?? 'N/A') ?></p>
-            <p><strong>Rent?:</strong> <?= htmlspecialchars($petDetails['rent'] ?? 'N/A') ?></p>
-            <p><strong>Building Type:</strong> <?= htmlspecialchars($petDetails['buildingType'] ?? 'N/A') ?></p>
-            <p><strong>Live Alone?:</strong> <?= htmlspecialchars($petDetails['liveAlone'] ?? 'N/A') ?></p>
-            <p><strong>Looking After?:</strong> <?= htmlspecialchars($petDetails['lookAfter'] ?? 'N/A') ?></p>
-            <p><strong>Introduce Surroundings:</strong> <?= htmlspecialchars($petDetails['introduceSurroundings'] ?? 'N/A') ?></p>
+          <label><strong>Contact Number:</strong></label>
+          <input type="text" class="form-control mb-2" 
+                value="<?= htmlspecialchars($petDetails['contactPhone'] ?? 'N/A') ?>" 
+                disabled>
 
-            <p><strong>Posted Date:</strong> 
-              <?= htmlspecialchars(
-                is_numeric($petDetails['postedTimestamp']) && $petDetails['postedTimestamp'] > 0 
-                ? date('Y-m-d H:i:s', (int)$petDetails['postedTimestamp']) 
-                : date('Y-m-d H:i:s', time())
-              ) ?>
-            </p>
-          </div>
+          <label><strong>Email:</strong></label>
+          <input type="text" class="form-control mb-2" 
+                value="<?= htmlspecialchars($petDetails['contactEmail'] ?? 'N/A') ?>" 
+                disabled>
+
+          <label><strong>Relationship:</strong></label>
+          <input type="text" class="form-control mb-2" 
+                value="<?= htmlspecialchars($petDetails['contactRelationship'] ?? 'N/A') ?>" 
+                disabled>
         </div>
+    </div>
+    </div>
+  </div>
 
         <div class="col-md-6">
           <div class="card p-3 mb-4 shadow-sm">
@@ -307,32 +357,54 @@ if (!$petDetails) {
             </div>
 
             <h4 class="text-info">House Photos</h4>
+            <pre>Photo attachment of home. This has replaced on-site ocular inspections.
+  1. Front of the house
+  2. Street photo
+  3. Living room
+  4. Dining Area
+  5. Kitchen 
+  6. Bedroom/s (if your pet will have access)
+  7. Windows (if adopting a cat)
+  8. Front & backyard (if adopting a dog)
+            </pre>
             <div class="row">
               <?php if (!empty($petDetails['homePhotos']) && is_array($petDetails['homePhotos'])): ?>
                 <?php foreach ($petDetails['homePhotos'] as $photo): ?>
                   <div class="col-md-4 mb-3">
-                    <img src="<?= htmlspecialchars($photo) ?>" alt="House Photo" class="img-fluid rounded" style="border: 2px solid #ccc; object-fit: cover;">
+                    <img src="<?= htmlspecialchars($photo) ?>" alt="House Photo"   class="img-fluid rounded" style="border: 2px solid #ccc; object-fit: cover;">
                   </div>
                 <?php endforeach; ?>
               <?php else: ?>
-                <p>No house photos available.</p>
+                <p>No house photos available.</p><p><strong>Name:</strong> <?= htmlspecialchars($petDetails['name'] ?? 'N/A') ?></p>
               <?php endif; ?>
             </div>
-          </div>
-        </div>
-      </div>
+            <h4 class="text-info">Pet Information</h4>
+            <div class="col-md-6 mb-3">
+                <img src="<?= htmlspecialchars($petDetails['petPicture'] ?? 'default-profile.jpg') ?>" alt="Profile Picture" class="img-fluid rounded" style="width: 100%; object-fit: cover; border-radius: 10px;">
+              </div>
 
-      <div class="row">
-        <div class="col-md-6">
-          <h3 class="text-info">Contact Person Information</h3>
-          <p><strong>Name:</strong> <?= htmlspecialchars($petDetails['contactFirstName'] ?? 'N/A') ?> <?= htmlspecialchars($petDetails['contactLastName'] ?? 'N/A') ?></p>
-          <p><strong>Contact Number:</strong> <?= htmlspecialchars($petDetails['contactPhone'] ?? 'N/A') ?></p>
-          <p><strong>Email:</strong> <?= htmlspecialchars($petDetails['contactEmail'] ?? 'N/A') ?></p>
-          <p><strong>Relationship:</strong> <?= htmlspecialchars($petDetails['contactRelationship'] ?? 'N/A') ?></p>
-        </div>
-      </div>
+              <label><strong>Name:</strong></label>
+              <input type="text" class="form-control mb-2" value="<?= htmlspecialchars($petDetails['name'] ?? 'N/A') ?>" disabled>
 
-      <div class="row">
+              <label><strong>Breed:</strong></label>
+              <input type="text" class="form-control mb-2" value="<?= htmlspecialchars($petDetails['breed'] ?? 'N/A') ?>" disabled>
+
+              <label><strong>Age:</strong></label>
+              <input type="text" class="form-control mb-2" value="<?= htmlspecialchars($petDetails['age'] ?? 'N/A') ?>" disabled>
+
+              <label><strong>Gender:</strong></label>
+              <input type="text" class="form-control mb-2" value="<?= htmlspecialchars($petDetails['gender'] ?? 'N/A') ?>" disabled>
+
+              <label><strong>Size:</strong></label>
+              <input type="text" class="form-control mb-2" value="<?= htmlspecialchars($petDetails['size'] ?? 'N/A') ?>" disabled>
+
+              <label><strong>Type:</strong></label>
+              <input type="text" class="form-control mb-2" value="<?= htmlspecialchars($petDetails['petType'] ?? 'N/A') ?>" disabled>
+
+              <label><strong>Description:</strong></label>
+              <textarea class="form-control mb-2" rows="3" disabled><?= htmlspecialchars($petDetails['description'] ?? 'N/A') ?></textarea>
+              
+              <div class="row">
         <h2 class="text-center text-primary mb-4">Pet Records</h2>
         <div class="col-md-6">
           <h3 class="text-info">Medical Record</h3>
@@ -353,6 +425,12 @@ if (!$petDetails) {
           </a>
         </div>
       </div>
+
+</div>
+          </div>
+        </div>
+      </div>
+
     </form>
   </div>
  </div>

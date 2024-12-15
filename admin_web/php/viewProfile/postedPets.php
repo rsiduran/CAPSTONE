@@ -1,10 +1,20 @@
 <?php
+$firebase = include('../../config/firebase.php');
+include('../../config/auth.php');
 
-$firebase = include('../config/firebase.php');
-include('../config/auth.php');
+$userEmail = $_GET['email'] ?? null;
+$petid = $_GET['petid'] ?? null;
 
-$pets = $firebase->getDocuments("users");
-
+$pets = [];
+if ($userEmail) {
+    $allPets = $firebase->getDocuments("userPets");
+    foreach ($allPets as $pet) {
+        // Check if pet's email matches user's email
+        if (isset($pet['email']) && $pet['email'] === $userEmail) {
+            $pets[] = $pet;
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -97,7 +107,7 @@ $pets = $firebase->getDocuments("users");
   <!-- Sidebar -->
   <div class="sidebar">
     <div class="logo">
-      <img src="../assets/images/logo.png" alt="WanderPets Logo">
+      <img src="../../assets/images/logo.png" alt="WanderPets Logo">
       <h4>Supremo Furbabies</h4>
     </div>
     <a href="../index.php">Dashboard</a>
@@ -149,35 +159,40 @@ $pets = $firebase->getDocuments("users");
       <a href="login/logout.php">Logout</a>
     </div>
   </div>
-
   <!-- Main Content -->
   <div class="main-content">
     <div class="container-fluid mt-5 pt-3">
-      <h1>Users </h1>
-      <p>Below is the list of users which currently registered in the system:</p>
+      <h1>Posted Pets </h1>
+      <p>Below is the list of pets posted by certain authors which currently registered in the system:</p>
       <div class="table-responsive">
         <table class="table table-hover mx-auto" style="width: 90%;">
           <thead class="table-success">
             <tr>
-              <th>User Name</th>
-              <th>Email</th>
+              <th>Author Name</th>
+              <th>Type</th>
+              <th>Breed</th>
+              <th>Age</th>
+              <th>Size</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
           <?php if (!empty($pets)) : ?>
-            <?php foreach ($pets as $petid => $pet) : ?>
+            <?php foreach ($pets as $pet) : ?>
               <tr>
                 <td><?= htmlspecialchars($pet['firstName'] ?? 'N/A') ?> <?= htmlspecialchars($pet['lastName'] ?? 'N/A') ?></td>
-                <td><?= htmlspecialchars($pet['email'] ?? 'N/A') ?></td>
+                <td><?= htmlspecialchars($pet['petType'] ?? 'N/A') ?></td>
+                <td><?= htmlspecialchars($pet['breed'] ?? 'N/A') ?></td>
+                <td><?= htmlspecialchars($pet['age'] ?? 'N/A') ?></td>
+                <td><?= htmlspecialchars($pet['size'] ?? 'N/A') ?></td>
                 <td>
-                    <a href="viewProfile/view_profileUsers.php?petid=<?= urlencode($petid) ?>" class="btn btn-primary btn-sm">View Profile</a>
+                  <a href="view_profilePosted.php?email=<?php echo $pet['email']; ?>" class="btn btn-primary btn-sm">View Profile</a>
                 </td>
             </tr>
             <?php endforeach; ?>
           <?php else : ?>
             <tr>
-              <td colspan="5" class="text-center">No pending applications found</td>
+              <td colspan="5" class="text-center">No posted pets found</td>
             </tr>
           <?php endif; ?>
           </tbody>

@@ -190,12 +190,11 @@ try {
   <div class="sidebar">
     <div class="logo">
       <img src="../assets/images/logo.png" alt="WanderPets Logo">
-      <h4>WanderPets</h4>
+      <h4>Supremo Furbabies</h4>
     </div>
     <a href="../index.php">Dashboard</a>
     <a href="#inquiry">Inquiry</a>
     <a href="users.php">Users</a>
-    <a href="postedPets.php">Posted Pets</a>
     <a href="missing.php">Missing</a>
     <a href="wandering.php">Wandering</a>
     <a href="found.php">Found</a>
@@ -243,7 +242,7 @@ try {
     </div>
   </div>
 
-<div class="main-content">
+  <div class="main-content">
   <div class="form-container">
     <h2>Add Pet Adoption</h2>
     <form method="POST" enctype="multipart/form-data">
@@ -268,7 +267,7 @@ try {
         <input type="file" class="form-control" name="additionalPhotos[]" multiple>
       </div>
       <div class="mb-3">
-        <label for="characteristic" class="form-label">Description</label>
+        <label for="description" class="form-label">Description</label>
         <input type="text" class="form-control" name="description" required>
       </div>
       <div class="mb-3">
@@ -292,16 +291,26 @@ try {
       </div>
       <div class="mb-3">
         <label for="size" class="form-label">Size</label>
-        <input type="text" class="form-control" name="size" required>
+        <select class="form-select" name="size" required>
+          <option value="">Select Size</option>
+          <option value="Small">Small</option>
+          <option value="Medium">Medium</option>
+          <option value="Large">Large</option>
+        </select>
       </div>
       <div class="mb-3">
         <label for="petType" class="form-label">Pet Type</label>
-        <input type="text" class="form-control" name="petType" required>
+        <select class="form-select" name="petType" required>
+          <option value="">Select Pet Type</option>
+          <option value="Cat">Cat</option>
+          <option value="Dog">Dog</option>
+        </select>
       </div>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
   </div>
 </div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

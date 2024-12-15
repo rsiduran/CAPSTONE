@@ -105,6 +105,7 @@
                         'rescuedDate' => $fields['rescuedDate']['timestampValue'] ?? 'N/A',
                         'salaryRange' => $fields['salaryRange']['stringValue'] ?? 'N/A',
                         'createdAt' => $fields['createdAt']['timestampValue'] ?? 'N/A',
+                        'adoptionDate' => $fields['adoptionDate']['timestampValue'] ?? 'N/A',
                     ];
                 }
                 return $result;

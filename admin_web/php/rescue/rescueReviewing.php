@@ -104,12 +104,11 @@ $pendingPets = array_filter($pets, function($pet) {
 <div class="sidebar">
     <div class="logo">
       <img src="../../assets/images/logo.png" alt="WanderPets Logo">
-      <h4>WanderPets</h4>
+      <h4>Supremo Furbabies</h4>
     </div>
     <a href="../../index.php">Dashboard</a>
     <a href="#inquiry">Inquiry</a>
     <a href="../users.php">Users</a>
-    <a href="../postedPets.php">Posted Pets</a>
     <a href="../missing.php">Missing</a>
     <a href="../wandering.php">Wandering</a>
     <a href="../found.php">Found</a>
@@ -166,8 +165,8 @@ $pendingPets = array_filter($pets, function($pet) {
         <table class="table table-hover mx-auto" style="width: 90%;">
           <thead class="table-success">
             <tr>
-              <th>Name</th>
-              <th>Type</th>
+            <th>Name</th>
+              <th>Email</th>
               <th>Phone Number</th>
               <th>Status</th>
               <th>Actions</th>
@@ -178,7 +177,7 @@ $pendingPets = array_filter($pets, function($pet) {
             <?php foreach ($pendingPets as $petid => $pet) : ?>
               <tr>
                 <td><?= htmlspecialchars($pet['firstName'] ?? 'N/A') ?> <?= htmlspecialchars($pet['lastName'] ?? 'N/A') ?></td>
-                <td><?= htmlspecialchars($pet['petType'] ?? 'N/A') ?></td>
+                <td><?= htmlspecialchars($pet['email'] ?? 'N/A') ?></td>
                 <td><?= htmlspecialchars($pet['phoneNumber'] ?? 'N/A') ?></td>
                 <td><?= htmlspecialchars($pet['reportStatus'] ?? 'N/A') ?></td>
                 <td>

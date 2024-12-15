@@ -142,12 +142,11 @@ if (!$petDetails) {
   <div class="sidebar">
     <div class="logo">
       <img src="../../../assets/images/logo.png" alt="WanderPets Logo">
-      <h4>WanderPets</h4>
+      <h4>Supremo Furbabies</h4>
     </div>
     <a href="../../../index.php">Dashboard</a>
     <a href="#inquiry">Inquiry</a>
     <a href="../../../users.php">Users</a>
-    <a href="../../../postedPets.php">Posted Pets</a>
     <a href="../../../php/missing.php">Missing</a>
     <a href="../../../php/wandering.php">Wandering</a>
     <a href="../../../php/found.php">Found</a>
@@ -199,6 +198,11 @@ if (!$petDetails) {
   <div class="main-content">
     <div class="container my-5">
       <div class="card profile-card shadow-lg p-4">
+      <form class="mt-4" action="../updateRescue/update_ReportOngoing.php" method="POST" style="display:inline;">
+            <input type="hidden" name="petid" value="<?= htmlspecialchars($petid) ?>">
+            <input type="hidden" name="currentStatus" value="<?= htmlspecialchars($petDetails['reportStatus'] ?? 'N/A') ?>">
+            <button type="submit" class="btn btn-warning btn-sm">RESCUED</button>
+          </form>
         <!-- Header -->
         <div class="text-center profile-header mb-4">
           <h3>Pet Profile</h3>
@@ -297,11 +301,7 @@ if (!$petDetails) {
         <?php else: ?>
         <p class="mt-4">No additional photos available.</p>
         <?php endif; ?>
-          <form class="mt-4" action="../updateRescue/update_ReportOngoing.php" method="POST" style="display:inline;">
-            <input type="hidden" name="petid" value="<?= htmlspecialchars($petid) ?>">
-            <input type="hidden" name="currentStatus" value="<?= htmlspecialchars($petDetails['reportStatus'] ?? 'N/A') ?>">
-            <button type="submit" class="btn btn-warning btn-sm">RESCUED</button>
-          </form>
+
       </div>
     </div>
   </div>
