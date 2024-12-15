@@ -207,108 +207,254 @@ if (!$petDetails) {
   </div>
 </nav>
 
-<div class="container main-content">
-<div class="back-button-container">
-    <a href="../rescueRescued.php" class="back-button">Back</a>
-</div>
-  <div class="row">
-    <div class="col-md-6">
-    <p><span class="fw-bold">Transaction Number:</span> <?= htmlspecialchars($petDetails['transactionNumber'] ?? 'N/A') ?></p>
-      <img src="<?= htmlspecialchars($petDetails['petPicture'] ?? 'default-pet.jpg') ?>" alt="<?= htmlspecialchars($petDetails['name'] ?? 'Pet Image') ?>" class="pet-image">
-      <img src="<?= htmlspecialchars($petDetails['profilePicture'] ?? 'default-pet.jpg') ?>"class="pet-image">
-    </div>
-    <div class="col-md-6">
-      <p><strong>Breed:</strong> <?= htmlspecialchars($petDetails['breed'] ?? 'N/A') ?></p>
-      <p><strong>Age:</strong> <?= htmlspecialchars($petDetails['age'] ?? 'N/A') ?></p>
-      <p><strong>Gender:</strong> <?= htmlspecialchars($petDetails['gender'] ?? 'N/A') ?></p>
-      <p><strong>Size:</strong> <?= htmlspecialchars($petDetails['size'] ?? 'N/A') ?></p>
-      <p><strong>City:</strong> <?= htmlspecialchars($petDetails['city'] ?? 'N/A') ?></p>
-      <p><strong>Street Number:</strong> <?= htmlspecialchars($petDetails['streetNumber'] ?? 'N/A') ?></p>
-      <p><strong>Address</strong> <?= htmlspecialchars($petDetails['address'] ?? 'N/A') ?></p>
-      <p><strong>Pet Type:</strong> <?= htmlspecialchars($petDetails['petType'] ?? 'N/A') ?></p>
-      <p>
-    <strong>Posted Date:</strong> 
-    <?php 
-    if (isset($petDetails['timestamp']) && !empty($petDetails['timestamp'])) {
-        try {
-            // Parse the date into a DateTime object
-            $rescuedDate = new DateTime($petDetails['timestamp']);
-            // Format the date as 'Month day, Year at H:i:s A'
-            echo $rescuedDate->format('F j, Y \a\t g:i:s A');
-        } catch (Exception $e) {
-            // Handle invalid date formats gracefully
-            echo 'Invalid Date';
-        }
-    } else {
-        echo 'N/A'; // Display N/A if the date is not set
-    }
-    ?>
-</p>
-
- <!-- Additional Details -->
- <div class="row g-4">
-          <div class="col-md-6">
-            <div class="details-section">
-              <strong>Note</strong>
-              <p><?= htmlspecialchars($petDetails['note'] ?? 'N/A') ?></p>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="details-section">
-              <strong>Description</strong>
-              <p><?= htmlspecialchars($petDetails['description'] ?? 'N/A') ?></p>
-            </div>
-          </div>
-        </div>
-
-<div class="col-md-6">
-      <div class="row">
-      <?php if (!empty($petDetails['additionalPhotos']) && is_array($petDetails['additionalPhotos'])): ?>
-    <h3>Additional Photos</h3>
-    <div class="row">
-        <?php foreach ($petDetails['additionalPhotos'] as $photo): ?>
-            <div class="col-md-4">
-                <img src="<?= htmlspecialchars($photo) ?>" 
-                     alt="Additional Photos" 
-                     class="img-fluid rounded mb-3" 
-                     style="border: 2px solid #ccc; object-fit: cover;">
-            </div>
-        <?php endforeach; ?>
-    </div>
-<?php else: ?>
-    <p>No house photos available.</p>
-<?php endif; ?>
+<div class="main-content">
+<div class="container my-5">
+      <div class="card shadow-lg p-4">
+      <!-- Header -->
+      <div class="text-center mb-4">
+        <h3 class="fw-bold">Pet Profile</h3>
       </div>
+
+      <!-- Main Information -->
+      <div class="row g-4">
+      <!-- Pet Section -->
+        <div class="col-md-6">
+          <div class="form-group text-center mb-3 my-2">
+          <p><span class="fw-bold">Transaction Number:</span> <?= htmlspecialchars($petDetails['transactionNumber'] ?? 'N/A') ?></p>
+          <img
+            src="<?= htmlspecialchars($petDetails['petPicture'] ?? 'default-pet.jpg') ?>"
+            alt="<?= htmlspecialchars($petDetails['name'] ?? 'Pet Image') ?>"
+            class="rounded-circle mb-3"
+            style="width: 120px; height: 120px"
+          />
+          <h4 class="fw-bold mb-2">
+          <button class="btn btn-danger btn-disabled px-4 fw-bold mb-3" disabled>
+          <?= htmlspecialchars(strtoupper($petDetails['reportStatus'] ?? 'Unknown')) ?>
+              </button>
+                  </h4>
+                  <p>
+      <strong>Posted Date:</strong> 
+      <?php 
+      if (isset($petDetails['timestamp']) && !empty($petDetails['timestamp'])) {
+          try {
+              // Parse the date into a DateTime object
+              $rescuedDate = new DateTime($petDetails['timestamp']);
+              // Format the date as 'Month day, Year at H:i:s A'
+              echo $rescuedDate->format('F j, Y \a\t g:i:s A');
+          } catch (Exception $e) {
+              // Handle invalid date formats gracefully
+              echo 'Invalid Date';
+          }
+      } else {
+          echo 'N/A'; // Display N/A if the date is not set
+      }
+      ?>
+        </p>
+                </div>
+
+                <div class="form-group my-2">
+                  <label for="breed"><strong>Breed</strong></label>
+                  <input
+                    type="text"
+                    id="breed"
+                    class="form-control"
+                    value="<?= htmlspecialchars($petDetails['breed'] ?? 'N/A') ?>"
+                    disabled
+                  />
+                </div>
+                <div class="form-group my-2">
+                  <label for="age"><strong>Age</strong></label>
+                  <input
+                    type="text"
+                    id="age"
+                    class="form-control"
+                    value="<?= htmlspecialchars($petDetails['age'] ?? 'N/A') ?>"
+                    disabled
+                  />
+                </div>
+                <div class="form-group my-2">
+                  <label for="gender"><strong>Gender</strong></label>
+                  <input
+                    type="text"
+                    id="gender"
+                    class="form-control"
+                    value="<?= htmlspecialchars($petDetails['gender'] ?? 'N/A') ?>"
+                    disabled
+                  />
+                </div>
+                <div class="form-group my-2">
+                  <label for="size"><strong>Size</strong></label>
+                  <input
+                    type="text"
+                    id="size"
+                    class="form-control"
+                    value="<?= htmlspecialchars($petDetails['size'] ?? 'N/A') ?>"
+                    disabled
+                  />
+                </div>
+                <div class="form-group my-2">
+                  <label for="petType"><strong>Pet Type</strong></label>
+                  <input
+                    type="text"
+                    id="petType"
+                    class="form-control"
+                    value="<?= htmlspecialchars($petDetails['petType'] ?? 'N/A') ?>"
+                    disabled
+                  />
+                </div>
+                <div class="form-group my-2">
+                  <label for="city"><strong>City</strong></label>
+                  <input
+                    type="text"
+                    id="city"
+                    class="form-control"
+                    value="<?= htmlspecialchars($petDetails['city'] ?? 'N/A') ?>"
+                    disabled
+                  />
+                </div>
+                <div class="form-group my-2">
+                  <label for="streetNumber"><strong>Street Number</strong></label>
+                  <input
+                    type="text"
+                    id="streetNumber"
+                    class="form-control"
+                    value="<?= htmlspecialchars($petDetails['streetNumber'] ?? 'N/A') ?>"
+                    disabled
+                  />
+                </div>
+                <div class="form-group my-2">
+                  <label for="address"><strong>Address</strong></label>
+                  <input
+                    type="text"
+                    id="address"
+                    class="form-control"
+                    value="<?= htmlspecialchars($petDetails['address'] ?? 'N/A') ?>"
+                    disabled
+                  />
+                </div>
+              </div>
+
+              <!-- Owner Section -->
+              <div class="col-md-6">
+                <div class="form-group text-center mb-3 my-2">
+                  <img
+                    src="<?= htmlspecialchars($petDetails['profilePicture'] ?? 'default-owner.jpg') ?>"
+                    alt="<?= htmlspecialchars($petDetails['firstName'] . ' ' . $petDetails['lastName'] ?? 'Owner Image') ?>"
+                    class="rounded-circle"
+                    style="width: 120px; height: 120px"
+                  />
+                  <h4 class="fw-bold my-3">
+                    <?= htmlspecialchars($petDetails['firstName'] ?? 'N/A') ?>
+                  </h4>
+                </div>
+                <div class="form-group my-2">
+                  <label for="ownerName"><strong>Owner Name</strong></label>
+                  <input
+                    type="text"
+                    id="ownerName"
+                    class="form-control"
+                    value="<?= htmlspecialchars($petDetails['firstName'] ?? 'N/A') ?> <?= htmlspecialchars($petDetails['lastName'] ?? 'N/A') ?>"
+                    disabled
+                  />
+                </div>
+                <div class="form-group my-2">
+                  <label for="ownerEmail"><strong>Email</strong></label>
+                  <input
+                    type="email"
+                    id="ownerEmail"
+                    class="form-control"
+                    value="<?= htmlspecialchars($petDetails['email'] ?? 'N/A') ?>"
+                    disabled
+                  />
+                </div>
+                <div class="form-group my-2">
+                  <label for="ownerPhone"><strong>Phone Number</strong></label>
+                  <input
+                    type="text"
+                    id="ownerPhone"
+                    class="form-control"
+                    value="<?= htmlspecialchars($petDetails['phoneNumber'] ?? 'N/A') ?>"
+                    disabled
+                  />
+                </div>
+                <div class="form-group my-2">
+                  <label for="note"><strong>Note</strong></label>
+                  <textarea id="note" class="form-control" rows="3" disabled>
+                    <?= htmlspecialchars($petDetails['note'] ?? 'N/A') ?></textarea
+                  >
+                </div>
+                <div class="form-group my-2">
+                  <label for="description"><strong>Description</strong></label>
+                  <textarea
+                    id="description"
+                    class="form-control"
+                    rows="3"
+                    disabled
+                  >
+                    <?= htmlspecialchars($petDetails['description'] ?? 'N/A') ?></textarea
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Divider -->
+            <hr class="my-4" />
+
+            <!-- Additional Information -->
+
+            <!-- Additional Photos -->
+            <?php if (!empty($petDetails['additionalPhotos']) && is_array($petDetails['additionalPhotos'])): ?>
+            <div class="mt-4">
+              <h4 class="text-center mb-2">Additional Photos</h4>
+              <div
+                id="photoCarousel"
+                class="carousel slide"
+                data-bs-ride="carousel"
+                style="max-width: 500px; margin: 0 auto"
+              >
+                <div class="carousel-inner">
+                  <?php foreach ($petDetails['additionalPhotos'] as $index =>
+                  $photo): ?>
+                  <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
+                    <img
+                      src="<?= htmlspecialchars($photo) ?>"
+                      alt="Additional Photo"
+                      class="d-block w-100 rounded"
+                    />
+                  </div>
+                  <?php endforeach; ?>
+                </div>
+                <button
+                  class="carousel-control-prev"
+                  type="button"
+                  data-bs-target="#photoCarousel"
+                  data-bs-slide="prev"
+                >
+                  <span
+                    class="carousel-control-prev-icon"
+                    aria-hidden="true"
+                  ></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button
+                  class="carousel-control-next"
+                  type="button"
+                  data-bs-target="#photoCarousel"
+                  data-bs-slide="next"
+                >
+                  <span
+                    class="carousel-control-next-icon"
+                    aria-hidden="true"
+                  ></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>
+            </div>
+            <?php else: ?>
+            <p class="mt-4">No additional photos available.</p>
+            <?php endif; ?>
+          </div>
     </div>
-      
-      <p><strong>Reporter Name:</strong> <?= htmlspecialchars($petDetails['firstName'] ?? 'N/A') ?> <?= htmlspecialchars($petDetails['lastName'] ?? 'N/A') ?></p>  
-      <p><strong>Email:</strong> <?= htmlspecialchars($petDetails['email'] ?? 'N/A') ?></p>
-      <p><strong>Phone Number:</strong> <?= htmlspecialchars($petDetails['phoneNumber'] ?? 'N/A') ?></p>
-
-      <p><strong>Rescuer:</strong> <?= htmlspecialchars($petDetails['rescuer'] ?? 'N/A') ?></p>
-      
-      <p><strong>Rescued Date:</strong><?php 
-    if (isset($petDetails['rescuedDate']) && !empty($petDetails['rescuedDate'])) {
-        try {
-            // Parse the date into a DateTime object
-            $rescuedDate = new DateTime($petDetails['rescuedDate']);
-            // Format the date as 'Month day, Year at H:i:s A'
-            echo $rescuedDate->format('F j, Y \a\t g:i:s A');
-        } catch (Exception $e) {
-            // Handle invalid date formats gracefully
-            echo 'Invalid Date';
-        }
-    } else {
-        echo 'N/A'; // Display N/A if the date is not set
-    }
-    ?></p>
-
-      <p><strong>Status:</strong> <span id="status"><?= htmlspecialchars($petDetails['reportStatus'] ?? 'N/A') ?></span></p>
-
-
-    </div>
-    </div>
-  </div>
 </div>
 
 

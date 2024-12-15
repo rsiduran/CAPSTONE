@@ -195,56 +195,59 @@ if (!$petDetails) {
 
 <!-- Main Content -->
 <div class="main-content">
-    <div class="container my-5">
-      <div class="card profile-card shadow-lg p-4">
-        <!-- View Posted Pets Button -->
-<div class="text-left mt-4">
-    <a href="postedPets.php?email=<?= urlencode($petDetails['email']) ?>" class="btn btn-warning">
-        View Posted Pets
-    </a>
-</div>
-        <!-- Header -->
-        <div class="text-center profile-header mb-4">
-          <h3>User Profile</h3>
-        </div>
+<div class="container my-5">
+  <div class="card shadow-lg p-4" style="max-width: 800px; margin: 0 auto;">
+    <!-- Header -->
+    <div class="text-center mb-4">
+      <h3 class="fw-bold">User Profile</h3>
+    </div>
 
-        <!-- Owner Information -->
-        <div class="row g-4">
-          <!-- User Section -->
-          <div class="col-md-6 text-center">
-            <img src="<?= htmlspecialchars($petDetails['profilePicture'] ?? 'default-pet.jpg') ?>" 
-                alt="<?= htmlspecialchars($petDetails['name'] ?? 'Pet Image') ?>" 
-                class="profile-image rounded-circle mb-3">
-            <h4 class="fw-bold"><?= htmlspecialchars($petDetails['firstName'] ?? 'N/A') ?> <?= htmlspecialchars($petDetails['lastName'] ?? 'N/A') ?></h4>
+    <!-- Owner Information -->
+    <div class="text-center mb-4">
+      <!-- User Section -->
+      <img
+        src="<?= htmlspecialchars($petDetails['profilePicture'] ?? 'default-pet.jpg') ?>"
+        alt="<?= htmlspecialchars($petDetails['name'] ?? 'Pet Image') ?>"
+        class="rounded-circle mb-3"
+        style="width: 120px; height: 120px"
+      />
+      <h4 class="fw-bold"><?= htmlspecialchars($petDetails['firstName'] ?? 'N/A') ?> <?= htmlspecialchars($petDetails['lastName'] ?? 'N/A') ?></h4>
 
-            <strong>Account Created:</strong> 
-    <?php 
-    if (isset($petDetails['createdAt']) && !empty($petDetails['createdAt'])) {
-        try {
-            // Parse the date into a DateTime object
-            $rescuedDate = new DateTime($petDetails['createdAt']);
-            // Format the date as 'Month day, Year at H:i:s A'
-            echo $rescuedDate->format('F j, Y \a\t g:i:s A');
-        } catch (Exception $e) {
-            // Handle invalid date formats gracefully
-            echo 'Invalid Date';
+      <p><strong>Account Created:</strong>
+        <?php 
+        if (isset($petDetails['createdAt']) && !empty($petDetails['createdAt'])) {
+            try {
+                $rescuedDate = new DateTime($petDetails['createdAt']);
+                echo $rescuedDate->format('F j, Y \a\t g:i:s A');
+            } catch (Exception $e) {
+                echo 'Invalid Date';
+            }
+        } else {
+            echo 'N/A';
         }
-    } else {
-        echo 'N/A'; // Display N/A if the date is not set
-    }
-    ?>
-</p>
+        ?>
+      </p>
 
-            <div class="text-start details-section">
-              <p><span class="text-highlight">Email:</span> <?= htmlspecialchars($petDetails['email'] ?? 'N/A') ?></p>
-              <p><span class="text-highlight">Phone Number:</span> <?= htmlspecialchars($petDetails['phoneNumber'] ?? 'N/A') ?></p>
-              <p><span class="text-highlight">Address:</span> <?= htmlspecialchars($petDetails['address'] ?? 'N/A') ?></p>
-            </div>
-          </div>
-        
+      <div class="text-start details-section">
+        <p><span class="text-highlight">Email:</span> <?= htmlspecialchars($petDetails['email'] ?? 'N/A') ?></p>
+        <p><span class="text-highlight">Phone Number:</span> <?= htmlspecialchars($petDetails['phoneNumber'] ?? 'N/A') ?></p>
+        <p><span class="text-highlight">Address:</span> <?= htmlspecialchars($petDetails['address'] ?? 'N/A') ?></p>
       </div>
     </div>
+
+    <!-- Divider -->
+    <hr class="my-4" />
+
+    <!-- View Posted Pets Button -->
+    <div class="text-center mt-4">
+      <a href="postedPets.php?email=<?= urlencode($petDetails['email']) ?>" class="btn btn-warning">
+        View Posted Pets
+      </a>
+    </div>
   </div>
+</div>
+
+
   </div>
  
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>

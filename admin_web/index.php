@@ -181,7 +181,7 @@ $adoptedPets = $firebase->getCollectionCount('adopted');
       <div class="row">
         <div class="col-md-4">
           <div class="card mb-3">
-            <div class="card-body"><a href ="php/applicationPending.php" class="dash-box">
+            <div class="card-body"><a href ="php/application/applicationPending.php" class="dash-box">
               <h5 class="card-title">Adoption Applications</h5>
               <p class="card-text"><?php echo $adoptionApplication; ?></p></a>
             </div>
@@ -189,7 +189,7 @@ $adoptedPets = $firebase->getCollectionCount('adopted');
         </div>
         <div class="col-md-4">
           <div class="card mb-3">
-            <div class="card-body"><a href ="php/rescuePending.php" class="dash-box">
+            <div class="card-body"><a href ="php/rescue/rescuePending.php" class="dash-box">
               <h5 class="card-title">Rescue Reports</h5>
               <p class="card-text"><?php echo $rescueReport; ?></p></a>
             </div>
