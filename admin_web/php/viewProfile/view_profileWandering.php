@@ -233,7 +233,18 @@ if (!$petDetails) {
                   type="text"
                   id="postedDate"
                   class="form-control"
-                  value="<?= htmlspecialchars($formattedDate ?? 'N/A') ?>"
+                  value="<?php 
+                        if (isset($petDetails['timestamp']) && !empty($petDetails['timestamp'])) {
+                            try {
+                                $rescuedDate = new DateTime($petDetails['timestamp']);
+                                echo $rescuedDate->format('F j, Y \a\t g:i:s A');
+                            } catch (Exception $e) {
+                                echo 'Invalid Date';
+                            }
+                        } else {
+                            echo 'N/A';
+                        }
+                        ?>"
                   disabled
                 />
               </div>

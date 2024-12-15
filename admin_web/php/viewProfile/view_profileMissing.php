@@ -141,108 +141,59 @@ $petDetails = $firebase->getDocuments("missing")[$petid] ?? null; if
   <body>
     <!-- Sidebar -->
     <div class="sidebar">
-      <div class="logo">
-        <img src="../../assets/images/logo.png" alt="WanderPets Logo" />
-        <h4>Supremo Furbabies</h4>
-      </div>
-      <a href="../../index.php">Dashboard</a>
-      <a href="#inquiry">Inquiry</a>
-      <a href="../../php/missing.php">Missing</a>
-      <a href="../../php/wandering.php">Wandering</a>
-      <a href="../../php/found.php">Found</a>
-      <a
-        data-bs-toggle="collapse"
-        href="#adoptionMenu"
-        role="button"
-        aria-expanded="false"
-        aria-controls="adoptionMenu"
-      >
-        Adoption
-      </a>
-      <div class="collapse" id="adoptionMenu">
-        <a href="#petAdoptionList" class="sub-link">Pet Adoption List</a>
-        <a href="#adoptedPets" class="sub-link">Adopted Pets</a>
-        <a href="../../php/addPetAdoption.php" class="sub-link">Add Pet</a>
-      </div>
-      <a
-        data-bs-toggle="collapse"
-        href="#applicationMenu"
-        role="button"
-        aria-expanded="false"
-        aria-controls="applicationMenu"
-      >
-        Adoption Application
-      </a>
-      <div class="collapse" id="applicationMenu">
-        <a href="../../php/application/applicationPending.php" class="sub-link"
-          >Pending</a
-        >
-        <a
-          href="../../php/application/applicationReviewing.php"
-          class="sub-link"
-          >Reviewing</a
-        >
-        <a href="../../php/application/applicationApproved.php" class="sub-link"
-          >Approved</a
-        >
-        <a
-          href="../../php/application/applicationCompleted.php"
-          class="sub-link"
-          >Completed</a
-        >
-        <a href="../../php/application/applicationRejected.php" class="sub-link"
-          >Rejected</a
-        >
-      </div>
-      <a
-        data-bs-toggle="collapse"
-        href="#rescueMenu"
-        role="button"
-        aria-expanded="false"
-        aria-controls="rescueMenu"
-      >
-        Rescue
-      </a>
-      <div class="collapse" id="rescueMenu">
-        <a href="../../php/rescue/rescuePending.php" class="sub-link"
-          >Pending</a
-        >
-        <a href="../../php/rescue/rescueReviewing.php" class="sub-link"
-          >Reviewing</a
-        >
-        <a href="../../php/rescue/rescueOngoing.php" class="sub-link"
-          >Ongoing</a
-        >
-        <a href="../../php/rescue/rescueRescued.php" class="sub-link"
-          >Rescued</a
-        >
-        <a href="../../php/rescue/rescueDeclined.php" class="sub-link"
-          >Declined</a
-        >
-      </div>
-      <a
-        data-bs-toggle="collapse"
-        href="#historyMenu"
-        role="button"
-        aria-expanded="false"
-        aria-controls="historyMenu"
-      >
-        History
-      </a>
-      <div class="collapse" id="historyMenu">
-        <a href="../../history/missing_history.php" class="sub-link">Missing</a>
-        <a href="../../history/wandering_history.php" class="sub-link"
-          >Wandering</a
-        >
-        <a href="#adopted-history" class="sub-link">Adopted</a>
-        <a href="../../history/found_history.php" class="sub-link">Found</a>
-      </div>
-      <!-- Profile and Logout -->
-      <div class="profile-section">
-        <a href="#profile">Profile</a>
-        <a href="../../php/login/logout.php">Logout</a>
-      </div>
+    <div class="logo">
+      <img src="../../assets/images/logo.png" alt="WanderPets Logo">
+      <h4>Supremo Furbabies</h4>
     </div>
+    <a href="../../index.php">Dashboard</a>
+    <a href="#inquiry">Inquiry</a>
+    <a href="../../php/users.php">Users</a>
+    <a href="../../php/missing.php">Missing</a>
+    <a href="../../php/wandering.php">Wandering</a>
+    <a href="../../php/found.php">Found</a>
+    <a data-bs-toggle="collapse" href="#adoptionMenu" role="button" aria-expanded="false" aria-controls="adoptionMenu">
+      Adoption
+    </a>
+    <div class="collapse" id="adoptionMenu">
+      <a href="../../php/addPetAdoption.php" class="sub-link">Pet Adoption List</a>
+      <a href="../../php/adoptedPets.php" class="sub-link">Adopted Pets</a>
+      <a href="../../php/addPetAdoption.php" class="sub-link">Add Pet</a>
+    </div>
+    <a data-bs-toggle="collapse" href="#applicationMenu" role="button" aria-expanded="false" aria-controls="applicationMenu">
+      Adoption Application
+    </a>
+    <div class="collapse" id="applicationMenu">
+      <a href="../../php/application/applicationPending.php" class="sub-link">Pending</a>
+      <a href="../../php/application/applicationReviewing.php" class="sub-link">Reviewing</a>
+      <a href="../../php/application/applicationApproved.php" class="sub-link">Approved</a>
+      <a href="../../php/application/applicationCompleted.php" class="sub-link">Completed</a>
+      <a href="../../php/application/applicationRejected.php" class="sub-link">Rejected</a>
+    </div>
+    <a data-bs-toggle="collapse" href="#rescueMenu" role="button" aria-expanded="false" aria-controls="rescueMenu">
+      Rescue
+    </a>
+    <div class="collapse" id="rescueMenu">
+      <a href="../../php/rescue/rescuePending.php" class="sub-link">Pending</a>
+      <a href="../../php/rescue/rescueReviewing.php" class="sub-link">Reviewing</a>
+      <a href="../../php/rescue/rescueOngoing.php" class="sub-link">Ongoing</a>
+      <a href="../../php/rescue/rescueRescued.php" class="sub-link">Rescued</a>
+      <a href="../../php/rescue/rescueDeclined.php" class="sub-link">Declined</a>
+    </div>
+    <a data-bs-toggle="collapse" href="#historyMenu" role="button" aria-expanded="false" aria-controls="historyMenu">
+      History
+    </a>
+    <div class="collapse" id="historyMenu">
+      <a href="../../history/missing_history.php" class="sub-link">Missing</a>
+      <a href="../../history/wandering_history.php" class="sub-link">Wandering</a>
+      <a href="#adopted-history" class="sub-link">Adopted</a>
+      <a href="../../history/found_history.php" class="sub-link">Found</a>
+    </div>
+    <!-- Profile and Logout -->
+    <div class="profile-section">
+      <a href="#profile">Profile</a>
+      <a href="../../php/login/logout.php">Logout</a>
+    </div>    
+  </div>
 
     <!-- Main Content -->
     <div class="main-content">
@@ -284,7 +235,18 @@ $petDetails = $firebase->getDocuments("missing")[$petid] ?? null; if
                   type="text"
                   id="postedDate"
                   class="form-control"
-                  value="<?= htmlspecialchars($formattedDate ?? 'N/A') ?>"
+                  value="<?php 
+                        if (isset($petDetails['timestamp']) && !empty($petDetails['timestamp'])) {
+                            try {
+                                $rescuedDate = new DateTime($petDetails['timestamp']);
+                                echo $rescuedDate->format('F j, Y \a\t g:i:s A');
+                            } catch (Exception $e) {
+                                echo 'Invalid Date';
+                            }
+                        } else {
+                            echo 'N/A';
+                        }
+                        ?>"
                   disabled
                 />
               </div>
