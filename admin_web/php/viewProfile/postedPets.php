@@ -110,54 +110,54 @@ if ($userEmail) {
       <img src="../../assets/images/logo.png" alt="WanderPets Logo">
       <h4>Supremo Furbabies</h4>
     </div>
-    <a href="../index.php">Dashboard</a>
+    <a href="../../index.php">Dashboard</a>
     <a href="#inquiry">Inquiry</a>
-    <a href="users.php">Users</a>
-    <a href="missing.php">Missing</a>
-    <a href="wandering.php">Wandering</a>
-    <a href="found.php">Found</a>
+    <a href="../../php/users.php">Users</a>
+    <a href="../../php/missing.php">Missing</a>
+    <a href="../../php/wandering.php">Wandering</a>
+    <a href="../../php/found.php">Found</a>
     <a data-bs-toggle="collapse" href="#adoptionMenu" role="button" aria-expanded="false" aria-controls="adoptionMenu">
       Adoption
     </a>
     <div class="collapse" id="adoptionMenu">
-      <a href="adoptionList.php" class="sub-link">Pet Adoption List</a>
-      <a href="adoptedPets.php" class="sub-link">Adopted Pets</a>
-      <a href="addPetAdoption.php" class="sub-link">Add Pet</a>
+      <a href="../../php/addPetAdoption.php" class="sub-link">Pet Adoption List</a>
+      <a href="../../php/adoptedPets.php" class="sub-link">Adopted Pets</a>
+      <a href="../../php/addPetAdoption.php" class="sub-link">Add Pet</a>
     </div>
     <a data-bs-toggle="collapse" href="#applicationMenu" role="button" aria-expanded="false" aria-controls="applicationMenu">
       Adoption Application
     </a>
     <div class="collapse" id="applicationMenu">
-      <a href="application/applicationPending.php" class="sub-link">Pending</a>
-      <a href="application/applicationReviewing.php" class="sub-link">Reviewing</a>
-      <a href="application/applicationApproved.php" class="sub-link">Approved</a>
-      <a href="application/applicationCompleted.php" class="sub-link">Completed</a>
-      <a href="application/applicationRejected.php" class="sub-link">Rejected</a>
+      <a href="../../php/application/applicationPending.php" class="sub-link">Pending</a>
+      <a href="../../php/application/applicationReviewing.php" class="sub-link">Reviewing</a>
+      <a href="../../php/application/applicationApproved.php" class="sub-link">Approved</a>
+      <a href="../../php/application/applicationCompleted.php" class="sub-link">Completed</a>
+      <a href="../../php/application/applicationRejected.php" class="sub-link">Rejected</a>
     </div>
     <a data-bs-toggle="collapse" href="#rescueMenu" role="button" aria-expanded="false" aria-controls="rescueMenu">
       Rescue
     </a>
     <div class="collapse" id="rescueMenu">
-      <a href="rescue/rescuePending.php" class="sub-link">Pending</a>
-      <a href="rescue/rescueReviewing.php" class="sub-link">Reviewing</a>
-      <a href="rescue/rescueOngoing.php" class="sub-link">Ongoing</a>
-      <a href="rescue/rescueRescued.php" class="sub-link">Rescued</a>
-      <a href="rescue/rescueDeclined.php" class="sub-link">Declined</a>
+      <a href="../../php/rescue/rescuePending.php" class="sub-link">Pending</a>
+      <a href="../../php/rescue/rescueReviewing.php" class="sub-link">Reviewing</a>
+      <a href="../../php/rescue/rescueOngoing.php" class="sub-link">Ongoing</a>
+      <a href="../../php/rescue/rescueRescued.php" class="sub-link">Rescued</a>
+      <a href="../../php/rescue/rescueDeclined.php" class="sub-link">Declined</a>
     </div>
     <a data-bs-toggle="collapse" href="#historyMenu" role="button" aria-expanded="false" aria-controls="historyMenu">
       History
     </a>
     <div class="collapse" id="historyMenu">
-      <a href="../history/missing_history.php" class="sub-link">Missing</a>
-      <a href="../history/wandering_history.php" class="sub-link">Wandering</a>
+      <a href="../../history/missing_history.php" class="sub-link">Missing</a>
+      <a href="../../history/wandering_history.php" class="sub-link">Wandering</a>
       <a href="#adopted-history" class="sub-link">Adopted</a>
-      <a href="../history/found_history.php" class="sub-link">Found</a>
+      <a href="../../history/found_history.php" class="sub-link">Found</a>
     </div>
     <!-- Profile and Logout -->
     <div class="profile-section">
       <a href="#profile">Profile</a>
-      <a href="login/logout.php">Logout</a>
-    </div>
+      <a href="../../php/login/logout.php">Logout</a>
+    </div>    
   </div>
   <!-- Main Content -->
   <div class="main-content">

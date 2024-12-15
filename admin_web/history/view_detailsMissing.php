@@ -5,7 +5,7 @@ include('../config/auth.php');
 
 $petid = $_GET['petid'] ?? null;
 
-$petDetails = $firebase->getDocuments("missing")[$petid] ?? null;
+$petDetails = $firebase->getDocuments("missingHistory")[$petid] ?? null;
 
 if (!$petDetails) {
     die("Pet not found.");

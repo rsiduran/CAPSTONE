@@ -15,7 +15,7 @@ if (isset($_GET['petid'])) {
 
         $firebase->deleteDocument("missing", $petid);
 
-        header("Location: ../php/missing.php");
+        header("Location: missing.php");
         exit();
     }
 }

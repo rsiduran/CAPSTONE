@@ -21,8 +21,7 @@ if (isset($_GET['petid'])) {
         // Redirect after deletion
         header("Location: missing.php");
         exit();
-    }
-}
+    }}
 ?>
 <!DOCTYPE html>
 <html lang="en">
