@@ -17,6 +17,7 @@ try {
             'petType' => $_POST['petType'],
             'description' => $_POST['description'],   
             'timestamp' => new DateTime('now', new DateTimeZone('Asia/Manila')),
+            'viewed' => "NO",
 
         ];
 

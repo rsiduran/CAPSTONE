@@ -5,6 +5,10 @@ include('../../../config/auth.php');
 
 $petid = $_GET['petid'] ?? null;
 
+include('../../../config/counts.php');
+
+$usersCount = $firebase->getCollectionCount('users');
+
 $petDetails = $firebase->getDocuments("rescue")[$petid] ?? null;
 
 if (!$petDetails) {
@@ -133,6 +137,30 @@ if (!$petDetails) {
       font-weight: bold;
       color: #2d6a4f;
     }
+    .badge {
+    font-size: 12px;
+    margin-left: 5px;
+    padding: 5px 10px;
+    border-radius: 12px;
+    background-color: #dc3545; /* Bootstrap danger color */
+    color: #fff;
+    }
+    .badge1 {
+    font-size: 14px;
+    font-weight: "bold";
+    color: #fff;
+    }
+    .table-search-bar {
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .sort-dropdown {
+      display: inline-block;
+      color: black;
+      text-decoration: none;
+      font-size: 14px;
+    }
   
   </style>
 </head>
@@ -146,15 +174,15 @@ if (!$petDetails) {
     </div>
     <a href="../../../index.php">Dashboard</a>
     <a href="#inquiry">Inquiry</a>
-    <a href="../../../users.php">Users</a>
-    <a href="../../../php/missing.php">Missing</a>
-    <a href="../../../php/wandering.php">Wandering</a>
-    <a href="../../../php/found.php">Found</a>
+    <a href="../../../users.php"><span class="badge1 "><?php echo $usersCount ?></span> Users</a>
+    <a href="../../../php/missing.php">Missing <span class="badge bg-danger"><?= $unviewedCounts['missing'] ?? 0 ?></span></a>
+    <a href="../../../php/wandering.php">Wandering <span class="badge bg-danger"><?= $unviewedCounts['wandering'] ?? 0 ?></span></a>
+    <a href="../../../php/found.php">Found <span class="badge bg-danger"><?= $unviewedCounts['found'] ?? 0 ?></span></a>
     <a data-bs-toggle="collapse" href="#adoptionMenu" role="button" aria-expanded="false" aria-controls="adoptionMenu">
       Adoption
     </a>
     <div class="collapse" id="adoptionMenu">
-      <a href="../../../php/adoptionList.php" class="sub-link">Pet Adoption List</a>
+      <a href="../../../php/adoptionList.php" class="sub-link">Pet Adoption List <span class="badge bg-danger"><?= $unviewedCounts['adoption'] ?? 0 ?></span></a>
       <a href="../../../php/adoptedPets.php" class="sub-link">Adopted Pets</a>
       <a href="../../../php/addPetAdoption.php" class="sub-link">Add Pet</a>
     </div>
@@ -162,21 +190,21 @@ if (!$petDetails) {
       Adoption Application
     </a>
     <div class="collapse" id="applicationMenu">
-      <a href="../../../php/application/applicationPending.php" class="sub-link">Pending</a>
-      <a href="../../../php/application/applicationReviewing.php" class="sub-link">Reviewing</a>
-      <a href="../../../php/application/applicationApproved.php" class="sub-link">Approved</a>
-      <a href="../../../php/application/applicationCompleted.php" class="sub-link">Completed</a>
-      <a href="../../../php/application/applicationRejected.php" class="sub-link">Rejected</a>
+      <a href="../../../php/application/applicationPending.php" class="sub-link">Pending <span class="badge bg-danger"><?= $adoptionCounts['PENDING'] ?? 0 ?></span></a>
+      <a href="../../../php/application/applicationReviewing.php" class="sub-link">Reviewing <span class="badge bg-danger"><?= $adoptionCounts['REVIEWING'] ?? 0 ?></span></a>
+      <a href="../../../php/application/applicationApproved.php" class="sub-link">Approved <span class="badge bg-danger"><?= $adoptionCounts['APPROVED'] ?? 0 ?></span></a>
+      <a href="../../../php/application/applicationCompleted.php" class="sub-link">Completed <span class="badge bg-danger"><?= $adoptionCounts['PENDING'] ?? 0 ?></span></a>
+      <a href="../../../php/application/applicationRejected.php" class="sub-link">Rejected <span class="badge bg-danger"><?= $adoptionCounts['PENDING'] ?? 0 ?></span></a>
     </div>
     <a data-bs-toggle="collapse" href="#rescueMenu" role="button" aria-expanded="false" aria-controls="rescueMenu">
       Rescue
     </a>
     <div class="collapse" id="rescueMenu">
-      <a href="../../../php/rescue/rescuePending.php" class="sub-link">Pending</a>
-      <a href="../../../php/rescue/rescueReviewing.php" class="sub-link">Reviewing</a>
-      <a href="../../../php/rescue/rescueOngoing.php" class="sub-link">Ongoing</a>
-      <a href="../../../php/rescue/rescueRescued.php" class="sub-link">Rescued</a>
-      <a href="../../../php/rescue/rescueDeclined.php" class="sub-link">Declined</a>
+      <a href="../../../php/rescue/rescuePending.php" class="sub-link">Pending <span class="badge bg-danger"><?= $rescueCounts['PENDING'] ?? 0 ?></span></a>
+      <a href="../../../php/rescue/rescueReviewing.php" class="sub-link">Reviewing <span class="badge bg-danger"><?= $rescueCounts['REVIEWING'] ?? 0 ?></span></a>
+      <a href="../../../php/rescue/rescueOngoing.php" class="sub-link">Ongoing <span class="badge bg-danger"><?= $rescueCounts['ONGOING'] ?? 0 ?></span></a>
+      <a href="../../../php/rescue/rescueRescued.php" class="sub-link">Rescued <span class="badge bg-danger"><?= $rescueCounts['RESCUED'] ?? 0 ?></span></a>
+      <a href="../../../php/rescue/rescueDeclined.php" class="sub-link">Declined <span class="badge bg-danger"><?= $rescueCounts['DECLINED'] ?? 0 ?></span></a>
     </div>
     <a data-bs-toggle="collapse" href="#historyMenu" role="button" aria-expanded="false" aria-controls="historyMenu">
       History

@@ -28,6 +28,7 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
             'homePhotos' => array_map(fn($photo) => ['stringValue' => $photo['stringValue']], $homePhotos), // Ensure proper array handling
             'timestamp' => new DateTime($currentDocument['fields']['timestamp']['timestampValue'] ?? 'now'), // Timestamp
             'postedTimestamp' => new DateTime($currentDocument['fields']['postedTimestamp']['timestampValue'] ?? 'now'), // Timestamp
+            'viewed' => 'NO',
         ];
 
         $fieldsToKeep = [

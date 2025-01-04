@@ -5,6 +5,54 @@ include('../config/auth.php');
 
 $pets = $firebase->getDocuments("users");
 
+include('../config/counts.php');
+
+$usersCount = $firebase->getCollectionCount('users');
+
+// Sort the pets by timestamp, keeping their keys intact
+uasort($pets, function ($a, $b) {
+  $timeA = isset($a['createdAt']) && $a['createdAt'] !== 'N/A' && !empty($a['createdAt']) ? new DateTime($a['createdAt']) : null;
+  $timeB = isset($b['createdAt']) && $b['createdAt'] !== 'N/A' && !empty($b['createdAt']) ? new DateTime($b['createdAt']) : null;
+
+  if ($timeA && $timeB) {
+      return $timeB <=> $timeA;
+  }
+  return 0;
+});
+
+$searchQuery = $_GET['search'] ?? null;
+if ($searchQuery) {
+    $pets = array_filter($pets, function ($pet) use ($searchQuery) {
+        $searchQuery = strtolower($searchQuery);
+        return (
+            (isset($pet['firstname']) && stripos($pet['firstname'], $searchQuery) !== false) ||
+            (isset($pet['lastname']) && stripos($pet['lastname'], $searchQuery) !== false) ||
+            (isset($pet['email']) && stripos($pet['email'], $searchQuery) !== false) ||
+            (isset($pet['createdAt']) && stripos($pet['createdAt'], $searchQuery) !== false)
+        );
+    });
+}
+
+$sortField = isset($_GET['sortField']) ? $_GET['sortField'] : 'timestamp';
+$sortOrder = isset($_GET['sortOrder']) && $_GET['sortOrder'] === 'asc' ? SORT_ASC : SORT_DESC;
+
+if (!empty($pets)) {
+  uasort($pets, function ($a, $b) use ($sortField, $sortOrder) {
+      $valA = $a[$sortField] ?? '';
+      $valB = $b[$sortField] ?? '';
+      
+      if ($sortField === 'createdAt') {
+          $valA = strtotime($valA) ?: 0;
+          $valB = strtotime($valB) ?: 0;
+      } else {
+          $valA = strtolower($valA); 
+          $valB = strtolower($valB);
+      }
+      
+      return $sortOrder === SORT_ASC ? $valA <=> $valB : $valB <=> $valA;
+  });
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -90,6 +138,30 @@ $pets = $firebase->getDocuments("users");
       padding: 20px;
       border-top: 1px solid rgba(255, 255, 255, 0.2);
     }
+    .badge {
+    font-size: 12px;
+    margin-left: 5px;
+    padding: 5px 10px;
+    border-radius: 12px;
+    background-color: #dc3545; /* Bootstrap danger color */
+    color: #fff;
+    }
+    .badge1 {
+    font-size: 14px;
+    font-weight: "bold";
+    color: #fff;
+    }
+    .table-search-bar {
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .sort-dropdown {
+      display: inline-block;
+      color: black;
+      text-decoration: none;
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
@@ -102,15 +174,15 @@ $pets = $firebase->getDocuments("users");
     </div>
     <a href="../index.php">Dashboard</a>
     <a href="#inquiry">Inquiry</a>
-    <a href="users.php">Users</a>
-    <a href="missing.php">Missing</a>
-    <a href="wandering.php">Wandering</a>
-    <a href="found.php">Found</a>
+    <a href="users.php"><span class="badge1 "><?php echo $usersCount ?></span> Users</a>
+    <a href="missing.php">Missing  <span class="badge bg-danger"><?= $unviewedCounts['missing'] ?? 0 ?></span></a>
+    <a href="wandering.php">Wandering <span class="badge bg-danger"><?= $unviewedCounts['wandering'] ?? 0 ?></span></a>
+    <a href="found.php">Found <span class="badge bg-danger"><?= $unviewedCounts['found'] ?? 0 ?></span></a>
     <a data-bs-toggle="collapse" href="#adoptionMenu" role="button" aria-expanded="false" aria-controls="adoptionMenu">
       Adoption
     </a>
     <div class="collapse" id="adoptionMenu">
-      <a href="adoptionList.php" class="sub-link">Pet Adoption List</a>
+      <a href="adoptionList.php" class="sub-link">Pet Adoption List <span class="badge bg-danger"><?= $unviewedCounts['adoption'] ?? 0 ?></span></a>
       <a href="adoptedPets.php" class="sub-link">Adopted Pets</a>
       <a href="addPetAdoption.php" class="sub-link">Add Pet</a>
     </div>
@@ -118,21 +190,21 @@ $pets = $firebase->getDocuments("users");
       Adoption Application
     </a>
     <div class="collapse" id="applicationMenu">
-      <a href="application/applicationPending.php" class="sub-link">Pending</a>
-      <a href="application/applicationReviewing.php" class="sub-link">Reviewing</a>
-      <a href="application/applicationApproved.php" class="sub-link">Approved</a>
-      <a href="application/applicationCompleted.php" class="sub-link">Completed</a>
-      <a href="application/applicationRejected.php" class="sub-link">Rejected</a>
+      <a href="application/applicationPending.php" class="sub-link">Pending <span class="badge bg-danger"><?= $adoptionCounts['PENDING'] ?? 0 ?></span></a>
+      <a href="application/applicationReviewing.php" class="sub-link">Reviewing <span class="badge bg-danger"><?= $adoptionCounts['REVIEWING'] ?? 0 ?></span></a>
+      <a href="application/applicationApproved.php" class="sub-link">Approved <span class="badge bg-danger"><?= $adoptionCounts['APPROVED'] ?? 0 ?></span></a>
+      <a href="application/applicationCompleted.php" class="sub-link">Completed <span class="badge bg-danger"><?= $adoptionCounts['COMPLETED'] ?? 0 ?></span></a>
+      <a href="application/applicationRejected.php" class="sub-link">Rejected <span class="badge bg-danger"><?= $adoptionCounts['REJECTED'] ?? 0 ?></span></a>
     </div>
     <a data-bs-toggle="collapse" href="#rescueMenu" role="button" aria-expanded="false" aria-controls="rescueMenu">
       Rescue
     </a>
     <div class="collapse" id="rescueMenu">
-      <a href="rescue/rescuePending.php" class="sub-link">Pending</a>
-      <a href="rescue/rescueReviewing.php" class="sub-link">Reviewing</a>
-      <a href="rescue/rescueOngoing.php" class="sub-link">Ongoing</a>
-      <a href="rescue/rescueRescued.php" class="sub-link">Rescued</a>
-      <a href="rescue/rescueDeclined.php" class="sub-link">Declined</a>
+      <a href="rescue/rescuePending.php" class="sub-link">Pending <span class="badge bg-danger"><?= $rescueCounts['PENDING'] ?? 0 ?></span></a>
+      <a href="rescue/rescueReviewing.php" class="sub-link">Reviewing <span class="badge bg-danger"><?= $rescueCounts['REVIEWING'] ?? 0 ?></span></a>
+      <a href="rescue/rescueOngoing.php" class="sub-link">Ongoing <span class="badge bg-danger"><?= $rescueCounts['ONGOING'] ?? 0 ?></span></a>
+      <a href="rescue/rescueRescued.php" class="sub-link">Rescued <span class="badge bg-danger"><?= $rescueCounts['RESCUED'] ?? 0 ?></span></a>
+      <a href="rescue/rescueDeclined.php" class="sub-link">Declined <span class="badge bg-danger"><?= $rescueCounts['DECLINED'] ?? 0 ?></span></a>
     </div>
     <a data-bs-toggle="collapse" href="#historyMenu" role="button" aria-expanded="false" aria-controls="historyMenu">
       History
@@ -155,12 +227,31 @@ $pets = $firebase->getDocuments("users");
     <div class="container-fluid mt-5 pt-3">
       <h1>Users </h1>
       <p>Below is the list of users which currently registered in the system:</p>
+
+      <form method="GET" class="mb-4">
+      <div class="input-group" style="width: 50%; margin: 0 auto;">
+          <input type="text" class="form-control" name="search" placeholder="Search by ..."
+                value="<?= htmlspecialchars($searchQuery ?? '') ?>">
+          <button type="submit" class="btn btn-success">Search</button>
+          <a href="users.php" class="btn btn-secondary">Reset</a>
+      </div>
+    </form>
       <div class="table-responsive">
         <table class="table table-hover mx-auto" style="width: 90%;">
           <thead class="table-success">
             <tr>
-              <th>User Name</th>
-              <th>Email</th>
+              <th>User Name
+              <a href="?sortField=firstName&sortOrder=asc" class="sort-dropdown">↑</a>
+              <a href="?sortField=firstName&sortOrder=desc" class="sort-dropdown">↓</a>
+              </th>
+              <th>Email
+              <a href="?sortField=email&sortOrder=asc" class="sort-dropdown">↑</a>
+              <a href="?sortField=email&sortOrder=desc" class="sort-dropdown">↓</a>
+              </th>
+              <th>Created At
+              <a href="?sortField=createdAt&sortOrder=asc" class="sort-dropdown">↑</a>
+              <a href="?sortField=createdAt&sortOrder=desc" class="sort-dropdown">↓</a>
+              </th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -170,6 +261,20 @@ $pets = $firebase->getDocuments("users");
               <tr>
                 <td><?= htmlspecialchars($pet['firstName'] ?? 'N/A') ?> <?= htmlspecialchars($pet['lastName'] ?? 'N/A') ?></td>
                 <td><?= htmlspecialchars($pet['email'] ?? 'N/A') ?></td>
+                <td>
+                <?php 
+                  if (isset($pet['createdAt']) && $pet['createdAt'] !== 'N/A' && !empty($pet['createdAt'])) {
+                      try {
+                          $time = new DateTime($pet['createdAt']); 
+                          echo $time->format('F j, Y / g:i A');
+                      } catch (Exception $e) {
+                          echo 'Invalid Date';
+                      }
+                  } else {
+                      echo 'N/A';
+                  }
+              ?>
+                </td>
                 <td>
                     <a href="viewProfile/view_profileUsers.php?petid=<?= urlencode($petid) ?>" class="btn btn-primary btn-sm">View Profile</a>
                 </td>

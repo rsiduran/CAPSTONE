@@ -154,7 +154,6 @@
                     'description' => ['stringValue' => $document['description'] ?? ''],
                     'streetNumber' => ['stringValue' => $document['streetNumber'] ?? ''],
                     'city' => ['stringValue' => $document['city'] ?? ''],
-                    'message' => ['stringValue' => $document['message'] ?? ''],
                     'address' => ['stringValue' => $document['address'] ?? ''],
                     'firstName' => ['stringValue' => $document['firstName'] ?? ''],
                     'lastName' => ['stringValue' => $document['lastName'] ?? ''],
@@ -216,7 +215,6 @@
                     'description' => ['stringValue' => $document['description'] ?? ''],
                     'streetNumber' => ['stringValue' => $document['streetNumber'] ?? ''],
                     'city' => ['stringValue' => $document['city'] ?? ''],
-                    'message' => ['stringValue' => $document['message'] ?? ''],
                     'address' => ['stringValue' => $document['address'] ?? ''],
                     'firstName' => ['stringValue' => $document['firstName'] ?? ''],
                     'lastName' => ['stringValue' => $document['lastName'] ?? ''],
@@ -637,7 +635,62 @@
             return 0;
         }
         
+        public function countUnviewedForCollection($collection) {
+            $count = 0;
+        
+            $documents = $this->getDocuments($collection);
+        
+            if ($documents) {
+                foreach ($documents as $document) {
+                    if (isset($document['viewed']) && $document['viewed'] === 'NO') {
+                        $count++;
+                    }   
+                }
+            }
+        
+            return $count;
+        }
+        
+        public function countDocumentsForStatusAndViewed($collection, $statusField, $statusValue) {
+            $count = 0;
+            
+            // Get all documents from the collection
+            $documents = $this->getDocuments($collection);
+            
+            // Check if documents exist
+            if ($documents) {
+                foreach ($documents as $document) {
+                    // Check if the document has the status and viewed fields
+                    if (isset($document[$statusField]) && $document[$statusField] === $statusValue) {
+                        if (isset($document['viewed']) && $document['viewed'] === 'NO') {
+                            $count++;
+                        }
+                    }
+                }
+            }
+            
+            return $count;
+        }
+
+        public function getDocumentById($collection, $documentId) {
+            $url = "https://firestore.googleapis.com/v1/projects/{$this->projectId}/databases/(default)/documents/{$collection}/{$documentId}?key={$this->apiKey}";
+            
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     
+            $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    
+            curl_close($ch);
+    
+            if ($httpCode === 200) {
+                $data = json_decode($response, true);
+                return $data['fields'] ?? null;
+            }
+    
+            return null; // Return null if the document does not exist or an error occurred
+        }
     }
 
     

@@ -94,6 +94,7 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
             'additionalPhotos' => array_map(fn($photo) => ['stringValue' => $photo['stringValue']], $additionalPhotos),  
             'rescuer' => $rescuer,
             'rescuedDate' => new DateTime('now', new DateTimeZone('Asia/Manila')),
+            'viewed' => 'NO',
         ];
 
         $updateData['remarks'] = $remarks;

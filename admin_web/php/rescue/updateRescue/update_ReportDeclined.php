@@ -31,7 +31,8 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
             'statusChange' => new DateTime('now', new DateTimeZone('Asia/Manila')),
             'additionalPhotos' => array_map(fn($photo) => ['stringValue' => $photo['stringValue']], $additionalPhotos), 
             'timestamp' => new DateTime($currentDocument['fields']['timestamp']['timestampValue'] ?? 'now'),
-        ]; // Initialize with new status
+            'viewed' => 'NO',
+        ]; 
 
         // Define the fields to keep
         $fieldsToKeep = [
