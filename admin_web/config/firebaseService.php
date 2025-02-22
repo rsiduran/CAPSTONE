@@ -106,6 +106,11 @@
                         'salaryRange' => $fields['salaryRange']['stringValue'] ?? 'N/A',
                         'createdAt' => $fields['createdAt']['timestampValue'] ?? 'N/A',
                         'adoptionDate' => $fields['adoptionDate']['timestampValue'] ?? 'N/A',
+                        'read' => $fields['read']['booleanValue'] ?? 'N/A',
+                        'title' => $fields['title']['stringValue'] ?? 'N/A',
+                        'body' => $fields['body']['stringValue'] ?? 'N/A',
+                        'userId' => $fields['userId']['stringValue'] ?? 'N/A',
+                        'type' => $fields['type']['stringValue'] ?? 'N/A',
                     ];
                 }
                 return $result;
@@ -690,6 +695,65 @@
             }
     
             return null; // Return null if the document does not exist or an error occurred
+        }
+
+        public function queryDocuments($collection, $field, $operator, $value) {
+            $url = "https://firestore.googleapis.com/v1/projects/{$this->projectId}/databases/(default)/documents:runQuery?key={$this->apiKey}";
+        
+            $queryData = [
+                "structuredQuery" => [
+                    "from" => [["collectionId" => $collection]],
+                    "where" => [
+                        "fieldFilter" => [
+                            "field" => ["fieldPath" => $field],
+                            "op" => $this->convertOperator($operator),
+                            "value" => ["stringValue" => $value]
+                        ]
+                    ]
+                ]
+            ];
+        
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($queryData));
+        
+            $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        
+            curl_close($ch);
+        
+            if ($httpCode === 200) {
+                $data = json_decode($response, true);
+                $documents = [];
+        
+                foreach ($data as $doc) {
+                    if (isset($doc['document'])) {
+                        $documents[] = [
+                            'name' => $doc['document']['name'],
+                            'fields' => $doc['document']['fields']
+                        ];
+                    }
+                }
+        
+                return ['documents' => $documents];
+            }
+        
+            return ['documents' => []]; // Return an empty array if no documents found or error
+        }
+
+        private function convertOperator($operator) {
+            $map = [
+                "==" => "EQUAL",
+                ">"  => "GREATER_THAN",
+                "<"  => "LESS_THAN",
+                ">=" => "GREATER_THAN_OR_EQUAL",
+                "<=" => "LESS_THAN_OR_EQUAL"
+            ];
+            
+            return $map[$operator] ?? "EQUAL"; // Default to EQUAL if unknown
         }
     }
 

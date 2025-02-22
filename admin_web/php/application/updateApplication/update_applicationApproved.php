@@ -116,6 +116,45 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
             echo "Document updated successfully.";
         }
 
+        $userEmail = $currentDocument['fields']['email']['stringValue'] ?? null;
+
+        if ($userEmail) {
+            error_log("Attempting to insert notification...");
+    
+            $userQuery = $firebase->queryDocuments("users", "email", "==", $userEmail);
+            error_log("User Query Result: " . json_encode($userQuery));
+    
+            if (empty($userQuery['documents'])) {
+                die("No user found for email: " . htmlspecialchars($userEmail));
+            }
+    
+            $userId = $userQuery['documents'][0]['name'] ?? null;
+            if (!$userId) {
+                die("User ID not found");
+            }
+    
+            $notificationData = [
+                'body' => ($currentDocument['fields']['transactionNumber']['stringValue'] ?? '') . 
+                          ": Your adoption application for " . ($currentDocument['fields']['name']['stringValue'] ?? '') . 
+                          " has been updated to COMPLETED" ,
+                'petId' => $currentDocument['fields']['petId']['stringValue'] ?? '',
+                'read' => false,
+                'title' => 'Adoption Application Update',
+                'timestamp' => new DateTime('now', new DateTimeZone('Asia/Manila')),
+                'transactionNumber' => $currentDocument['fields']['transactionNumber']['stringValue'] ?? '',
+                'type' => 'adoption',
+                'userId' => basename($userId ?? '') // Extracts only the document ID
+            ];
+    
+            error_log("Notification Data: " . json_encode($notificationData));
+    
+            $insertResponse = $firebase->insertDocument("notifications", $notificationData);
+            if (isset($insertResponse['error'])) {
+                die("Notification insertion failed: " . json_encode($insertResponse['error']));
+            }
+            error_log("Notification successfully inserted.");
+        }
+
         // Step 2: Check if petId exists in adoptionApplication collection and match it with document ID in adoption collection
         $petIdField = $currentDocument['fields']['petId']['stringValue'];
 
