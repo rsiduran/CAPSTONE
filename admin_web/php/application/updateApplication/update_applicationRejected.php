@@ -119,7 +119,7 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
                     'body' => ($currentDocument['fields']['transactionNumber']['stringValue'] ?? '') . 
                               ": Your adoption application for " . ($currentDocument['fields']['name']['stringValue'] ?? '') . 
                               " has been updated to REJECTED",
-                    'petId' => $currentDocument['fields']['petId']['stringValue'] ?? '',
+                    'petId' => $petid ?? '',
                     'read' => false,
                     'title' => 'Adoption Application Update',
                     'timestamp' => new DateTime('now', new DateTimeZone('Asia/Manila')),

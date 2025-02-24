@@ -154,7 +154,7 @@ if (isset($_POST['petid']) && isset($_POST['currentStatus'])) {
                     'body' => ($currentDocument['fields']['transactionNumber']['stringValue'] ?? '') . 
                               ": Your rescue request for " . ($currentDocument['fields']['name']['stringValue'] ?? '') . 
                               " has been updated to RESCUED",
-                    'petId' => $currentDocument['fields']['petId']['stringValue'] ?? '',
+                    'petId' => $petid ?? '',
                     'read' => false,
                     'title' => 'Rescue Request Update',
                     'timestamp' => new DateTime('now', new DateTimeZone('Asia/Manila')),
