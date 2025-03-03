@@ -15,8 +15,26 @@ $rescueReport = $firebase->getCollectionCount('rescue');
 $adoptionApplication = $firebase->getCollectionCount('adoptionApplication');
 $adoptedPets = $firebase->getCollectionCount('adopted');
 
+$adoption = [
+  'PENDING' => $firebase->getCountByStatus('adoptionApplication', 'applicationStatus', 'PENDING'),
+  'REVIEWING' => $firebase->getCountByStatus('adoptionApplication', 'applicationStatus', 'REVIEWING'),
+  'APPROVED' => $firebase->getCountByStatus('adoptionApplication', 'applicationStatus', 'APPROVED'),
+  'COMPLETED' => $firebase->getCountByStatus('adoptionApplication', 'applicationStatus', 'COMPLETED'),
+  'REJECTED' => $firebase->getCountByStatus('adoptionApplication', 'applicationStatus', 'REJECTED'),
+];
 
+$rescue = [
+  'PENDING' => $firebase->getCountByStatus('rescue', 'rescueStatus', 'PENDING'),
+  'REVIEWING' => $firebase->getCountByStatus('rescue', 'rescueStatus', 'REVIEWING'),
+  'ONGOING' => $firebase->getCountByStatus('rescue', 'rescueStatus', 'ONGOING'),
+  'RESCUED' => $firebase->getCountByStatus('rescue', 'rescueStatus', 'RESCUED'),
+  'DECLINED' => $firebase->getCountByStatus('rescue', 'rescueStatus', 'DECLINED'),
+];
+
+$adoptionLast3Months = $firebase->getAdoptionCountsLast3Months();
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -123,6 +141,10 @@ $adoptedPets = $firebase->getCollectionCount('adopted');
       text-decoration: none;
       font-size: 14px;
     }
+    .chart-container {
+      width: 100%;
+      height: 400px;
+}
 
   </style>
 </head>
@@ -140,7 +162,9 @@ $adoptedPets = $firebase->getCollectionCount('adopted');
     <a href="php/missing.php">Missing <span class="badge bg-danger"><?= $unviewedCounts['missing'] ?? 0 ?></span></a>
     <a href="php/wandering.php">Wandering <span class="badge bg-danger"><?= $unviewedCounts['wandering'] ?? 0 ?></span></a>
     <a href="php/found.php">Found <span class="badge bg-danger"><?= $unviewedCounts['found'] ?? 0 ?></span></a>
-    <a data-bs-toggle="collapse" href="#adoptionMenu" role="button" aria-expanded="false" aria-controls="adoptionMenu">Adoption</a>
+    <a data-bs-toggle="collapse" href="#adoptionMenu" role="button" aria-expanded="false" aria-controls="adoptionMenu">
+      Adoption
+    </a>
     <div class="collapse" id="adoptionMenu">
       <a href="php/adoptionList.php" class="sub-link">Pet Adoption List <span class="badge bg-danger"><?= $unviewedCounts['adoption'] ?? 0 ?></span></a>
       <a href="php/adoptedPets.php" class="sub-link">Adopted Pets</a>
@@ -234,6 +258,113 @@ $adoptedPets = $firebase->getCollectionCount('adopted');
           </div>
         </div>
       </div>
+
+  <div class="row">
+  
+    <div class="col-md-6">
+      <div class="chart-container">
+        <canvas id="rescueStatus"></canvas>
+      </div>
+      <br>
+      <div class="chart-container">
+        <canvas id="applicationStatus"></canvas>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="chart-container">
+        <canvas id="reportChart"></canvas>
+      </div>
+    </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var ctx = document.getElementById("reportChart").getContext("2d");
+    var reportChart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: ["LOST", "FOUND", "REUNITED"],
+        datasets: [{
+          label: "Reports Count",
+          data: [<?php echo $missingReport; ?>, <?php echo $wanderingReport; ?>, <?php echo $foundReport; ?>],
+          backgroundColor: ["#ff6384", "#ff9f40", "#36a2eb"],
+          borderColor: ["#ff6384", "#ff9f40", "#36a2eb"],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var ctx = document.getElementById("rescueStatus").getContext("2d");
+    var rescueChart = new Chart(ctx, {
+        type: "pie",
+        data: {
+            labels: ["PENDING", "REVIEWING", "ONGOING", "RESCUED", "DECLINED"],
+            datasets: [{
+                label: "Rescue Status",
+                data: [
+                    <?php echo $rescue['PENDING'] ?? 0; ?>,
+                    <?php echo $rescue['REVIEWING'] ?? 0; ?>,
+                    <?php echo $rescue['ONGOING'] ?? 0; ?>,
+                    <?php echo $rescue['RESCUED'] ?? 0; ?>,
+                    <?php echo $rescue['DECLINED'] ?? 0; ?>
+                ],
+                backgroundColor: ["#ff6384", "#ff9f40", "#ffcd56", "#4bc0c0", "#9966ff"],
+                borderColor: ["#ff6384", "#ff9f40", "#ffcd56", "#4bc0c0", "#9966ff"],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+        }
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    var ctx = document.getElementById("applicationStatus").getContext("2d");
+    var rescueChart = new Chart(ctx, {
+        type: "pie",
+        data: {
+            labels: ["PENDING", "REVIEWING", "APPROVED", "COMPLETED", "REJECTED"],
+            datasets: [{
+                label: "Adoption Application Status",
+                data: [
+                    <?php echo $adoption['PENDING'] ?? 0; ?>,
+                    <?php echo $adoption['REVIEWING'] ?? 0; ?>,
+                    <?php echo $adoption['APPROVED'] ?? 0; ?>,
+                    <?php echo $adoption['COMPLETED'] ?? 0; ?>,
+                    <?php echo $adoption['REJECTED'] ?? 0; ?>
+                ],
+                backgroundColor: ["#ff6384", "#ff9f40", "#ffcd56", "#4bc0c0", "#9966ff"],
+                borderColor: ["#ff6384", "#ff9f40", "#ffcd56", "#4bc0c0", "#9966ff"],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+        }
+    });
+});
+
+
+</script>
+    
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
 </body>

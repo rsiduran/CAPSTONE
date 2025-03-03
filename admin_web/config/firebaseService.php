@@ -755,6 +755,100 @@
             
             return $map[$operator] ?? "EQUAL"; // Default to EQUAL if unknown
         }
+
+        public function getCountByStatus($collection, $field, $status) {
+            $url = "https://firestore.googleapis.com/v1/projects/{$this->projectId}/databases/(default)/documents:runQuery";
+        
+            $query = json_encode([
+                "structuredQuery" => [
+                    "from" => [["collectionId" => $collection]],
+                    "where" => [
+                        "fieldFilter" => [
+                            "field" => ["fieldPath" => $field],
+                            "op" => "EQUAL",
+                            "value" => ["stringValue" => $status]
+                        ]
+                    ]
+                ]
+            ]);
+        
+            $headers = ["Content-Type: application/json"];
+        
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        
+            $response = json_decode(curl_exec($ch), true);
+            curl_close($ch);
+        
+            return count($response) ?? 0; // Return count of matching documents
+        }
+        
+        public function getAdoptionCountsLast3Months() {
+            $url = "https://firestore.googleapis.com/v1/projects/{$this->projectId}/databases/(default)/documents:runQuery";
+        
+            // Get the first day of the current month and 3 months ago
+            $startOfCurrentMonth = new DateTime('first day of this month midnight', new DateTimeZone('UTC'));
+            $startOfThreeMonthsAgo = new DateTime('first day of -2 months midnight', new DateTimeZone('UTC'));
+        
+            $query = json_encode([
+                "structuredQuery" => [
+                    "from" => [["collectionId" => "adoptionApplication"]],
+                    "where" => [
+                        "fieldFilter" => [
+                            "field" => ["fieldPath" => "timestamp"],
+                            "op" => "GREATER_THAN_OR_EQUAL",
+                            "value" => ["timestampValue" => $startOfThreeMonthsAgo->format("Y-m-d\TH:i:s\Z")]
+                        ]
+                    ],
+                    "orderBy" => [["field" => ["fieldPath" => "timestamp"], "direction" => "ASC"]]
+                ]
+            ]);
+        
+            $headers = ["Content-Type: application/json"];
+        
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        
+            $response = json_decode(curl_exec($ch), true);
+            curl_close($ch);
+        
+            return $this->processAdoptionData($response);
+        }
+        
+        /**
+         * Process Firestore data and count applications per month (last 3 months)
+         */
+        private function processAdoptionData($data) {
+            $counts = [
+                (new DateTime('-2 months'))->format("F Y") => 0, // 3 months ago
+                (new DateTime('-1 months'))->format("F Y") => 0, // 2 months ago
+                (new DateTime())->format("F Y") => 0, // Current month
+            ];
+        
+            foreach ($data as $doc) {
+                if (!isset($doc['document'])) continue;
+        
+                $timestampStr = $doc['document']['fields']['timestamp']['timestampValue'] ?? null;
+                if (!$timestampStr) continue;
+        
+                // Convert Firestore timestamp to DateTime
+                $timestamp = new DateTime($timestampStr, new DateTimeZone('UTC'));
+                $monthYear = $timestamp->format("F Y");
+        
+                if (isset($counts[$monthYear])) {
+                    $counts[$monthYear]++;
+                }
+            }
+        
+            return $counts;
+        }
+        
     }
 
     
