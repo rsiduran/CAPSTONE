@@ -197,74 +197,186 @@ if (!$petDetails) {
   <!-- Main Content -->
   <div class="main-content">
     <div class="container my-5">
-      <div class="card profile-card shadow-lg p-4">
-        <!-- Header -->
-        <div class="text-center profile-header mb-4">
-          <h3>Pet Profile</h3>
-        </div>
+        <div class="card shadow-lg p-4">
+          <!-- Header -->
+          <div class="text-center mb-4">
+            <h3 class="fw-bold">Pet Profile</h3>
+          </div>
 
-        <!-- Pet and Owner Information -->
-        <div class="row g-4">
-          <!-- Pet Section -->
-          <div class="col-md-6 text-center">
-            <img src="<?= htmlspecialchars($petDetails['petPicture'] ?? 'default-pet.jpg') ?>" 
-                alt="<?= htmlspecialchars($petDetails['name'] ?? 'Pet Image') ?>" 
-                class="profile-image rounded-circle mb-3">
-            <h4 class="fw-bold"><?= htmlspecialchars($petDetails['name'] ?? 'N/A') ?></h4>
-            <button class="btn btn-danger btn-disabled px-4 fw-bold mb-3" disabled>
-              <?= htmlspecialchars(strtoupper($petDetails['postType'] ?? 'Unknown')) ?>
-            </button>
-            <p class="mb-4">Posted Date: <?= htmlspecialchars(
-                is_numeric($petDetails['timestamp']) && $petDetails['timestamp'] > 0 
-                ? date('Y-m-d H:i:s', (int)$petDetails['timestamp']) 
-                : date('Y-m-d H:i:s', time())
-            ) ?></p>
-            <div class="text-start details-section">
-              <p><span class="text-highlight">Breed:</span> <?= htmlspecialchars($petDetails['breed'] ?? 'N/A') ?></p>
-              <p><span class="text-highlight">Age:</span> <?= htmlspecialchars($petDetails['age'] ?? 'N/A') ?></p>
-              <p><span class="text-highlight">Gender:</span> <?= htmlspecialchars($petDetails['gender'] ?? 'N/A') ?></p>
-              <p><span class="text-highlight">Size:</span> <?= htmlspecialchars($petDetails['size'] ?? 'N/A') ?></p>
-              <p><span class="text-highlight">Pet Type:</span> <?= htmlspecialchars($petDetails['petType'] ?? 'N/A') ?></p>
-              <p><span class="text-highlight">City:</span> <?= htmlspecialchars($petDetails['city'] ?? 'N/A') ?></p>
-              <p><span class="text-highlight">Street Number:</span> <?= htmlspecialchars($petDetails['streetNumber'] ?? 'N/A') ?></p>
-              <p><span class="text-highlight">Address:</span> <?= htmlspecialchars($petDetails['address'] ?? 'N/A') ?></p>
+          <!-- Main Information -->
+          <div class="row g-4">
+            <!-- Pet Section -->
+            <div class="col-md-6">
+              <div class="form-group text-center mb-3 my-2">
+                <img
+                  src="<?= htmlspecialchars($petDetails['petPicture'] ?? 'default-pet.jpg') ?>"
+                  alt="<?= htmlspecialchars($petDetails['name'] ?? 'Pet Image') ?>"
+                  class="rounded-circle mb-3"
+                  style="width: 120px; height: 120px"
+                />
+                <h4 class="fw-bold mb-2">
+                  <?= htmlspecialchars($petDetails['name'] ?? 'N/A') ?>
+                </h4>
+              </div>
+
+              <div class="form-group my-2">
+                <label for="breed"><strong>Breed</strong></label>
+                <input
+                  type="text"
+                  id="breed"
+                  class="form-control"
+                  value="<?= htmlspecialchars($petDetails['breed'] ?? 'N/A') ?>"
+                  disabled
+                />
+              </div>
+              <div class="form-group my-2">
+                <label for="age"><strong>Age</strong></label>
+                <input
+                  type="text"
+                  id="age"
+                  class="form-control"
+                  value="<?= htmlspecialchars($petDetails['age'] ?? 'N/A') ?>"
+                  disabled
+                />
+              </div>
+              <div class="form-group my-2">
+                <label for="gender"><strong>Gender</strong></label>
+                <input
+                  type="text"
+                  id="gender"
+                  class="form-control"
+                  value="<?= htmlspecialchars($petDetails['gender'] ?? 'N/A') ?>"
+                  disabled
+                />
+              </div>
+              <div class="form-group my-2">
+                <label for="size"><strong>Size</strong></label>
+                <input
+                  type="text"
+                  id="size"
+                  class="form-control"
+                  value="<?= htmlspecialchars($petDetails['size'] ?? 'N/A') ?>"
+                  disabled
+                />
+              </div>
+              <div class="form-group my-2">
+                <label for="petType"><strong>Pet Type</strong></label>
+                <input
+                  type="text"
+                  id="petType"
+                  class="form-control"
+                  value="<?= htmlspecialchars($petDetails['petType'] ?? 'N/A') ?>"
+                  disabled
+                />
+              </div>
+             
+            </div>
+
+            <!-- Owner Section -->
+            <div class="col-md-6">
+              <div class="form-group text-center mb-3 my-2">
+                
+                <h4 class="fw-bold my-3">
+                 Records
+                </h4>
+              </div>
+              <div class="form-group my-2">
+  <label for="medicalRecord"><strong>Medical Record</strong></label>
+  <a href="<?= htmlspecialchars($petDetails['medical'] ?? 'default-medical.jpg') ?>" target="_blank">
+    <img
+      src="<?= htmlspecialchars($petDetails['medical'] ?? 'default-medical.jpg') ?>"
+      alt="Medical Record"
+      class="img-fluid d-block mx-auto"
+      style="width: 180px; height: 180px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7); margin-top: 10px;"
+    />
+  </a>
+</div>
+
+<div class="form-group my-2">
+  <label for="vaccinationRecord"><strong>Vaccination</strong></label>
+  <a href="<?= htmlspecialchars($petDetails['vaccination'] ?? 'default-vaccination.jpg') ?>" target="_blank">
+    <img
+      src="<?= htmlspecialchars($petDetails['vaccination'] ?? 'default-vaccination.jpg') ?>"
+      alt="Vaccination Record"
+      class="img-fluid d-block mx-auto"
+      style="width: 180px; height: 180px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7); margin-top: 10px;"
+    />
+  </a>
+</div>
+
+<div class="form-group my-2">
+  <label for="spayNeuterRecord"><strong>Spay/Neuter</strong></label>
+  <a href="<?= htmlspecialchars($petDetails['spay'] ?? 'default-spay-neuter.jpg') ?>" target="_blank">
+    <img
+      src="<?= htmlspecialchars($petDetails['spay'] ?? 'default-spay-neuter.jpg') ?>"
+      alt="Spay/Neuter Record"
+      class="img-fluid d-block mx-auto"
+      style="width: 180px; height: 180px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7); margin-top: 10px;"
+    />
+  </a>
+</div>
+
             </div>
           </div>
 
-        </div>
+          <!-- Divider -->
+          <hr class="my-4" />
 
-        <hr class="text-white my-4">
+          <!-- Additional Information -->
 
-        <!-- Additional Details -->
-        <div class="row g-4">
-          <div class="col-md-6">
-            <div class="details-section">
-              <strong>Description</strong>
-              <p><?= htmlspecialchars($petDetails['description'] ?? 'N/A') ?></p>
+          <!-- Additional Photos -->
+          <?php if (!empty($petDetails['additionalPhotos']) && is_array($petDetails['additionalPhotos'])): ?>
+          <div class="mt-4">
+            <h4 class="text-center mb-2">Additional Photos</h4>
+            <div
+              id="photoCarousel"
+              class="carousel slide"
+              data-bs-ride="carousel"
+              style="max-width: 500px; margin: 0 auto"
+            >
+              <div class="carousel-inner">
+                <?php foreach ($petDetails['additionalPhotos'] as $index =>
+                $photo): ?>
+                <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
+                  <img
+                    src="<?= htmlspecialchars($photo) ?>"
+                    alt="Additional Photo"
+                    class="d-block w-100 rounded"
+                  />
+                </div>
+                <?php endforeach; ?>
+              </div>
+              <button
+                class="carousel-control-prev"
+                type="button"
+                data-bs-target="#photoCarousel"
+                data-bs-slide="prev"
+              >
+                <span
+                  class="carousel-control-prev-icon"
+                  aria-hidden="true"
+                ></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button
+                class="carousel-control-next"
+                type="button"
+                data-bs-target="#photoCarousel"
+                data-bs-slide="next"
+              >
+                <span
+                  class="carousel-control-next-icon"
+                  aria-hidden="true"
+                ></span>
+                <span class="visually-hidden">Next</span>
+              </button>
             </div>
           </div>
-          
+          <?php else: ?>
+          <p class="mt-4">No additional photos available.</p>
+          <?php endif; ?>
         </div>
-
-        <!-- Additional Photos -->
-        <?php if (!empty($petDetails['additionalPhotos']) && is_array($petDetails['additionalPhotos'])): ?>
-        <div class="mt-4">
-          <h5 class="">Additional Photos</h5>
-          <div class="row g-3 additional-photos">
-            <?php foreach ($petDetails['additionalPhotos'] as $photo): ?>
-            <div class="col-md-4">
-              <img src="<?= htmlspecialchars($photo) ?>" 
-                  alt="Additional Photo" 
-                  class="img-fluid rounded">
-            </div>
-            <?php endforeach; ?>
-          </div>
-        </div>
-        <?php else: ?>
-        <p class="mt-4">No additional photos available.</p>
-        <?php endif; ?>
       </div>
-    </div>
   </div>
 
 
